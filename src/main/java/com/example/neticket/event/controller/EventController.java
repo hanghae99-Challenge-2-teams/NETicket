@@ -1,12 +1,25 @@
 package com.example.neticket.event.controller;
 
+import com.example.neticket.event.dto.EventResponseDto;
+import com.example.neticket.event.service.EventService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping
+@RequestMapping("/neticket/events")
 public class EventController {
+
+  private final EventService eventService;
+
+  @GetMapping
+  public Page<EventResponseDto> getEvents(@RequestParam(value = "page") int page) {
+    return eventService.getEvents(page);
+
+  }
 
 }

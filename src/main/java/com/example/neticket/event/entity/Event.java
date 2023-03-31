@@ -1,5 +1,6 @@
 package com.example.neticket.event.entity;
 
+import java.time.LocalDate;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -28,5 +29,7 @@ public class Event {
   @Column(nullable = false)
   private int price;
 
+//  일단 임시로
+  private LocalDate earliestDate;
 
 }
