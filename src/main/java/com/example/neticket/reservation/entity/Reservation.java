@@ -26,13 +26,11 @@ public class Reservation {
 //  예매-사용자 단방향 다대일 관계로 설정
   @ManyToOne
   @JoinColumn(name = "user_id", nullable = false)
-  @Column(nullable = false)
   private User user;
 
 //  예매-공연회차 단방향 다대일 관계로 설정
   @ManyToOne
   @JoinColumn(name = "show_time_id", nullable = false)
-  @Column(nullable = false)
   private ShowTime showTime;
 
 
