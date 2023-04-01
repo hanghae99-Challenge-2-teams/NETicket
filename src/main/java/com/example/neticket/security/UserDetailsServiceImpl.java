@@ -13,7 +13,7 @@ public class UserDetailsServiceImpl {
 
     private final UserRepository userRepository;
     
-    public UserDetails loadUsersByusername(String email) throws UsernameNotFoundException {
+    public UserDetails loadUsersByEmail(String email) throws UsernameNotFoundException {
         User user = userRepository.findByEmail(email).orElseThrow(
                 () -> new UsernameNotFoundException("유저를 찾을 수 없습니다.")
         );

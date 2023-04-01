@@ -1,5 +1,6 @@
 package com.example.neticket.user.entity;
 
+import com.example.neticket.user.dto.SignupRequestDto;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -21,10 +22,21 @@ public class User {
   @Column(nullable = false, unique = true)
   private String email;
 
+  @Column(nullable = false)
+  private String password;
+
   @Column(nullable = false, unique = true)
   private String nickname;
 
   @Column(nullable = false)
   @Enumerated(value = EnumType.STRING)
   private UserRoleEnum role;
+
+  public User(SignupRequestDto dto, String password, UserRoleEnum role) {
+    this.email = dto.getEmail();
+    this.password = password;
+    this.nickname = dto.getNickname();
+    this.role = role;
+  }
+
 }
