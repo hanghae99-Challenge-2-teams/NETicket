@@ -10,7 +10,8 @@
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
         crossorigin="anonymous">
   <link rel="preconnect" href="https://fonts.gstatic.com">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
   <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
   <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
   <meta charset="UTF-8">
@@ -124,8 +125,7 @@
 
       // 비밀번호와 비밀번호 확인 값이 일치하지 않을 경우
       if (password !== passwordCheck) {
-        $("#alert-text").text("비밀번호와 비밀번호 확인이 일치하지 않습니다.");
-        $("#alert").addClass("alert-danger").removeClass("fade");
+        alert("비밀번호와 비밀번호 확인이 일치하지 않습니다.");
         return;
       }
 
@@ -144,6 +144,7 @@
           console.log(data);
           $("#alert-text").text("회원가입이 완료되었습니다.");
           $("#alert").addClass("alert-success").removeClass("fade");
+          window.location.href = "/neticket/login-page";
         },
         error: function (jqXHR, textStatus, errorThrown) {
           console.log(jqXHR);
@@ -154,7 +155,30 @@
         }
       });
     });
+
+    // 비밀번호 입력값 사용자가 안보이게 가려주기
+    $("#password").focus(function () {
+      $("#password").attr("type", "password");
+    });
+
+    $("#password").blur(function () {
+      if ($("#password").val() === "") {
+        $("#password").attr("type", "text");
+      }
+    });
+
+    $("#passwordCheck").focus(function () {
+      $("#passwordCheck").attr("type", "password");
+    });
+
+    $("#passwordCheck").blur(function () {
+      if ($("#passwordCheck").val() === "") {
+        $("#passwordCheck").attr("type", "text");
+      }
+    });
   });
+
+
 </script>
 <body>
 <div class="">
@@ -169,12 +193,15 @@
         </div>
         <div class="mb-3">
           <label class="form-label">비밀번호</label>
-          <input type="text" id="password" class="form-control" placeholder="비밀번호를 입력해주세요.">
+          <div class="input-group">
+            <input type="password" id="password" class="form-control" placeholder="비밀번호를 입력해주세요.">
+          </div>
         </div>
         <div class="mb-3">
           <label class="form-label">비밀번호 확인</label>
-          <input type="text" id="passwordCheck" class="form-control"
-                 placeholder="비밀번호를 한번 더 입력해주세요.">
+          <div class="input-group">
+            <input type="password" id="passwordCheck" class="form-control" placeholder="비밀번호를 한번 더 입력해주세요.">
+          </div>
         </div>
         <div class="mb-3">
           <label class="form-label">닉네임</label>
@@ -190,7 +217,7 @@
           </div>
         </div>
         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-          <a href="/neticket/login">
+          <a href="/neticket/login-page">
             <button type="button" class="btn btn-warning" id="loginpage">로그인</button>
           </a>
           <button type="button" class="btn btn-primary me-2" id="signup-btn">회원가입</button>
@@ -198,10 +225,7 @@
       </form>
     </div>
   </div>
-  <div id="alert" class="alert alert-dismissible fade" role="alert" style="display: none;">
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    <span id="alert-text"></span>
-  </div>
+
 </div>
 </body>
 </html>
