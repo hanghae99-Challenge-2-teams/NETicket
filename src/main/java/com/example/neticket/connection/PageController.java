@@ -28,7 +28,7 @@ public class PageController {
   }
 
   // 메인페이지 이동
-  @GetMapping("/events/detail-page")
+  @GetMapping("/events/detail-page/{eventId}")
   public ModelAndView detailPage() {
     return new ModelAndView("detail");
   }
