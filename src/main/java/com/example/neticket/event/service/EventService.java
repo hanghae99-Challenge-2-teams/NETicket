@@ -19,14 +19,20 @@ public class EventService {
   private final ShowTimeRepository showTimeRepository;
 
 
+//  메인페이지 조회
   @Transactional(readOnly = true)
   public Page<EventResponseDto> getEvents(int page) {
+//    ShowTime의 isAvailable이 true인 Event를 ShowTime의 date가 가장 빠른 순서대로 정렬하여 Page<EventResponseDto>로 반환
     Sort.Direction direction = Sort.Direction.ASC;
-    Sort sort = Sort.by(direction, "date");
+    Sort sort = Sort.by(direction, "showTimeList.date");
     Pageable pageable = PageRequest.of(page, 8, sort);
-//    여기서 어떤 repository를 써서 가져와야 할까?
-
-
+    return eventRepository.findAllByAvailableOrderByShowTimeDate(pageable)
+        .map(EventResponseDto::new);
 
   }
+
+
+
+
+
 }

@@ -16,6 +16,7 @@ public class EventController {
 
   private final EventService eventService;
 
+//  메인 페이지 조회
   @GetMapping
   public Page<EventResponseDto> getEvents(@RequestParam(value = "page") int page) {
     return eventService.getEvents(page);
