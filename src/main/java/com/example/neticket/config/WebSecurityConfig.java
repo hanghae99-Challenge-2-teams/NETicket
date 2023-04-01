@@ -51,6 +51,7 @@ public class WebSecurityConfig {
         .antMatchers("/neticket/signup").permitAll()
         .antMatchers("/neticket/events").permitAll()
         .antMatchers("/neticket/events/**").permitAll()
+        .antMatchers("/neticket/**").permitAll()
         .antMatchers("/resources/**").permitAll()
         .antMatchers("/**").permitAll()
         .anyRequest().authenticated()
