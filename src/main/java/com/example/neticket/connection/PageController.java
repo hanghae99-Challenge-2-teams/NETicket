@@ -36,7 +36,7 @@ public class PageController {
   // 예약완료 페이지 이동
   @GetMapping("/reservations-page")
   public ModelAndView reservationsPage() {
-    return new ModelAndView("reservation");
+    return new ModelAndView("mypage");
   }
 
   // 마이페이지 이동
