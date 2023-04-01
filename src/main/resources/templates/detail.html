@@ -34,45 +34,66 @@
 
   <title>NETicket 상세페이지</title>
   <script>
-    $(document).ready(function () {
-      // API 요청을 보내어 세부 정보를 받아옵니다.
-      $.ajax({
-        type: "GET",
-        url: "/neticket/detail",
-        success: function (data) {
-          const detailEventResponse = data.detailEventResponse;
+    // $(document).ready(function () {
+    //   // API 요청을 보내어 세부 정보를 받아옵니다.
+    //   $.ajax({
+    //     type: "GET",
+    //     url: "/neticket/detail",
+    //     success: function (data) {
+    //       const detailEventResponse = data.detailEventResponse;
+    //
+    //       // 세부 정보를 이용하여 UI를 업데이트합니다.
+    //       $('.image').attr('src', detailEventResponse.image);
+    //       $('h1').text(detailEventResponse.title);
+    //       $('.infoBtn').text(detailEventResponse.place);
+    //
+    //     },
+    //     error: function (jqXHR, textStatus, errorThrown) {
+    //       console.log(jqXHR);
+    //       console.log(textStatus);
+    //       console.log(errorThrown);
+    //     }
+    //   });
+    //
+    // });
+    //
+    // function onBookingButtonClick() {
+    //   const quantity = $('.infoItem:contains("매수") .infoText').text();
+    //   const selectedDate = $('#datePicker').val();
+    //   $.ajax({
+    //     type: 'POST',
+    //     url: '/neticket/booking',
+    //     data: {quantity, selectedDate},
+    //     success: function (response) {
+    //       window.location.href = '/neticket/mypage-page';
+    //     },
+    //     error: function (jqXHR, textStatus, errorThrown) {
+    //       console.log(jqXHR);
+    //       console.log(textStatus);
+    //       console.log(errorThrown);
+    //     }
+    //   });
+    // }
+    const detailEventResponse = {
+      title: '공연 제목',
+      place: '공연 장소',
+      price: 10000,
+      quantity: 2,
+      totalPrice: 20000
+    };
 
-          // 세부 정보를 이용하여 UI를 업데이트합니다.
-          $('.image').attr('src', detailEventResponse.image);
-          $('h1').text(detailEventResponse.title);
-          $('.infoBtn').text(detailEventResponse.place);
+    // HTML의 템플릿 변수에 값을 적용하여 동적으로 변경합니다.
+    const templateVars = [
+      {selector: '.info ul li:first-child .infoDesc', value: detailEventResponse.title},
+      {selector: '.info ul li:nth-child(2) .infoDesc', value: `<a class="infoBtn" data-popup="info-place" role="button" href="#">${detailEventResponse.place}</a>`},
+      {selector: '.info ul li:nth-child(3) .infoDesc p', value: `${detailEventResponse.price}원`},
+      {selector: '.info ul li:nth-child(4) .infoDesc p', value: `${detailEventResponse.quantity}매`},
+      {selector: '.info ul li:nth-child(5) .infoDesc p', value: `${detailEventResponse.totalPrice}원`}
+    ];
 
-        },
-        error: function (jqXHR, textStatus, errorThrown) {
-          console.log(jqXHR);
-          console.log(textStatus);
-          console.log(errorThrown);
-        }
-      });
-
+    templateVars.forEach(({selector, value}) => {
+      document.querySelector(selector).innerHTML = value;
     });
-    function onBookingButtonClick() {
-      const quantity = $('.infoItem:contains("매수") .infoText').text();
-      const selectedDate = $('#datePicker').val();
-      $.ajax({
-        type: 'POST',
-        url: '/neticket/booking',
-        data: { quantity, selectedDate },
-        success: function(response) {
-          window.location.href = '/neticket/mypage-page';
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-          console.log(jqXHR);
-          console.log(textStatus);
-          console.log(errorThrown);
-        }
-      });
-    }
 
   </script>
 
@@ -169,19 +190,19 @@
   <input type="submit" value="검색">
 </form>
 <div style="display: flex;">
-  <div style="margin-left: 50px; margin-top: 50px;">
+  <div style="margin-left: 50px; margin-top: 50px;" class="col-2">
     <p>Category</p>
-    <div class="list-group" style="width: 200px">
+    <div class="list-group" style="width: 100%">
       <a href="#" class="list-group-item list-group-item-action">공연</a>
       <a href="#" class="list-group-item list-group-item-action">영화</a>
       <a href="#" class="list-group-item list-group-item-action">연극</a>
       <a href="#" class="list-group-item list-group-item-action">뮤지컬</a>
     </div>
   </div>
-  <div class="image-container">
-    <img class="image" src="https://picsum.photos/800/650" alt="">
+  <div class="image-container col-6">
+    <img class="image" src="https://picsum.photos/600/650" alt="" width="80%" HEIGHT="70%">
   </div>
-  <ul class="info">
+  <ul class="info col-4">
     <li class="infoItem"><strong class="infoLabel">제목</strong>
       <div class="infoDesc">{{title}}</div>
     </li>
