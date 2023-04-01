@@ -141,9 +141,10 @@
   function showEvent(pageNum) {
     $.ajax({
       type: "GET",
-      url: "/neticket/events/?page=${pageNum}",
+      url: "/neticket/events/?page="+pageNum,
+      dataType: "json",
       headers: {'Content-Type': 'application/json'},
-      success: function (respones, status, xhr) {
+      success: function (respones) {
         for (let i = 0; i < respones.length; i++) {
           let eventDto = respones[i];
           let id = eventDto.id;
