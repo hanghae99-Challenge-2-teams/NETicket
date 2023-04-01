@@ -27,7 +27,12 @@ public class ReservationService {
         () -> new IllegalArgumentException("공연회차 정보가 없습니다.")
     );
 
-    reservationRepository.saveAndFlush(new Reservation(dto, user, showTime));
+     if (showTime.getTotalSeats() >= showTime.getReservedSeats() + dto.getCount()) {
+       showTime.reserveSeats(dto.getCount());
+       reservationRepository.saveAndFlush(new Reservation(dto, user, showTime));
+       return;
+     }
+     throw new IllegalArgumentException("남은 자리가 없습니다");
   }
 
   // 예매완료
