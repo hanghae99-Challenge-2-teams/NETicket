@@ -23,7 +23,7 @@ public class EventService {
   @Transactional(readOnly = true)
   public Page<EventResponseDto> getEvents(int page) {
 //    ShowTime의 isAvailable이 true인 Event를 ShowTime의 date가 가장 빠른 순서대로 정렬하여 Page<EventResponseDto>로 반환
-    Pageable pageable = PageRequest.of(page, 8);
+    Pageable pageable = PageRequest.of(page, 4);
     return eventRepository.findAllByAvailableOrderByShowTimeDate(pageable)
         .map(EventResponseDto::new);
 
@@ -44,7 +44,7 @@ public class EventService {
   public Page<EventResponseDto> searchEvents(String keyword, int page, String sortBy, boolean isAsc) {
     Sort.Direction direction = isAsc? Sort.Direction.ASC : Sort.Direction.DESC;
     Sort sort = Sort.by(direction, sortBy);
-    Pageable pageable = PageRequest.of(page, 8, sort);
+    Pageable pageable = PageRequest.of(page, 4, sort);
     return eventRepository.findAllByTitleOrPlaceContaining(keyword, pageable)
         .map(EventResponseDto::new);
 
