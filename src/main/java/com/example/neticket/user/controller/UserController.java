@@ -12,7 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequiredArgsConstructor
@@ -23,7 +23,7 @@ public class UserController {
 
   // 회원가입
   @PostMapping("/signup")
-  public String  signup(@RequestBody @Valid SignupRequestDto dto) {
+  public String signup(@RequestBody @Valid SignupRequestDto dto) {
 
     userService.signup(dto);
 
@@ -32,11 +32,11 @@ public class UserController {
 
   // 로그인
   @PostMapping("/login")
-  public String  login (@RequestBody @Valid LoginRequestDto dto, HttpServletResponse response){
+  public @ResponseBody MessageResponseDto login (@RequestBody @Valid LoginRequestDto dto, HttpServletResponse response){
 
     userService.login(dto, response);
 
-    return "redirect:/neticket/events-page";
+    return new MessageResponseDto(HttpStatus.OK, "로그인이 완료되었습니다.");
   }
 
 }

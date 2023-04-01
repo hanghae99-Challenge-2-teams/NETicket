@@ -54,6 +54,7 @@ public class WebSecurityConfig {
                 .antMatchers("/neticket/signup").permitAll()
                 .antMatchers("/neticket/events").permitAll()
                 .antMatchers("/neticket/events/**").permitAll()
+                .antMatchers("/**").permitAll()
                 .anyRequest().authenticated()
                 .and().addFilterBefore(new JwtAuthFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(new ExceptionHandlerFilter(), JwtAuthFilter.class);
