@@ -7,7 +7,6 @@ import com.example.neticket.reservation.dto.ReservationResponseDto;
 import com.example.neticket.reservation.entity.Reservation;
 import com.example.neticket.reservation.repository.ReservationRepository;
 import com.example.neticket.user.entity.User;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
