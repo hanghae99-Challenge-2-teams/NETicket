@@ -9,6 +9,7 @@ import com.example.neticket.reservation.repository.ReservationRepository;
 import com.example.neticket.user.entity.User;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,8 +24,7 @@ public class ReservationService {
   // 예매하기
   @Transactional
   public void makeReservations(ReservationRequestDto dto, User user) {
-
-    ShowTime showTime = showTimeRepository.findById(dto.getShowtimeId()).orElseThrow(
+    ShowTime showTime = showTimeRepository.findById(dto.getShowTimeId()).orElseThrow(
         () -> new IllegalArgumentException("공연회차 정보가 없습니다.")
     );
 
@@ -51,11 +51,9 @@ public class ReservationService {
   public List<ReservationResponseDto> getMyPage(User user) {
 
     List<Reservation> allByUser = reservationRepository.findAllByUser(user);
-    List<ReservationResponseDto> dtoList = new ArrayList<>();
-
-    for (Reservation reservation : allByUser) {
-      dtoList.add(new ReservationResponseDto(reservation));
-    }
+    List<ReservationResponseDto> dtoList = allByUser.stream()
+        .map(ReservationResponseDto::new)
+        .collect(Collectors.toList());
 
     return dtoList;
   }

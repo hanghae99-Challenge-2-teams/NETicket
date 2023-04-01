@@ -2,14 +2,11 @@ package com.example.neticket.user.service;
 
 
 import com.example.neticket.jwt.JwtUtil;
-import com.example.neticket.reservation.dto.ReservationResponseDto;
 import com.example.neticket.user.dto.LoginRequestDto;
 import com.example.neticket.user.dto.SignupRequestDto;
 import com.example.neticket.user.entity.User;
 import com.example.neticket.user.entity.UserRoleEnum;
 import com.example.neticket.user.repository.UserRepository;
-import java.util.List;
-import java.util.Optional;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -28,17 +25,17 @@ public class UserService {
   @Transactional
   public void signup(SignupRequestDto dto) {
 
-    Optional<User> found = userRepository.findByEmail(dto.getEmail());
-    if(found.isPresent()) {
-      throw new IllegalArgumentException("이미 가입된 이메일이 존재합니다.");
+    boolean isEmailExist = userRepository.existsByEmail(dto.getEmail());
+    if (isEmailExist) {
+      throw new IllegalArgumentException("이미 가입된 이메일입니다.");
+    }
+
+    boolean isNickExist = userRepository.existsByNickname(dto.getNickname());
+    if (isNickExist) {
+      throw new IllegalArgumentException("이미 가입된 닉네임입니다.");
     }
 
     String password = passwordEncoder.encode(dto.getPassword());
-
-    Optional<User> found1 = userRepository.findByNickname(dto.getNickname());
-    if(found1.isPresent()) {
-      throw new IllegalArgumentException("이미 가입된 닉네임 입니다.");
-    }
 
     UserRoleEnum role = UserRoleEnum.USER;
 
@@ -55,7 +52,7 @@ public class UserService {
   }
 
   // 로그인
-  @Transactional
+  @Transactional(readOnly = true)
   public void login(LoginRequestDto dto, HttpServletResponse response) {
 
     User user = userRepository.findByEmail(dto.getEmail()).orElseThrow(
@@ -70,7 +67,10 @@ public class UserService {
     }
 
     response.addHeader(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(user.getEmail(), user.getRole()));
-
+    // Cookie 생성 및 직접 브라우저에 Set 위와 아래 방법중 택일
+//        Cookie cookie = new Cookie(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(user.getEmail(), user.getRole());
+////        cookie.setPath("/");
+//        response.addCookie(cookie);
   }
 
 }

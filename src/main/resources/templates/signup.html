@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+        crossorigin="anonymous">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+  <meta charset="UTF-8">
+  <title>NETicket 회원가입</title>
+  <style>
+    * {
+      font-family: 'Jua', sans-serif;
+    }
+
+    body {
+      background-color: #f5f5f5;
+    }
+
+    #wrap {
+      max-width: 600px;
+      margin: 50px auto;
+      background-color: #fff;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      padding: 30px;
+    }
+
+    h1 {
+      margin-top: 30px;
+      text-align: center;
+      font-size: 36px;
+      color: #333;
+      text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+      margin-top: 50px;
+      font-size: 24px;
+      color: #333;
+      text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
+    }
+
+    form {
+      margin-top: 30px;
+    }
+
+    .form-control {
+      border: none;
+      border-radius: 0;
+      box-shadow: none;
+      border-bottom: 1px solid #ccc;
+    }
+
+    .form-control:focus {
+      box-shadow: none;
+      border-color: #6c757d;
+    }
+
+    .form-check-input:checked ~ .form-check-label:before {
+      color: #007bff;
+    }
+
+    .btn-primary {
+      background-color: #007bff;
+      border-color: #007bff;
+    }
+
+    .btn-primary:hover {
+      background-color: #0069d9;
+      border-color: #0062cc;
+    }
+
+    .btn-primary:focus {
+      box-shadow: none;
+    }
+
+    .btn-primary:active {
+      background-color: #0062cc;
+      border-color: #005cbf;
+    }
+
+    .btn-outline-primary {
+      color: #007bff;
+      border-color: #007bff;
+    }
+
+    .btn-outline-primary:hover {
+      background-color: #007bff;
+      color: #fff;
+    }
+
+    .btn-outline-primary:focus {
+      box-shadow: none;
+    }
+
+    .btn-outline-primary:active {
+      background-color: #007bff;
+      border-color: #007bff;
+      color: #fff;
+    }
+
+    .btn-close {
+      color: #000;
+    }
+  </style>
+</head>
+<script>
+  $(document).ready(function () {
+    // 회원가입 버튼 클릭 시
+    $("#signup-btn").click(function () {
+      let email = $("#email").val();
+      let password = $("#password").val();
+      let passwordCheck = $("#passwordCheck").val();
+      let nickname = $("#nickname").val();
+      // let isAdmin = $("#disabledFieldsetCheck").is(":checked");
+
+      // 비밀번호와 비밀번호 확인 값이 일치하지 않을 경우
+      if (password !== passwordCheck) {
+        $("#alert-text").text("비밀번호와 비밀번호 확인이 일치하지 않습니다.");
+        $("#alert").addClass("alert-danger").removeClass("fade");
+        return;
+      }
+
+      // 회원가입 요청
+      $.ajax({
+        type: "POST",
+        url: "/neticket/signup",
+        contentType: "application/json",
+        data: JSON.stringify({
+          email: email,
+          password: password,
+          nickname: nickname,
+          // isAdmin: isAdmin
+        }),
+        success: function (data) {
+          console.log(data);
+          $("#alert-text").text("회원가입이 완료되었습니다.");
+          $("#alert").addClass("alert-success").removeClass("fade");
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+          console.log(jqXHR);
+          console.log(textStatus);
+          console.log(errorThrown);
+          $("#alert-text").text("회원가입에 실패하였습니다.");
+          $("#alert").addClass("alert-danger").removeClass("fade");
+        }
+      });
+    });
+  });
+</script>
+<body>
+<div class="">
+  <h1 style="margin-bottom: 70px; margin-top: 100px;">NETicket</h1>
+  <div id="wrap">
+    <div id="login-form">
+      <form>
+        <legend>회원가입</legend>
+        <div class="mb-3">
+          <label class="form-label">이메일</label>
+          <input type="text" id="email" class="form-control" placeholder="이메일 주소를 입력해주세요.">
+        </div>
+        <div class="mb-3">
+          <label class="form-label">비밀번호</label>
+          <input type="text" id="password" class="form-control" placeholder="비밀번호를 입력해주세요.">
+        </div>
+        <div class="mb-3">
+          <label class="form-label">비밀번호 확인</label>
+          <input type="text" id="passwordCheck" class="form-control"
+                 placeholder="비밀번호를 한번 더 입력해주세요.">
+        </div>
+        <div class="mb-3">
+          <label class="form-label">닉네임</label>
+          <input type="text" id="nickname" class="form-control" placeholder="닉네임을 입력해주세요.">
+        </div>
+
+        <div class="mb-3">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="disabledFieldsetCheck">
+            <label class="form-check-label" for="disabledFieldsetCheck">
+              관리자
+            </label>
+          </div>
+        </div>
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+          <a href="/neticket/login">
+            <button type="button" class="btn btn-warning" id="loginpage">로그인</button>
+          </a>
+          <button type="button" class="btn btn-primary me-2" id="signup-btn">회원가입</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div id="alert" class="alert alert-dismissible fade" role="alert" style="display: none;">
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    <span id="alert-text"></span>
+  </div>
+</div>
+</body>
+</html>

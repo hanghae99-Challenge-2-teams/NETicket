@@ -29,7 +29,9 @@ public class EventController {
   @GetMapping("/detail/{eventId}")
   public DetailEventResponseDto getDetailEvent(@PathVariable Long eventId) {
     return eventService.getDetailEvent(eventId);
+
   }
+
 
   /**
    * 검색기능
@@ -52,7 +54,5 @@ public class EventController {
     return eventService.searchEvents(keyword, page-1, sortBy, isAsc);
 
   }
-
-
 
 }

@@ -27,5 +27,4 @@ public class ReservationResponseDto {
       this.count = reservation.getCount();
     }
 
-
 }
