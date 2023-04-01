@@ -14,7 +14,7 @@ public class ReservationResponseDto {
     private String title;
     private String place;
     private LocalDate date;
-    private int price;
+    private int totalPrice;
     private int count;
 
     public ReservationResponseDto(Reservation reservation) {
@@ -23,8 +23,8 @@ public class ReservationResponseDto {
       this.title = reservation.getShowTime().getEvent().getTitle();
       this.place = reservation.getShowTime().getEvent().getPlace();
       this.date = reservation.getShowTime().getDate();
-      this.price = reservation.getShowTime().getEvent().getPrice();
       this.count = reservation.getCount();
+      this.totalPrice = reservation.getShowTime().getEvent().getPrice() * this.count;
     }
 
 }

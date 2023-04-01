@@ -13,119 +13,199 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
   <link rel="stylesheet" type="text/css" th:href="@{/css/stylejang.css}">
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.3/css/bootstrap.min.css"
+        integrity="sha512-rn8d5WY6jz84r/OQuRU6vz8fUWlbjdpEsXAfX9HTyv2BPhq3ca/PAVKzO7c1KdQ3MqC4iN4A4XVxOxjE41oVtw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"/>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <!-- Bootstrap JavaScript -->
+  <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.3/js/bootstrap.bundle.min.js"
+      integrity="sha512-1QqnHg9XeMx/d+lKg7Lw/AiJhMV97+Z2d3T3T4ARs4bs4VXbRjxjjpV7zY+ey6rGJB6BZv6NehUj+Mm6M9X6gQ=="
+      crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="path/to/datepicker.css">
+  <script src="path/to/datepicker.js"></script>
+
+
   <meta charset="UTF-8">
   <title>메인 페이지</title>
   <style>
 
-    .layout {
-      flex-grow: 0;
-      flex-shrink: 0;
-      max-width: 1000px;
-      margin: 0 auto;
+    body {
+      font-size: 1.4rem;
+      font-weight: normal;
+      font-family: -apple-system, system-ui, BlinkMacSystemFont, "맑은 고딕", "Malgun Gothic", "돋움", Dotum, Helvetica, "Apple SD Gothic Neo", sans-serif;
+      color: #000;
+      height: 100%;
     }
 
+    .productWrapper .summary .info {
+      display: inline-block;
+      width: 50.5rem;
+      margin-top: 0.4rem;
+      margin-left: 2.5rem;
+      vertical-align: top;
+    }
 
-    .header {
+    .text-container h2 {
+      margin: 0 0 20px 0;
+    }
+
+    .text-container p {
+      line-height: 1.5;
+    }
+
+    .search-container {
       display: flex;
-      justify-content: space-between;
-      align-items: center;
+      justify-content: center;
+    }
+
+    .search-container input[type="text"] {
+      border: none;
+      border-radius: 5px;
+      margin-right: 10px;
+      font-size: 16px;
+      margin-bottom: 50px;
+      width: 400px;
+    }
+
+    .search-container input[type="submit"] {
       padding: 10px;
-      background-color: #ffffff;
-    }
-
-    .header-buttons {
-      display: flex;
-      justify-content: flex-end;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .header-title {
-      margin: 0;
-    }
-
-    .input-group {
-      margin: 0 auto;
-      text-align: center;
-      width: 500px;
-
-    }
-
-    .row {
-      margin-top: 50px;
-    }
-
-    .col {
+      border: none;
+      border-radius: 5px;
+      margin-bottom: 50px;
+      background-color: #007bff;
+      color: white;
+      font-size: 16px;
       cursor: pointer;
     }
 
-    .card-img-top {
-      /*width: 200px;*/
-      /*height: 160px;*/
-      object-fit: cover;
-      margin: auto;
+    .image-container {
+      margin-left: 50px;
     }
 
-    .card-text {
-      height: 120px;
-      overflow: hidden;
+
+    .productWrapper .productSide .sideMain {
+      width: 33rem;
+      margin: 0 auto;
+      border: 0.1rem solid #b6bdc7;
+      border-radius: 1.5rem;
     }
 
-    .page {
-      margin-top: 50px;
+    #bookingButton {
+      background-color: blue;
+      color: white;
+      font-weight: bold;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
     }
-
+    footer{
+      display: flex;
+      justify-content: center;
+      margin-top: 100px;
+    }
 
   </style>
 </head>
 <body>
-<div class="layout">
-  <div class="header">
-    <h1 class="header-title">NETicket</h1>
-    <div class="header-buttons">
-      <button type="button" class="btn btn-outline-primary">로그인</button>
-      <button type="button" class="btn btn-outline-primary">회원가입</button>
+<div class="row justify-content-between align-items-center py-2">
+  <div class="col-4">
+    <h1 style="margin-top: 30px; margin-left: 70px"><a href="/neticket/events-page"
+                                                       style="text-decoration: none;color: black;">NETicket</a>
+    </h1>
+  </div>
+  <nav class="col-8">
+    <ul class="nav justify-content-end" style="margin-right: 50px">
+      <a class="nav-link" href="/neticket/login-page" style="color: black">로그인</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/neticket/signup-page" style="color: black">회원가입</a>
+      </li>
+    </ul>
+  </nav>
+</div>
+<form action="#" method="get" class="search-container">
+  <input type="text" placeholder="검색">
+  <input type="submit" value="검색">
+</form>
+<div style="display: flex; margin-right: 20px" col-2 >
+  <div style="margin-left: 50px; margin-top: 50px; margin-right: 20px" class="col-2">
+    <p>Category</p>
+    <div class="list-group" style="width: 100%; height: 100%">
+      <a href="#" class="list-group-item list-group-item-action">공연</a>
+      <a href="#" class="list-group-item list-group-item-action">영화</a>
+      <a href="#" class="list-group-item list-group-item-action">연극</a>
+      <a href="#" class="list-group-item list-group-item-action">뮤지컬</a>
     </div>
   </div>
-  <div class="input-group mb-3">
-    <span class="input-group-text" id="inputGroup-sizing-default">검색</span>
-    <input type="text" class="form-control" aria-label="Sizing example input"
-           aria-describedby="inputGroup-sizing-default">
-    <button class="btn btn-primary" type="submit">검색하기</button>
-  </div>
-  <div class="row row-cols-1 row-cols-md-4 g-4" id="event_box">
-    <div class="col" onclick="clicktest()">
-      <div class="card h-100">
-        <img src="https://img.seoul.co.kr/img/upload/2021/11/28/SSI_20211128185735.jpg"
-             class="card-img-top" alt="...">
+
+  <div class="row">
+    <div class="col-md-3">
+      <div class="card" style="width: 18rem;">
+        <img src="https://via.placeholder.com/286x180" class="card-img-top" alt="...">
         <div class="card-body">
-          <h5 class="card-title">아이유 콘서트</h5>
-          <h6 class="card-date">2023-04-01 ~ 2023-04-05</h6>
-          <p class="card-text">노들섬 라이브하우스</p>
+          <h5 class="card-title">Card title</h5>
+          <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+          <a href="#" class="btn btn-primary">Go somewhere</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card" style="width: 18rem;">
+        <img src="https://via.placeholder.com/286x180" class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">Card title</h5>
+          <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+          <a href="#" class="btn btn-primary">Go somewhere</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card" style="width: 18rem;">
+        <img src="https://via.placeholder.com/286x180" class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">Card title</h5>
+          <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+          <a href="#" class="btn btn-primary">Go somewhere</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card" style="width: 18rem;">
+        <img src="https://via.placeholder.com/286x180" class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">Card title</h5>
+          <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+          <a href="#" class="btn btn-primary">Go somewhere</a>
         </div>
       </div>
     </div>
   </div>
-
-  <nav class="page" aria-label="Page navigation example">
-    <ul class="pagination justify-content-center">
-      <li class="page-item disabled">
-        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">이전</a>
+</div>
+<footer>
+  <nav aria-label="Page navigation example" class="justify-content-center">
+    <ul class="pagination">
+      <li class="page-item">
+        <a class="page-link" href="#" aria-label="Previous">
+          <span aria-hidden="true">&laquo;</span>
+        </a>
       </li>
       <li class="page-item"><a class="page-link" href="#">1</a></li>
       <li class="page-item"><a class="page-link" href="#">2</a></li>
       <li class="page-item"><a class="page-link" href="#">3</a></li>
-      <li class="page-item"><a class="page-link" href="#">4</a></li>
-      <li class="page-item"><a class="page-link" href="#">5</a></li>
-      <li class="page-item"><a class="page-link" href="#">6</a></li>
-      <li class="page-item"><a class="page-link" href="#">7</a></li>
-      <li class="page-item"><a class="page-link" href="#">8</a></li>
-      <li class="page-item"><a class="page-link" href="#">9</a></li>
       <li class="page-item">
-        <a class="page-link" href="#">다음</a>
+        <a class="page-link" href="#" aria-label="Next">
+          <span aria-hidden="true">&raquo;</span>
+        </a>
       </li>
     </ul>
   </nav>
+</footer>
 </div>
 </body>
 <script>
@@ -181,7 +261,6 @@
       },
     })
   }
-
 
 </script>
 </html>
