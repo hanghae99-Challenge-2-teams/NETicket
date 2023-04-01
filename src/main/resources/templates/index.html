@@ -159,6 +159,8 @@
 <!--      </div>-->
 <!--    </div>-->
 
+
+</div>
 <footer>
   <nav aria-label="Page navigation example" class="justify-content-center">
     <ul class="pagination">
@@ -178,12 +180,17 @@
     </ul>
   </nav>
 </footer>
-</div>
 </body>
 <script>
   $(document).ready(function () {
     showEvent(1);
+
+    $(document).on('click', '.col', function() {
+      let eventId = $(this).data('event-id');
+      getEventDetail(eventId);
+    });
   });
+
 
   // 행사정보 조회
   function showEvent(pageNum) {
@@ -204,7 +211,7 @@
           let date = eventDto.date;
           let place = eventDto.place;
 
-          let tmpevent = `<div class="col" onclick="getEventDetail(${id})">
+          let tmpevent = `<div class="col" data-event-id="${id}">
                           <div class="card h-100">
                             <img src="https://gykimagebucket.s3.ap-northeast-2.amazonaws.com/uploaded-image/${image}"
                                  class="card-img-top" alt="...">
@@ -224,12 +231,13 @@
   function getEventDetail(num) {
     $.ajax({
       type: "GET",
-      url: "/neticket/events?num=" + num,
+      url: "/neticket/events?page=" + num,
       success: function () {
-        window.location.href = "/neticket/events/detail?num=" + num;
+        window.location.href = "/neticket/events/detail-page/" + num;
       },
     })
   }
+
 
   // 페이징 처리
   function showPaging(response) {
