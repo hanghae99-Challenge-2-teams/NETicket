@@ -1,6 +1,8 @@
 package com.example.neticket.event.service;
 
+import com.example.neticket.event.dto.DetailEventResponseDto;
 import com.example.neticket.event.dto.EventResponseDto;
+import com.example.neticket.event.entity.Event;
 import com.example.neticket.event.repository.EventRepository;
 import com.example.neticket.event.repository.ShowTimeRepository;
 import lombok.RequiredArgsConstructor;
@@ -31,8 +33,13 @@ public class EventService {
 
   }
 
+//  상세 페이지 조회
+  @Transactional(readOnly = true)
+  public DetailEventResponseDto getDetailEvent(Long eventId) {
+    Event event = eventRepository.findById(eventId).orElseThrow(
+        () -> new IllegalArgumentException("조회하려는 공연 정보가 없습니다.")
+    );
+    return new DetailEventResponseDto(event);
 
-
-
-
+  }
 }
