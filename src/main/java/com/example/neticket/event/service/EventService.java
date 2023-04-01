@@ -4,7 +4,6 @@ import com.example.neticket.event.dto.DetailEventResponseDto;
 import com.example.neticket.event.dto.EventResponseDto;
 import com.example.neticket.event.entity.Event;
 import com.example.neticket.event.repository.EventRepository;
-import com.example.neticket.event.repository.ShowTimeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
