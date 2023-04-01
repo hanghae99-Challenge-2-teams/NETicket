@@ -1,6 +1,5 @@
 package com.example.neticket.user.entity;
 
-import com.example.neticket.user.dto.LoginRequestDto;
 import com.example.neticket.user.dto.SignupRequestDto;
 import javax.persistence.Column;
 import javax.persistence.Entity;

@@ -4,12 +4,12 @@ import com.example.neticket.event.dto.DetailEventResponseDto;
 import com.example.neticket.event.dto.EventResponseDto;
 import com.example.neticket.event.entity.Event;
 import com.example.neticket.event.repository.EventRepository;
-import com.example.neticket.event.repository.ShowTimeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,9 +23,7 @@ public class EventService {
   @Transactional(readOnly = true)
   public Page<EventResponseDto> getEvents(int page) {
 //    ShowTime의 isAvailable이 true인 Event를 ShowTime의 date가 가장 빠른 순서대로 정렬하여 Page<EventResponseDto>로 반환
-    Sort.Direction direction = Sort.Direction.ASC;
-    Sort sort = Sort.by(direction, "showTimeList.date");
-    Pageable pageable = PageRequest.of(page, 8, sort);
+    Pageable pageable = PageRequest.of(page, 8);
     return eventRepository.findAllByAvailableOrderByShowTimeDate(pageable)
         .map(EventResponseDto::new);
 
@@ -51,4 +49,5 @@ public class EventService {
         .map(EventResponseDto::new);
 
   }
+
 }
