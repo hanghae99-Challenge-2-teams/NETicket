@@ -15,6 +15,18 @@
   <link rel="stylesheet" type="text/css" th:href="@{/css/stylelee.css}">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.3/css/bootstrap.min.css"
+        integrity="sha512-rn8d5WY6jz84r/OQuRU6vz8fUWlbjdpEsXAfX9HTyv2BPhq3ca/PAVKzO7c1KdQ3MqC4iN4A4XVxOxjE41oVtw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"/>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <!-- Bootstrap JavaScript -->
+  <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.3/js/bootstrap.bundle.min.js"
+      integrity="sha512-1QqnHg9XeMx/d+lKg7Lw/AiJhMV97+Z2d3T3T4ARs4bs4VXbRjxjjpV7zY+ey6rGJB6BZv6NehUj+Mm6M9X6gQ=="
+      crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
   <meta charset="UTF-8">
   <link rel="stylesheet" href="path/to/datepicker.css">
   <script src="path/to/datepicker.js"></script>
@@ -22,40 +34,46 @@
 
   <title>NETicket 상세페이지</title>
   <script>
-    function onBookingButtonClick() {
-      // 선택된 정보들을 가져옵니다.
-      const titleElem = document.querySelector(".infoItem:nth-child(1) .infoDesc");
-      const placeElem = document.querySelector(".infoItem:nth-child(2) .infoDesc a");
-      const priceElem = document.querySelector(".infoItem:nth-child(3) .infoDesc .infoText");
-      const quantityElem = document.querySelector(".infoItem:nth-child(4) .infoDesc .infoText");
-      const selectedDateElem = document.getElementById("datePicker");
+    $(document).ready(function () {
+      // API 요청을 보내어 세부 정보를 받아옵니다.
+      $.ajax({
+        type: "GET",
+        url: "/neticket/detail",
+        success: function (data) {
+          const detailEventResponse = data.detailEventResponse;
 
-      const title = titleElem.innerText.trim();
-      const place = placeElem.innerText.trim();
-      const price = parseInt(priceElem.innerText.trim().replace(/[^0-9]/g, ""));
-      const quantity = parseInt(quantityElem.innerText.trim().replace(/[^0-9]/g, ""));
-      const selectedDate = selectedDateElem.value;
+          // 세부 정보를 이용하여 UI를 업데이트합니다.
+          $('.image').attr('src', detailEventResponse.image);
+          $('h1').text(detailEventResponse.title);
+          $('.infoBtn').text(detailEventResponse.place);
 
-      // 서버로 데이터를 전송합니다.
-      fetch("/neticket/events/detail-page", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
         },
-        body: JSON.stringify({
-          title: title,
-          place: place,
-          price: price,
-          quantity: quantity,
-          selectedDate: selectedDate
-        })
-      }).then(response => {
-        // 서버로부터 응답을 받은 후 처리합니다.
-        console.log(response);
-      }).catch(error => {
-        console.error(error);
+        error: function (jqXHR, textStatus, errorThrown) {
+          console.log(jqXHR);
+          console.log(textStatus);
+          console.log(errorThrown);
+        }
+      });
+
+    });
+    function onBookingButtonClick() {
+      const quantity = $('.infoItem:contains("매수") .infoText').text();
+      const selectedDate = $('#datePicker').val();
+      $.ajax({
+        type: 'POST',
+        url: '/neticket/booking',
+        data: { quantity, selectedDate },
+        success: function(response) {
+          window.location.href = '/neticket/mypage-page';
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+          console.log(jqXHR);
+          console.log(textStatus);
+          console.log(errorThrown);
+        }
       });
     }
+
   </script>
 
   <style>
@@ -132,14 +150,16 @@
 <body>
 <div class="row justify-content-between align-items-center py-2">
   <div class="col-4">
-    <h1 style="margin-top: 30px; margin-left: 70px">NETicket</h1>
+    <h1 style="margin-top: 30px; margin-left: 70px"><a href="/neticket/events-page"
+                                                       style="text-decoration: none;color: black;">NETicket</a>
+    </h1>
   </div>
   <nav class="col-8">
     <ul class="nav justify-content-end" style="margin-right: 50px">
-      <a class="nav-link" href="#">로그인</a>
+      <a class="nav-link" href="/neticket/login-page" style="color: black">로그인</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">회원가입</a>
+        <a class="nav-link" href="/neticket/signup-page" style="color: black">회원가입</a>
       </li>
     </ul>
   </nav>
@@ -163,22 +183,21 @@
   </div>
   <ul class="info">
     <li class="infoItem"><strong class="infoLabel">제목</strong>
-      <div class="infoDesc"> ㅁㄴㅇㄹ</div>
+      <div class="infoDesc">{{title}}</div>
     </li>
     <li class="infoItem"><strong class="infoLabel">장소</strong>
       <div class="infoDesc">
-        <a class="infoBtn" data-popup="info-place" role="button" href="#">링크아트센터
-          벅스홀
-        </a>
+        <a class="infoBtn" data-popup="info-place" role="button" href="#">{{place}}</a>
       </div>
     </li>
     <li class="infoItem"><strong class="infoLabel">공연 가격</strong>
-      <div class="infoDesc"><p class="infoText">10000원</p></div>
+      <div class="infoDesc"><p class="infoText">{{price}}원</p></div>
     </li>
     <li class="infoItem"><strong class="infoLabel">매수</strong>
-      <div class="infoDesc"><p class="infoText">3매</p></div>
+      <div class="infoDesc"><p class="infoText">{{quantity}}매</p></div>
     </li>
     <li class="infoItem infoPrice"><strong class="infoLabel">가격</strong>
+      <div class="infoDesc"><p class="infoText">{{totalPrice}}원</p></div>
     </li>
     <li class="infoItem">
       <div>
@@ -195,79 +214,7 @@
     </li>
     <button id="bookingButton" onclick="onBookingButtonClick()">예매하기</button>
   </ul>
+
 </div>
 </body>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-  function onBookingButtonClick() {
-    // 이미지 url
-    const imgUrl = document.querySelector('.image').src;
-    // 제목
-    const title = document.querySelector('.infoDesc:first-child').textContent.trim();
-    // 장소
-    const place = document.querySelector('.infoDesc a').textContent.trim();
-    // 가격
-    const price = document.querySelector('.infoDesc:nth-child(3) p').textContent.trim();
-    // 매수
-    const quantity = document.querySelector('.infoDesc:nth-child(4) p').textContent.trim();
-    // 날짜
-    const date = document.querySelector('#datePicker').value;
-
-    // fetch() 함수를 이용해 서버에 요청을 보냅니다.
-    fetch('/booking', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        imgUrl: image,
-        title: title,
-        place: place,
-        price: price,
-        quantity: count,
-        date: date
-      })
-    })
-    .then(response => {
-      // 응답이 성공적으로 처리되었다면, 결과를 처리합니다.
-      if (response.ok) {
-        console.log('예매가 완료되었습니다.');
-      } else {
-        console.error('예매가 실패하였습니다.');
-      }
-    })
-    .catch(error => {
-      console.error('에러 발생:', error);
-    });
-  }
-  document.querySelector('#bookingButton').addEventListener('click', onBookingButtonClick);
-
-  // function onBookingButtonClick() {
-  //   const title = $(".infoItem:nth-child(1) .infoDesc").text().trim();
-  //   const place = $(".infoItem:nth-child(2) .infoDesc").text().trim();
-  //   const price = $(".infoItem:nth-child(3) .infoDesc .infoText").text().trim();
-  //   const count = $(".infoItem:nth-child(4) .infoDesc .infoText").text().trim();
-  //   const date = $("#datePicker").val();
-  //
-  //   $.ajax({
-  //     type: "POST",
-  //     url: "/booking",
-  //     data: {
-  //       title: title,
-  //       place: place,
-  //       price: price,
-  //       count: count,
-  //       date: date
-  //     },
-  //     success: function(response) {
-  //       // 예매 성공 시 실행될 로직
-  //       console.log(response);
-  //     },
-  //     error: function(error) {
-  //       // 예매 실패 시 실행될 로직
-  //       console.log(error);
-  //     }
-  //   });
-  // }
-</script>
 </html>
