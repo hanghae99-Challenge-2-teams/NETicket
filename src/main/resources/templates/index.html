@@ -206,15 +206,61 @@
     </ul>
   </nav>
 </footer>
-
 </div>
-
-
-
-
-
-
-
 </body>
+<script>
+  $(document).ready(function () {
+    showEvent(1);
+  });
 
+  function clicktest() {
+    alert("클릭성공")
+  }
+
+  // 행사정보 조회
+  function showEvent(pageNum) {
+    $.ajax({
+      type: "GET",
+      url: "/neticket/events/?page="+pageNum,
+      dataType: "json",
+      headers: {'Content-Type': 'application/json'},
+      success: function (respones) {
+        for (let i = 0; i < respones.length; i++) {
+          let eventDto = respones[i];
+          let id = eventDto.id;
+          let image = eventDto.image;
+          let title = eventDto.title;
+          let date = eventDto.date;
+          let place = eventDto.place;
+
+          let tmpevent = `<div class="col" onclick=getEventDetail(${id})>
+                            <div class="card h-100">
+                              <img src="${image}"
+                                   class="card-img-top" alt="...">
+                              <div class="card-body">
+                                <h5 class="card-title">"${title}"</h5>
+                                <h6 class="card-date">"${date}"</h6>
+                                <p class="card-text">"${place}"</p>
+                              </div>
+                            </div>
+                          </div>`
+          $('#event_box').append(tmpevent)
+
+        }
+      },
+
+    })
+  }
+
+  function getEventDetail(num) {
+    $.ajax({
+      type: "GET",
+      url: "/neticket/events/detail?num="+num,
+      success: function () {
+        window.lo
+      },
+    })
+  }
+
+</script>
 </html>
