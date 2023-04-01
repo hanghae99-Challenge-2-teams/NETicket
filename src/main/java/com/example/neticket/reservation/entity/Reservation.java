@@ -1,6 +1,7 @@
 package com.example.neticket.reservation.entity;
 
 import com.example.neticket.event.entity.ShowTime;
+import com.example.neticket.reservation.dto.ReservationRequestDto;
 import com.example.neticket.user.entity.User;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -32,6 +33,13 @@ public class Reservation {
   @ManyToOne
   @JoinColumn(name = "show_time_id", nullable = false)
   private ShowTime showTime;
+
+
+  public Reservation(ReservationRequestDto dto, User user, ShowTime showTime) {
+    this.count = dto.getCount();
+    this.user = user;
+    this.showTime = showTime;
+  }
 
 
 }

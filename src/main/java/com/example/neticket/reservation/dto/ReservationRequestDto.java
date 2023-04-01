@@ -5,4 +5,8 @@ import lombok.Getter;
 @Getter
 public class ReservationRequestDto {
 
+  private Long showtimeId;
+
+  private int count;
+
 }
