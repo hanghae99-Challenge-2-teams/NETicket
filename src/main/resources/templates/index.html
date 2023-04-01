@@ -1,10 +1,186 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>Title</title>
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+        crossorigin="anonymous">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" th:href="@{/css/stylejang.css}">
+  <meta charset="UTF-8">
+  <title>메인 페이지</title>
+  <style>
+
+    .layout {
+      flex-grow: 0;
+      flex-shrink: 0;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+      background-color: #ffffff;
+    }
+
+    .header-buttons {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .header-title {
+      margin: 0;
+    }
+
+    .input-group {
+      margin: 0 auto;
+      text-align: center;
+      width: 500px;
+
+    }
+
+    .row {
+      margin-top: 50px;
+    }
+
+    .col {
+      cursor: pointer;
+    }
+
+    .card-img-top {
+      /*width: 200px;*/
+      /*height: 160px;*/
+      object-fit: cover;
+      margin: auto;
+    }
+
+    .card-text {
+      height: 120px;
+      overflow: hidden;
+    }
+
+    .page {
+      margin-top: 50px;
+    }
+
+
+  </style>
 </head>
 <body>
+<div class="layout">
+  <div class="header">
+    <h1 class="header-title">NETicket</h1>
+    <div class="header-buttons">
+      <button type="button" class="btn btn-outline-primary">로그인</button>
+      <button type="button" class="btn btn-outline-primary">회원가입</button>
+    </div>
+  </div>
+  <div class="input-group mb-3">
+    <span class="input-group-text" id="inputGroup-sizing-default">검색</span>
+    <input type="text" class="form-control" aria-label="Sizing example input"
+           aria-describedby="inputGroup-sizing-default">
+    <button class="btn btn-primary" type="submit">검색하기</button>
+  </div>
+  <div class="row row-cols-1 row-cols-md-4 g-4" id="event_box">
+    <div class="col" onclick="clicktest()">
+      <div class="card h-100">
+        <img src="https://img.seoul.co.kr/img/upload/2021/11/28/SSI_20211128185735.jpg"
+             class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">아이유 콘서트</h5>
+          <h6 class="card-date">2023-04-01 ~ 2023-04-05</h6>
+          <p class="card-text">노들섬 라이브하우스</p>
+        </div>
+      </div>
+    </div>
+  </div>
 
+  <nav class="page" aria-label="Page navigation example">
+    <ul class="pagination justify-content-center">
+      <li class="page-item disabled">
+        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">이전</a>
+      </li>
+      <li class="page-item"><a class="page-link" href="#">1</a></li>
+      <li class="page-item"><a class="page-link" href="#">2</a></li>
+      <li class="page-item"><a class="page-link" href="#">3</a></li>
+      <li class="page-item"><a class="page-link" href="#">4</a></li>
+      <li class="page-item"><a class="page-link" href="#">5</a></li>
+      <li class="page-item"><a class="page-link" href="#">6</a></li>
+      <li class="page-item"><a class="page-link" href="#">7</a></li>
+      <li class="page-item"><a class="page-link" href="#">8</a></li>
+      <li class="page-item"><a class="page-link" href="#">9</a></li>
+      <li class="page-item">
+        <a class="page-link" href="#">다음</a>
+      </li>
+    </ul>
+  </nav>
+</div>
 </body>
+<script>
+  $(document).ready(function () {
+    showEvent(1);
+  });
+
+  function clicktest() {
+    alert("클릭성공")
+  }
+
+  // 행사정보 조회
+  function showEvent(pageNum) {
+    $.ajax({
+      type: "GET",
+      url: "/neticket/events/?page=${pageNum}",
+      headers: {'Content-Type': 'application/json'},
+      success: function (respones, status, xhr) {
+        for (let i = 0; i < respones.length; i++) {
+          let eventDto = respones[i];
+          let id = eventDto.id;
+          let image = eventDto.image;
+          let title = eventDto.title;
+          let date = eventDto.date;
+          let place = eventDto.place;
+
+          let tmpevent = `<div class="col" onclick=getEventDetail(${id})>
+                            <div class="card h-100">
+                              <img src="${image}"
+                                   class="card-img-top" alt="...">
+                              <div class="card-body">
+                                <h5 class="card-title">"${title}"</h5>
+                                <h6 class="card-date">"${date}"</h6>
+                                <p class="card-text">"${place}"</p>
+                              </div>
+                            </div>
+                          </div>`
+          $('#event_box').append(tmpevent)
+
+        }
+      },
+
+    })
+  }
+
+  function getEventDetail(num) {
+    $.ajax({
+      type: "GET",
+      url: "/neticket/events/detail?num="+num,
+      success: function () {
+        window.lo
+      },
+    })
+  }
+
+
+</script>
 </html>
