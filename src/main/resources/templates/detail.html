@@ -127,18 +127,17 @@
     }
 
     .search-container input[type="text"] {
-      border: none;
-      border-radius: 5px;
-      margin-right: 10px;
+      border-radius: 0px;
       font-size: 16px;
       margin-bottom: 50px;
       width: 400px;
+      border-color: #007bff;
     }
 
     .search-container input[type="submit"] {
       padding: 10px;
       border: none;
-      border-radius: 5px;
+      border-radius: 0px;
       margin-bottom: 50px;
       background-color: #007bff;
       color: white;
@@ -167,12 +166,83 @@
       border-radius: 5px;
       cursor: pointer;
     }
+
+    .infoItem {
+      list-style: none;
+      font-size: 16px;
+    }
+
+    .infoDesc {
+      display: inline;
+    }
+
+    .infoText {
+      display: inline;
+    }
+
+    .info strong{
+      width: 100px;
+      display: inline-block;
+    }
+
+    .info li{
+      margin-bottom: 12px;
+    }
+
+    .nav-link {
+      font-size: 14px;
+    }
+
+    #bookingButton {
+      font-size: 16px;
+      width: 48%;
+    }
+
+    .footerContainer {
+      height: 80px;
+      font-size: 12px;
+      background-color: #eee;
+      display: flex;
+      align-content: center;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .footerContainer p {
+      margin: 0;
+      color: #999;
+    }
+
+    .headerContainer {
+      width: 100%;
+      margin: 0;
+    }
+
+    .main {
+      display: flex;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .main .category {
+      width: 20%;
+      margin-right: 80px;
+    }
+
+    .main .image-container {
+      width: 50%;
+      margin-right: 40px;
+    }
+
+    .main .info {
+      width: 30%;
+    }
+
   </style>
 <body>
-<div class="row justify-content-between align-items-center py-2">
+<header class="row justify-content-between align-items-center py-2 headerContainer">
   <div class="col-4">
-    <h1 style="margin-top: 30px; margin-left: 70px"><a href="/neticket/events-page"
-                                                       style="text-decoration: none;color: black;">NETicket</a>
+    <h1 style="margin-top: 30px; margin-left: 70px"><a href="/neticket/events-page" style="text-decoration: none;color: black;">NETicket</a>
     </h1>
   </div>
   <nav class="col-8">
@@ -184,13 +254,13 @@
       </li>
     </ul>
   </nav>
-</div>
+</header>
 <form action="#" method="get" class="search-container">
   <input type="text" placeholder="검색">
   <input type="submit" value="검색">
 </form>
-<div style="display: flex;">
-  <div style="margin-left: 50px; margin-top: 50px;" class="col-2">
+<div style="display: flex;" class="main">
+  <div class="category">
     <p>Category</p>
     <div class="list-group" style="width: 100%">
       <a href="#" class="list-group-item list-group-item-action">공연</a>
@@ -199,10 +269,10 @@
       <a href="#" class="list-group-item list-group-item-action">뮤지컬</a>
     </div>
   </div>
-  <div class="image-container col-6">
-    <img class="image" src="https://picsum.photos/600/650" alt="" width="80%" HEIGHT="70%">
+  <div class="image-container">
+    <img class="image" src="https://picsum.photos/600/650" alt="" width="100%" HEIGHT="70%">
   </div>
-  <ul class="info col-4">
+  <ul class="info">
     <li class="infoItem"><strong class="infoLabel">제목</strong>
       <div class="infoDesc">{{title}}</div>
     </li>
@@ -235,7 +305,13 @@
     </li>
     <button id="bookingButton" onclick="onBookingButtonClick()">예매하기</button>
   </ul>
-
 </div>
+
+<footer>
+  <div class="footerContainer">
+    <p>Copyright ⓒ NETicket. All Rights Reserved.</p>
+  </div>
+</footer>
+
 </body>
 </html>
