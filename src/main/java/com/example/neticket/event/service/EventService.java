@@ -18,8 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class EventService {
 
   private final EventRepository eventRepository;
-  private final ShowTimeRepository showTimeRepository;
-
 
 //  메인페이지 조회
   @Transactional(readOnly = true)
@@ -40,6 +38,17 @@ public class EventService {
         () -> new IllegalArgumentException("조회하려는 공연 정보가 없습니다.")
     );
     return new DetailEventResponseDto(event);
+
+  }
+
+//  검색기능
+  @Transactional(readOnly = true)
+  public Page<EventResponseDto> searchEvents(String keyword, int page, String sortBy, boolean isAsc) {
+    Sort.Direction direction = isAsc? Sort.Direction.ASC : Sort.Direction.DESC;
+    Sort sort = Sort.by(direction, sortBy);
+    Pageable pageable = PageRequest.of(page, 8, sort);
+    return eventRepository.findAllByTitleOrPlaceContaining(keyword, pageable)
+        .map(EventResponseDto::new);
 
   }
 }

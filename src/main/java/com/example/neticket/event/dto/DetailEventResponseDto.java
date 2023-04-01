@@ -12,14 +12,14 @@ public class DetailEventResponseDto {
   private String image;
   private String place;
   private int price;
-  private List<ShowtimeResponseDto> ShowTimeList;
+  private List<ShowtimeResponseDto> showTimeList;
 
   public DetailEventResponseDto(Event event) {
     this.title = event.getTitle();
     this.image = event.getImage();
     this.place = event.getPlace();
     this.price = event.getPrice();
-    this.ShowTimeList = event.getShowTimeList().stream()
+    this.showTimeList = event.getShowTimeList().stream()
         .map(ShowtimeResponseDto::new)
         .collect(Collectors.toList());
   }
