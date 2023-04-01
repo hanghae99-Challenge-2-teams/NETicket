@@ -13,66 +13,65 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
   <link rel="stylesheet" type="text/css" th:href="@{/css/stylelee.css}">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.css" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 
   <meta charset="UTF-8">
+  <link rel="stylesheet" href="path/to/datepicker.css">
+  <script src="path/to/datepicker.js"></script>
+
+
   <title>NETicket 상세페이지</title>
-
   <script>
-    function showCalendar() {
-      const calendarEl = document.getElementById('calendar');
-      const calendar = new FullCalendar.Calendar(calendarEl, {
-        plugins: ['dayGrid'],
-        defaultView: 'dayGridMonth',
-        height: 'auto',
-      });
-      calendar.render();
+    function onBookingButtonClick() {
+      // 선택된 정보들을 가져옵니다.
+      const titleElem = document.querySelector(".infoItem:nth-child(1) .infoDesc");
+      const placeElem = document.querySelector(".infoItem:nth-child(2) .infoDesc a");
+      const priceElem = document.querySelector(".infoItem:nth-child(3) .infoDesc .infoText");
+      const quantityElem = document.querySelector(".infoItem:nth-child(4) .infoDesc .infoText");
+      const selectedDateElem = document.getElementById("datePicker");
 
+      const title = titleElem.innerText.trim();
+      const place = placeElem.innerText.trim();
+      const price = parseInt(priceElem.innerText.trim().replace(/[^0-9]/g, ""));
+      const quantity = parseInt(quantityElem.innerText.trim().replace(/[^0-9]/g, ""));
+      const selectedDate = selectedDateElem.value;
+
+      // 서버로 데이터를 전송합니다.
+      fetch("/neticket/events/detail-page", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          title: title,
+          place: place,
+          price: price,
+          quantity: quantity,
+          selectedDate: selectedDate
+        })
+      }).then(response => {
+        // 서버로부터 응답을 받은 후 처리합니다.
+        console.log(response);
+      }).catch(error => {
+        console.error(error);
+      });
     }
   </script>
+
   <style>
-    .container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 70vh;
+    body {
+      font-size: 1.4rem;
+      font-weight: normal;
+      font-family: -apple-system, system-ui, BlinkMacSystemFont, "맑은 고딕", "Malgun Gothic", "돋움", Dotum, Helvetica, "Apple SD Gothic Neo", sans-serif;
+      color: #000;
     }
 
-    .div1 {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      width: 100%;
-      height: 70%;
-    }
-
-    .image-container {
-      width: 50%;
-      height: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin-top: 50px;
-    }
-
-    .image {
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .text-container {
-      width: 50%;
-      height: 100%;
-      padding: 30px;
-      display: flex;
-      flex-direction: column;
-      align-items: left;
-      justify-content: center;
-      text-align: left;
-      margin-top: 50px;
+    .productWrapper .summary .info {
+      display: inline-block;
+      width: 50.5rem;
+      margin-top: 0.4rem;
+      margin-left: 2.5rem;
+      vertical-align: top;
     }
 
     .text-container h2 {
@@ -107,76 +106,168 @@
       font-size: 16px;
       cursor: pointer;
     }
-    .category-container {
-      width: 30%;
-      height: 100%;
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
-      text-align: left;
-      margin-top: 50px;
+
+    .image-container {
+      margin-left: 50px;
     }
 
 
-    .category-container h3 {
-      margin: 0 0 20px 0;
+    .productWrapper .productSide .sideMain {
+      width: 33rem;
+      margin: 0 auto;
+      border: 0.1rem solid #b6bdc7;
+      border-radius: 1.5rem;
     }
 
-    #reserve-btn {
+    #bookingButton {
+      background-color: blue;
+      color: white;
+      font-weight: bold;
       padding: 10px 20px;
       border: none;
       border-radius: 5px;
-      margin-top: 20px;
-      background-color: #007bff;
-      color: white;
-      font-size: 16px;
       cursor: pointer;
-      transition: all 0.3s ease-in-out;
     }
-
-    #reserve-btn:hover {
-      background-color: #0056b3;
-    }
-
   </style>
-
-
 <body>
-<h1 style="margin-left: 100px; margin-top: 50px;">NETicket</h1>
-<div class="container">
-  <div class="header"></div>
-  <form action="#" method="get" class="search-container">
-    <input type="text" placeholder="검색">
-    <input type="submit" value="검색">
-  </form>
-  <div class="div1">
-    <div class="category-container">
-      <h3>Category</h3>
-      <ul>
-        <li>Category 1</li>
-        <li>Category 2</li>
-        <li>Category 3</li>
-      </ul>
-    </div>
-    <div class="image-container">
-      <img class="image" src="https://picsum.photos/800/800" alt="">
-    </div>
-    <div class="text-container">
-      <h2>공연 정보</h2>
-      <p>공연 제목: th:text="${concert.title}"</p>
-      <p>공연 장소: th:text="${concert.location}"</p>
-      <p>공연 가격: th:text="${concert.price}"</p>
-      <p>매수: th:text="${concert.ticketCount}"</p>
-      <p>공연 날짜: th:text="${concert.date}"</p>
-
-      <div id="calendar" onclick="showCalendar()"></div>
-      <button id="reserve-btn">예약하기</button>
-    </div>
-
+<div class="row justify-content-between align-items-center py-2">
+  <div class="col-4">
+    <h1 style="margin-top: 30px; margin-left: 70px">NETicket</h1>
   </div>
+  <nav class="col-8">
+    <ul class="nav justify-content-end" style="margin-right: 50px">
+      <a class="nav-link" href="#">로그인</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">회원가입</a>
+      </li>
+    </ul>
+  </nav>
+</div>
+<form action="#" method="get" class="search-container">
+  <input type="text" placeholder="검색">
+  <input type="submit" value="검색">
+</form>
+<div style="display: flex;">
+  <div style="margin-left: 50px; margin-top: 50px;">
+    <p>Category</p>
+    <div class="list-group" style="width: 200px">
+      <a href="#" class="list-group-item list-group-item-action">공연</a>
+      <a href="#" class="list-group-item list-group-item-action">영화</a>
+      <a href="#" class="list-group-item list-group-item-action">연극</a>
+      <a href="#" class="list-group-item list-group-item-action">뮤지컬</a>
+    </div>
+  </div>
+  <div class="image-container">
+    <img class="image" src="https://picsum.photos/800/650" alt="">
+  </div>
+  <ul class="info">
+    <li class="infoItem"><strong class="infoLabel">제목</strong>
+      <div class="infoDesc"> ㅁㄴㅇㄹ</div>
+    </li>
+    <li class="infoItem"><strong class="infoLabel">장소</strong>
+      <div class="infoDesc">
+        <a class="infoBtn" data-popup="info-place" role="button" href="#">링크아트센터
+          벅스홀
+        </a>
+      </div>
+    </li>
+    <li class="infoItem"><strong class="infoLabel">공연 가격</strong>
+      <div class="infoDesc"><p class="infoText">10000원</p></div>
+    </li>
+    <li class="infoItem"><strong class="infoLabel">매수</strong>
+      <div class="infoDesc"><p class="infoText">3매</p></div>
+    </li>
+    <li class="infoItem infoPrice"><strong class="infoLabel">가격</strong>
+    </li>
+    <li class="infoItem">
+      <div>
+        <label for="datePicker"><strong class="infoLabel">날짜 선택:</strong></label>
+        <input type="text" id="datePicker" placeholder="날짜 선택">
+      </div>
+      <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+      <script>
+        flatpickr("#datePicker", {
+          dateFormat: "Y.m.d (D)",
+          disableMobile: true
+        });
+      </script>
+    </li>
+    <button id="bookingButton" onclick="onBookingButtonClick()">예매하기</button>
+  </ul>
 </div>
 </body>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  function onBookingButtonClick() {
+    // 이미지 url
+    const imgUrl = document.querySelector('.image').src;
+    // 제목
+    const title = document.querySelector('.infoDesc:first-child').textContent.trim();
+    // 장소
+    const place = document.querySelector('.infoDesc a').textContent.trim();
+    // 가격
+    const price = document.querySelector('.infoDesc:nth-child(3) p').textContent.trim();
+    // 매수
+    const quantity = document.querySelector('.infoDesc:nth-child(4) p').textContent.trim();
+    // 날짜
+    const date = document.querySelector('#datePicker').value;
 
+    // fetch() 함수를 이용해 서버에 요청을 보냅니다.
+    fetch('/booking', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        imgUrl: image,
+        title: title,
+        place: place,
+        price: price,
+        quantity: count,
+        date: date
+      })
+    })
+    .then(response => {
+      // 응답이 성공적으로 처리되었다면, 결과를 처리합니다.
+      if (response.ok) {
+        console.log('예매가 완료되었습니다.');
+      } else {
+        console.error('예매가 실패하였습니다.');
+      }
+    })
+    .catch(error => {
+      console.error('에러 발생:', error);
+    });
+  }
+  document.querySelector('#bookingButton').addEventListener('click', onBookingButtonClick);
+
+  // function onBookingButtonClick() {
+  //   const title = $(".infoItem:nth-child(1) .infoDesc").text().trim();
+  //   const place = $(".infoItem:nth-child(2) .infoDesc").text().trim();
+  //   const price = $(".infoItem:nth-child(3) .infoDesc .infoText").text().trim();
+  //   const count = $(".infoItem:nth-child(4) .infoDesc .infoText").text().trim();
+  //   const date = $("#datePicker").val();
+  //
+  //   $.ajax({
+  //     type: "POST",
+  //     url: "/booking",
+  //     data: {
+  //       title: title,
+  //       place: place,
+  //       price: price,
+  //       count: count,
+  //       date: date
+  //     },
+  //     success: function(response) {
+  //       // 예매 성공 시 실행될 로직
+  //       console.log(response);
+  //     },
+  //     error: function(error) {
+  //       // 예매 실패 시 실행될 로직
+  //       console.log(error);
+  //     }
+  //   });
+  // }
+</script>
 </html>
