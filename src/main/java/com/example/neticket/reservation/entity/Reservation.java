@@ -41,5 +41,4 @@ public class Reservation {
     this.showTime = showTime;
   }
 
-
 }

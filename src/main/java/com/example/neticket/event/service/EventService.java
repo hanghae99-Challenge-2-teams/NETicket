@@ -51,4 +51,5 @@ public class EventService {
         .map(EventResponseDto::new);
 
   }
+
 }

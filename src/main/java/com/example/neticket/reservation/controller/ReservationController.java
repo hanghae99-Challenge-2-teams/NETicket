@@ -2,59 +2,45 @@ package com.example.neticket.reservation.controller;
 
 import com.example.neticket.reservation.dto.ReservationRequestDto;
 import com.example.neticket.reservation.dto.ReservationResponseDto;
-import com.example.neticket.reservation.repository.ReservationRepository;
 import com.example.neticket.reservation.service.ReservationService;
 import com.example.neticket.security.UserDetailsImpl;
-import com.example.neticket.user.dto.SignupRequestDto;
 import java.util.List;
-import javax.validation.Valid;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.parameters.P;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-@RestController
+@Controller
 @RequiredArgsConstructor
 @RequestMapping("/neticket")
 public class ReservationController {
 
   private final ReservationService reservationService;
 
-  // 예약완료 페이지 이동
-  @GetMapping("/reservations")
-  public ModelAndView reservationsPage() {
-    return new ModelAndView("reservations");
-  }
-
   // 예매하기
   @PostMapping("/resv")
   public String makeReservations(@RequestBody ReservationRequestDto dto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-
     reservationService.makeReservations(dto, userDetails.getUser());
-
-    return "redirect:/neticket/resv"; // 경로 수정해야함
+    return "redirect:/neticket/reservations-page"; // 경로 수정해야함
   }
 
   // 예매완료
   @GetMapping("/resv/{resvId}")
-  public ReservationResponseDto reservationComplete(@PathVariable Long resvId, @AuthenticationPrincipal UserDetailsImpl userDetails){
-
+  public @ResponseBody ReservationResponseDto reservationComplete(@PathVariable Long resvId, @AuthenticationPrincipal UserDetailsImpl userDetails){
     return reservationService.reservationComplete(resvId, userDetails.getUser());
 
   }
 
   // 마이페이지
   @GetMapping("/mypage")
-  public List<ReservationResponseDto> getMyPage(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+  public @ResponseBody List<ReservationResponseDto> getMyPage(@AuthenticationPrincipal UserDetailsImpl userDetails) {
     return reservationService.getMyPage(userDetails.getUser());
+
   }
 
 

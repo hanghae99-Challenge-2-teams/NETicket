@@ -10,8 +10,7 @@ public class EventResponseDto {
 
   private Long id;
   private String title;
-
-//  이거 리스트로?
+//  date 추후 수정 ㅇㅇㅇㅇㅇ
   private String date;
   private String place;
   private String image;
@@ -21,7 +20,7 @@ public class EventResponseDto {
     this.title = event.getTitle();
     this.place = event.getPlace();
     this.image = event.getImage();
-//    date/date/date 이런 양식으로 프론트에 전달
+//   "date/date/date" 이런 양식으로 프론트에 전달
     List<ShowTime> showTimeList = event.getShowTimeList();
     StringBuilder dates = new StringBuilder(); // stringbuilder 사용
     for (ShowTime showTime : showTimeList) {

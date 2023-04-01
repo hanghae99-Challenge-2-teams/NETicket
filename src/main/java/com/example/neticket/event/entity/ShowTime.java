@@ -31,7 +31,7 @@ public class ShowTime {
   @Column(nullable = false)
   private int reservedSeats;
 
-//  공연회차-공연정보  단방향 다대일 관계로 설정
+//  공연회차-공연정보  양방향 다대일 관계로 설정
   @ManyToOne
   @JoinColumn(name = "event_id", nullable = false)
   private Event event;

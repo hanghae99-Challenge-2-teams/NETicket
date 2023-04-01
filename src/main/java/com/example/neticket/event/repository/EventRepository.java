@@ -17,5 +17,4 @@ public interface EventRepository extends JpaRepository<Event, Long> {
   @Query("SELECT e FROM Event e WHERE e.title LIKE %:keyword% OR e.place LIKE %:keyword%")
   Page<Event> findAllByTitleOrPlaceContaining(@Param("keyword") String keyword, Pageable pageable);
 
-
 }

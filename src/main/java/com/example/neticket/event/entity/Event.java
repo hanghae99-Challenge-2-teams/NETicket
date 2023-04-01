@@ -32,6 +32,7 @@ public class Event {
   @Column(nullable = false)
   private int price;
 
+//  공연회차를 OneToMany로 설정. 양방향.
   @OneToMany(mappedBy = "event")
   private List<ShowTime> showTimeList;
 
