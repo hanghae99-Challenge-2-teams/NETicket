@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+        crossorigin="anonymous">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" th:href="@{/css/stylelee.css}">
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.css"/>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+  <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.js"></script>
+
+  <meta charset="UTF-8">
+  <title>NETicket 예매완료 페이지</title>
+
+  <script>
+
+  </script>
+  <style>
+    .text-container h2 {
+      margin: 0 0 20px 0;
+    }
+
+    .text-container p {
+      line-height: 1.5;
+    }
+
+    .search-container {
+      display: flex;
+      justify-content: center;
+    }
+
+    .search-container input[type="text"] {
+      border: none;
+      border-radius: 5px;
+      margin-right: 10px;
+      font-size: 16px;
+      margin-bottom: 50px;
+      width: 400px;
+    }
+
+    .search-container input[type="submit"] {
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      margin-bottom: 50px;
+      background-color: #007bff;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+
+    .category-container h3 {
+      margin: 0 0 20px 0;
+    }
+  </style>
+
+<body>
+<header>
+  <div class="row justify-content-between align-items-center py-2">
+    <div class="col-4">
+      <h1 style="margin-top: 30px; margin-left: 70px">NETicket</h1>
+    </div>
+    <nav class="col-8">
+      <ul class="nav justify-content-end" style="margin-right: 50px">
+        <a class="nav-link" href="#">로그인</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">회원가입</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+  <form action="#" method="get" class="search-container">
+    <input type="text" placeholder="검색">
+    <input type="submit" value="검색">
+  </form>
+</header>
+<div style="display: flex;">
+  <div style="margin-left: 50px; margin-top: 50px;">
+    <p>Category</p>
+    <div class="list-group" style="width: 200px">
+      <a href="#" class="list-group-item list-group-item-action">공연</a>
+      <a href="#" class="list-group-item list-group-item-action">영화</a>
+      <a href="#" class="list-group-item list-group-item-action">연극</a>
+      <a href="#" class="list-group-item list-group-item-action">뮤지컬</a>
+    </div>
+  </div>
+
+</div>
+
+
+</div>
+</body>
+</html>
