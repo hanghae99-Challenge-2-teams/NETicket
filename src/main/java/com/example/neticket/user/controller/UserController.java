@@ -1,15 +1,18 @@
 package com.example.neticket.user.controller;
 
+import com.example.neticket.event.dto.MessageResponseDto;
 import com.example.neticket.user.dto.LoginRequestDto;
 import com.example.neticket.user.dto.SignupRequestDto;
 import com.example.neticket.user.service.UserService;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @Controller
 @RequiredArgsConstructor
@@ -20,7 +23,7 @@ public class UserController {
 
   // 회원가입
   @PostMapping("/signup")
-  public String signup(@RequestBody @Valid SignupRequestDto dto) {
+  public String  signup(@RequestBody @Valid SignupRequestDto dto) {
 
     userService.signup(dto);
 
@@ -29,7 +32,7 @@ public class UserController {
 
   // 로그인
   @PostMapping("/login")
-  public String login (@RequestBody @Valid LoginRequestDto dto, HttpServletResponse response){
+  public String  login (@RequestBody @Valid LoginRequestDto dto, HttpServletResponse response){
 
     userService.login(dto, response);
 

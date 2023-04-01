@@ -52,7 +52,7 @@ public class UserService {
   }
 
   // 로그인
-  @Transactional
+  @Transactional(readOnly = true)
   public void login(LoginRequestDto dto, HttpServletResponse response) {
 
     User user = userRepository.findByEmail(dto.getEmail()).orElseThrow(
