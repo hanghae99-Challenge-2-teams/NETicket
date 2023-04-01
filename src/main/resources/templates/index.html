@@ -193,9 +193,9 @@
       dataType: "json",
       headers: {'Content-Type': 'application/json'},
       success: function (response) {
-        showPaging(response); // 이 부분을 추가
+        showPaging(response);
 
-        $('#event_box').empty(); // 이 부분을 추가
+        $('#event_box').empty();
         for (let i = 0; i < response.content.length; i++) {
           let eventDto = response.content[i];
           let id = eventDto.id;
@@ -206,7 +206,7 @@
 
           let tmpevent = `<div class="col" onclick="getEventDetail(${id})">
                           <div class="card h-100">
-                            <img src="${image}"
+                            <img src="https://gykimagebucket.s3.ap-northeast-2.amazonaws.com/uploaded-image/${image}"
                                  class="card-img-top" alt="...">
                             <div class="card-body">
                               <h5 class="card-title">${title}</h5>
@@ -216,7 +216,6 @@
                           </div>
                         </div>`
           $('#event_box').append(tmpevent)
-
         }
       },
     })
