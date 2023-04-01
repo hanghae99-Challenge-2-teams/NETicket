@@ -36,5 +36,8 @@ public class ShowTime {
   @JoinColumn(name = "event_id", nullable = false)
   private Event event;
 
+  public void reserveSeats(int count) {
+    this.reservedSeats += count;
+  }
 
 }
