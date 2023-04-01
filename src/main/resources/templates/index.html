@@ -144,48 +144,22 @@
     </div>
   </div>
 
-  <div class="row">
-    <div class="col-md-3">
-      <div class="card" style="width: 18rem;">
-        <img src="https://via.placeholder.com/286x180" class="card-img-top" alt="...">
-        <div class="card-body">
-          <h5 class="card-title">Card title</h5>
-          <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-          <a href="#" class="btn btn-primary">Go somewhere</a>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="card" style="width: 18rem;">
-        <img src="https://via.placeholder.com/286x180" class="card-img-top" alt="...">
-        <div class="card-body">
-          <h5 class="card-title">Card title</h5>
-          <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-          <a href="#" class="btn btn-primary">Go somewhere</a>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="card" style="width: 18rem;">
-        <img src="https://via.placeholder.com/286x180" class="card-img-top" alt="...">
-        <div class="card-body">
-          <h5 class="card-title">Card title</h5>
-          <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-          <a href="#" class="btn btn-primary">Go somewhere</a>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="card" style="width: 18rem;">
-        <img src="https://via.placeholder.com/286x180" class="card-img-top" alt="...">
-        <div class="card-body">
-          <h5 class="card-title">Card title</h5>
-          <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-          <a href="#" class="btn btn-primary">Go somewhere</a>
-        </div>
-      </div>
-    </div>
-  </div>
+  <div id="event_box" class="row" style="margin-left: 50px; margin-top: 50px; margin-right: 20px"></div>
+
+<!--    <div class="col">-->
+<!--      <div class="card" style="width: 18rem;" data-id="<%= event.getId() %>">-->
+<!--        <img src="<%= event.getImage() %>" class="card-img-top" alt="...">-->
+<!--        <div class="card-body">-->
+<!--          <h5 class="card-title card-title-custom" data-title="<%= event.getTitle() %>"><%= event.getTitle() %></h5>-->
+<!--          <p class="card-text card-text-custom" data-description="">dsfsfadf</p>-->
+<!--          <p class="card-date" data-date="<%= event.getDate() %>"><%= event.getDate() %></p>-->
+<!--          <p class="card-place" data-place="<%= event.getPlace() %>"><%= event.getPlace() %></p>-->
+<!--          <a href="#" class="btn btn-primary">예매하러가기</a>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+
+
 </div>
 <footer>
   <nav aria-label="Page navigation example" class="justify-content-center">
@@ -206,61 +180,78 @@
     </ul>
   </nav>
 </footer>
-</div>
 </body>
 <script>
   $(document).ready(function () {
     showEvent(1);
+
+    $(document).on('click', '.col', function() {
+      let eventId = $(this).data('event-id');
+      getEventDetail(eventId);
+    });
   });
 
-  function clicktest() {
-    alert("클릭성공")
-  }
 
   // 행사정보 조회
   function showEvent(pageNum) {
     $.ajax({
       type: "GET",
-      url: "/neticket/events/?page="+pageNum,
+      url: "/neticket/events?page=" + pageNum,
       dataType: "json",
       headers: {'Content-Type': 'application/json'},
-      success: function (respones) {
-        for (let i = 0; i < respones.length; i++) {
-          let eventDto = respones[i];
+      success: function (response) {
+        showPaging(response);
+
+        $('#event_box').empty();
+        for (let i = 0; i < response.content.length; i++) {
+          let eventDto = response.content[i];
           let id = eventDto.id;
           let image = eventDto.image;
           let title = eventDto.title;
           let date = eventDto.date;
           let place = eventDto.place;
 
-          let tmpevent = `<div class="col" onclick=getEventDetail(${id})>
-                            <div class="card h-100">
-                              <img src="${image}"
-                                   class="card-img-top" alt="...">
-                              <div class="card-body">
-                                <h5 class="card-title">"${title}"</h5>
-                                <h6 class="card-date">"${date}"</h6>
-                                <p class="card-text">"${place}"</p>
-                              </div>
+          let tmpevent = `<div class="col" data-event-id="${id}">
+                          <div class="card h-100">
+                            <img src="https://gykimagebucket.s3.ap-northeast-2.amazonaws.com/uploaded-image/${image}"
+                                 class="card-img-top" alt="...">
+                            <div class="card-body">
+                              <h5 class="card-title">${title}</h5>
+                              <h6 class="card-date">${date}</h6>
+                              <p class="card-text">${place}</p>
                             </div>
-                          </div>`
+                          </div>
+                        </div>`
           $('#event_box').append(tmpevent)
-
         }
       },
-
     })
   }
 
   function getEventDetail(num) {
     $.ajax({
       type: "GET",
-      url: "/neticket/events/detail?num="+num,
+      url: "/neticket/events?page=" + num,
       success: function () {
-        window.lo
+        window.location.href = "/neticket/events/detail-page/" + num;
       },
     })
   }
+
+
+  // 페이징 처리
+  function showPaging(response) {
+    let totalPages = response.totalPages;
+    let currentPage = response.number + 1;
+    let pagination = $('.pagination');
+
+    pagination.empty(); // 이 부분을 추가
+    for (let i = 1; i <= totalPages; i++) {
+      let pageItem = `<li class="page-item ${(i === currentPage) ? 'active' : ''}"><a class="page-link" onclick="showEvent(${i})" href="#">${i}</a></li>`;
+      pagination.append(pageItem);
+    }
+  }
+
 
 </script>
 </html>
