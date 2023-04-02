@@ -2,14 +2,12 @@ package com.example.neticket.event.service;
 
 import com.example.neticket.event.dto.DetailEventResponseDto;
 import com.example.neticket.event.dto.EventResponseDto;
-import com.example.neticket.event.entity.Event;
 import com.example.neticket.event.repository.EventRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,11 +30,9 @@ public class EventService {
 //  상세 페이지 조회
   @Transactional(readOnly = true)
   public DetailEventResponseDto getDetailEvent(Long eventId) {
-    Event event = eventRepository.findById(eventId).orElseThrow(
-        () -> new IllegalArgumentException("조회하려는 공연 정보가 없습니다.")
-    );
-    return new DetailEventResponseDto(event);
-
+    return eventRepository.findById(eventId)
+        .map(DetailEventResponseDto::new)
+        .orElseThrow(() -> new IllegalArgumentException("조회하려는 공연 정보가 없습니다."));
   }
 
 //  검색기능
