@@ -28,7 +28,7 @@ public class PageController {
   }
 
   // 메인페이지 이동
-  @GetMapping("/events/detail-page")
+  @GetMapping("/events/detail-page/{eventId}")
   public ModelAndView detailPage() {
     return new ModelAndView("detail");
   }
@@ -36,7 +36,7 @@ public class PageController {
   // 예약완료 페이지 이동
   @GetMapping("/reservations-page")
   public ModelAndView reservationsPage() {
-    return new ModelAndView("reservation");
+    return new ModelAndView("mypage");
   }
 
   // 마이페이지 이동

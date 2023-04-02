@@ -10,18 +10,19 @@
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
         crossorigin="anonymous">
   <link rel="preconnect" href="https://fonts.gstatic.com">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
-  <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+  <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" th:href="@{/css/stylejang.css}">
   <meta charset="UTF-8">
+
   <title>로그인 페이지</title>
   <style>
     * {
       font-family: 'Jua', sans-serif;
     }
 
-    #wrap {
+    #login-form {
       text-align: center;
       max-width: 700px;
       align-content: center;
@@ -42,37 +43,31 @@
     h2 {
       margin-top: 100px;
     }
-
-    #login_id {
-      box-sizing: border-box;
-
-    }
   </style>
 </head>
 <body>
 <h1>NETicket</h1>
-<div id="wrap">
+<div id="login-form">
   <h2>LOGIN</h2>
-  <form>
-    <div class="mb-3">
-      <label for="login_email" class="form-label">Email address</label>
-      <input type="email" class="form-control" id="login_email" aria-describedby="emailHelp"
-             placeholder="이메일">
-    </div>
-    <div class="mb-3">
-      <label for="login_password" class="form-label">Password</label>
-      <input type="password" class="form-control" id="login_password" placeholder="비밀번호">
-    </div>
-    <button type="submit" class="btn btn-dark" onclick="login()">LOGIN</button>
-
-    <hr>
-    <button type="submit" class="btn btn-warning">회원가입</button>
-  </form>
+  <div class="mb-3">
+    <label for="login_email" class="form-label">Email address</label>
+    <input type="email" class="form-control" id="login_email" aria-describedby="emailHelp"
+           placeholder="이메일">
+  </div>
+  <div class="mb-3">
+    <label for="login_password" class="form-label">Password</label>
+    <input type="password" class="form-control" id="login_password" placeholder="비밀번호">
+  </div>
+  <button type="submit" class="btn btn-dark" onclick="login()">로그인</button>
+  <hr>
+  <button type="button" class="btn btn-warning" onclick="location.href='/neticket/signup-page'">
+    회원가입
+  </button>
 </div>
 </body>
 <script>
-  function login() {
 
+  function login() {
     let useremail = $('#login_email').val();
     let password = $('#login_password').val();
 
@@ -86,23 +81,27 @@
 
     $.ajax({
       type: "POST",
-      url: "/neticket/login",
-      data: JSON.stringify({email: useremail, password: password}),
-      contentType: 'application/json',
-      dataType: 'json',
+      url: '/neticket/login',
+      contentType: "application/json",
+      data: JSON.stringify({
+        email: useremail,
+        password: password
+      }),
       success: function (response, status, xhr) {
         if (response === 'success') {
-          let host = window.location.host;
-          let url = host + '/neticket/events/?page=1';
-
-          document.cookie =
-              'Authorization' + '=' + xhr.getResponseHeader('Authorization') + ';path=/';
-          window.location.href = 'http://' + url;
+          // Authorization 헤더 값을 쿠키에 저장합니다.
+          document.cookie = 'Authorization=' + xhr.getResponseHeader('Authorization') + ';path=/';
+          // 로그인 성공 시, 이동할 페이지로 리다이렉트합니다.
+          window.location.href = "/neticket/events-page";
         } else {
-          alert('로그인에 실패하셨습니다. 다시 로그인해 주세요.')
-          window.location.reload();
+          // 로그인 실패 시, 처리할 코드를 작성합니다.
+          alert("로그인에 실패하였습니다.");
         }
       },
+      error: function (jqXHR, textStatus, errorThrown) {
+        // 요청이 실패한 경우, 처리할 코드를 작성합니다.
+        alert("요청이 실패하였습니다.");
+      }
     })
   }
 
