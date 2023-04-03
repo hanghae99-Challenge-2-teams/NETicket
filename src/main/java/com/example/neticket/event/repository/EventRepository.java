@@ -9,9 +9,9 @@ import org.springframework.data.repository.query.Param;
 
 public interface EventRepository extends JpaRepository<Event, Long> {
 
-//  Event가 가진 ShowTime에서 isAvailable이 true인 것을 가져오고 날짜가 가장 빠른순으로 정렬해서 page로 반환
-  @Query("SELECT e FROM Event e JOIN e.showTimeList st WHERE st.isAvailable = true GROUP BY e.id ORDER BY MIN(st.date) ASC")
-  Page<Event> findAllByAvailableOrderByShowTimeDate(Pageable pageable);
+//  Event가 가진 ticketInfo에서 isAvailable이 true인 것을 가져오고 날짜가 가장 빠른순으로 정렬해서 page로 반환
+  @Query("SELECT e FROM Event e JOIN e.ticketInfo t WHERE t.isAvailable = true GROUP BY e.id ORDER BY MIN(e.date) ASC")
+  Page<Event> findAllByAvailableOrderByticketInfoDate(Pageable pageable);
 
 //  keyword로 Event의 title과 place에서 검색해 page로 반환
   @Query("SELECT e FROM Event e WHERE e.title LIKE %:keyword% OR e.place LIKE %:keyword%")

@@ -20,9 +20,9 @@ public class EventService {
 //  메인페이지 조회
   @Transactional(readOnly = true)
   public Page<EventResponseDto> getEvents(int page) {
-//    ShowTime의 isAvailable이 true인 Event를 ShowTime의 date가 가장 빠른 순서대로 정렬하여 Page<EventResponseDto>로 반환
+//    ticketInfo의 isAvailable이 true인 Event를 ticketInfo의 date가 가장 빠른 순서대로 정렬하여 Page<EventResponseDto>로 반환
     Pageable pageable = PageRequest.of(page, 4);
-    return eventRepository.findAllByAvailableOrderByShowTimeDate(pageable)
+    return eventRepository.findAllByAvailableOrderByticketInfoDate(pageable)
         .map(EventResponseDto::new);
 
   }

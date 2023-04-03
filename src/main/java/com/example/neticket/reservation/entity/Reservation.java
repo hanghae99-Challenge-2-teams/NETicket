@@ -1,6 +1,6 @@
 package com.example.neticket.reservation.entity;
 
-import com.example.neticket.event.entity.ShowTime;
+import com.example.neticket.event.entity.TicketInfo;
 import com.example.neticket.reservation.dto.ReservationRequestDto;
 import com.example.neticket.user.entity.User;
 import javax.persistence.Column;
@@ -31,14 +31,14 @@ public class Reservation {
 
 //  예매-공연회차 단방향 다대일 관계로 설정
   @ManyToOne
-  @JoinColumn(name = "show_time_id", nullable = false)
-  private ShowTime showTime;
+  @JoinColumn(name = "ticket_info_id", nullable = false)
+  private TicketInfo ticketInfo;
 
 
-  public Reservation(ReservationRequestDto dto, User user, ShowTime showTime) {
+  public Reservation(ReservationRequestDto dto, User user, TicketInfo ticketInfo) {
     this.count = dto.getCount();
     this.user = user;
-    this.showTime = showTime;
+    this.ticketInfo = ticketInfo;
   }
 
 }
