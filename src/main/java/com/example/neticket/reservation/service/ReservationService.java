@@ -1,7 +1,7 @@
 package com.example.neticket.reservation.service;
 
-import com.example.neticket.event.entity.ShowTime;
-import com.example.neticket.event.repository.ShowTimeRepository;
+import com.example.neticket.event.entity.TicketInfo;
+import com.example.neticket.event.repository.TicketInfoRepository;
 import com.example.neticket.reservation.dto.ReservationRequestDto;
 import com.example.neticket.reservation.dto.ReservationResponseDto;
 import com.example.neticket.reservation.entity.Reservation;
@@ -18,19 +18,20 @@ import org.springframework.transaction.annotation.Transactional;
 public class ReservationService {
 
   private final ReservationRepository reservationRepository;
-  private final ShowTimeRepository showTimeRepository;
+  private final TicketInfoRepository ticketInfoRepository;
 
   // 예매하기
   @Transactional
-  public void makeReservations(ReservationRequestDto dto, User user) {
-    ShowTime showTime = showTimeRepository.findById(dto.getShowTimeId()).orElseThrow(
+  public Long makeReservations(ReservationRequestDto dto, User user) {
+    TicketInfo ticketInfo = ticketInfoRepository.findById(dto.getTicketInfoId()).orElseThrow(
         () -> new IllegalArgumentException("공연회차 정보가 없습니다.")
     );
 
-     if (showTime.getTotalSeats() >= showTime.getReservedSeats() + dto.getCount()) {
-       showTime.reserveSeats(dto.getCount());
-       reservationRepository.saveAndFlush(new Reservation(dto, user, showTime));
-       return;
+     if (ticketInfo.getTotalSeats() >= ticketInfo.getReservedSeats() + dto.getCount()) {
+       ticketInfo.reserveSeats(dto.getCount());
+       Reservation reservation = new Reservation(dto, user, ticketInfo);
+       reservationRepository.saveAndFlush(reservation);
+       return reservation.getId();
      }
      throw new IllegalArgumentException("남은 자리가 없습니다");
   }
@@ -51,14 +52,14 @@ public class ReservationService {
   }
 
   // 마이페이지
-  @Transactional(readOnly = true)
-  public List<ReservationResponseDto> getMyPage(User user) {
-
-    List<Reservation> allByUser = reservationRepository.findAllByUser(user);
-    List<ReservationResponseDto> dtoList = allByUser.stream()
-        .map(ReservationResponseDto::new)
-        .collect(Collectors.toList());
-
-    return dtoList;
-  }
+//  @Transactional(readOnly = true)
+//  public List<ReservationResponseDto> getMyPage(User user) {
+//
+//    List<Reservation> allByUser = reservationRepository.findAllByUser(user);
+//    List<ReservationResponseDto> dtoList = allByUser.stream()
+//        .map(ReservationResponseDto::new)
+//        .collect(Collectors.toList());
+//
+//    return dtoList;
+//  }
 }

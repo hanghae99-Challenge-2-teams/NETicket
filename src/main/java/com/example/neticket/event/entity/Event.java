@@ -1,5 +1,6 @@
 package com.example.neticket.event.entity;
 
+import java.time.LocalDate;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -7,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -30,8 +32,11 @@ public class Event {
   @Column(nullable = false)
   private int price;
 
-//  공연회차를 OneToMany로 설정. 양방향.
-  @OneToMany(mappedBy = "event")
-  private List<ShowTime> showTimeList;
+  @Column(nullable = false)
+  private LocalDate date;
+
+//  공연정보와 티켓예매정보를 1대1 매칭
+  @OneToOne(mappedBy = "event")
+  private TicketInfo ticketInfo;
 
 }

@@ -25,7 +25,7 @@ public class UserController {
 
     userService.signup(dto);
 
-    return "redirect:/neticket/login-page";
+    return "redirect:/neticket/login";
   }
 
   // 로그인

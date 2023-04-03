@@ -26,7 +26,7 @@ public class EventController {
   }
 
 //  상세 페이지 조회
-  @GetMapping("/detail/{eventId}")
+  @GetMapping("/{eventId}")
   public DetailEventResponseDto getDetailEvent(@PathVariable Long eventId) {
     return eventService.getDetailEvent(eventId);
 

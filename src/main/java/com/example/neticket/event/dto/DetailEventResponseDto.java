@@ -1,26 +1,27 @@
 package com.example.neticket.event.dto;
 
 import com.example.neticket.event.entity.Event;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.time.LocalDate;
 import lombok.Getter;
 
 @Getter
 public class DetailEventResponseDto {
 
+  private Long eventId;
   private String title;
   private String image;
   private String place;
+  private LocalDate date;
   private int price;
-  private List<ShowtimeResponseDto> showTimeList;
+  private TicketInfoResponseDto ticketInfoDto;
 
   public DetailEventResponseDto(Event event) {
+    this.eventId = event.getId();
     this.title = event.getTitle();
     this.image = event.getImage();
     this.place = event.getPlace();
+    this.date = event.getDate();
     this.price = event.getPrice();
-    this.showTimeList = event.getShowTimeList().stream()
-        .map(ShowtimeResponseDto::new)
-        .collect(Collectors.toList());
+    this.ticketInfoDto = new TicketInfoResponseDto(event.getTicketInfo());
   }
 }
