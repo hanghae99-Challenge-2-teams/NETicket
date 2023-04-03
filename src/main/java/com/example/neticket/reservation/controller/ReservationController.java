@@ -1,5 +1,6 @@
 package com.example.neticket.reservation.controller;
 
+import com.example.neticket.event.dto.DetailEventResponseDto;
 import com.example.neticket.reservation.dto.ReservationRequestDto;
 import com.example.neticket.reservation.dto.ReservationResponseDto;
 import com.example.neticket.reservation.service.ReservationService;
@@ -23,10 +24,17 @@ public class ReservationController {
 
   private final ReservationService reservationService;
 
+  // 예매중 확인하기
+  @GetMapping("/reservation/{ticketInfoId}")
+  public @ResponseBody DetailEventResponseDto reservation(@PathVariable Long ticketInfoId) {
+    return reservationService.reservation(ticketInfoId);
+  }
+
   // 예매하기
   @ResponseBody
   @PostMapping("/resv")
-  public Map<String, Object> makeReservations(@RequestBody ReservationRequestDto dto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+  public Map<String, Object> makeReservations(@RequestBody ReservationRequestDto dto,
+      @AuthenticationPrincipal UserDetailsImpl userDetails) {
     Long resvId = reservationService.makeReservations(dto, userDetails.getUser());
     Map<String, Object> response = new HashMap<>();
     response.put("success", "success");
@@ -36,16 +44,10 @@ public class ReservationController {
 
   // 예매완료
   @GetMapping("/resv/{resvId}")
-  public @ResponseBody ReservationResponseDto reservationComplete(@PathVariable Long resvId, @AuthenticationPrincipal UserDetailsImpl userDetails){
+  public @ResponseBody ReservationResponseDto reservationComplete(@PathVariable Long resvId,
+      @AuthenticationPrincipal UserDetailsImpl userDetails) {
     return reservationService.reservationComplete(resvId, userDetails.getUser());
 
   }
-
-  // 마이페이지
-//  @GetMapping("/mypage")
-//  public List<ReservationResponseDto> getMyPage(@AuthenticationPrincipal UserDetailsImpl userDetails) {
-//    return reservationService.getMyPage(userDetails.getUser());
-//
-//  }
 
 }

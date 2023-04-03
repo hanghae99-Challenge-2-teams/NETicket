@@ -114,27 +114,58 @@
       <a href="#" class="list-group-item list-group-item-action">뮤지컬</a>
     </div>
   </div>
-  <div class="card">
-    <h5 class="card-header">선택한 예매를 확인하세요.</h5>
-    <div class="card-body">
-      <h5 class="card-title">{modelData}.title</h5>
-      <p class="card-text">{modelData}.place</p>
-      <p class="card-text">{modelData}.price</p>
-      <select name="ticketCount" id="ticketCount">
-        <option value="1">1장</option>
-        <option value="2">2장</option>
-      </select>
-      <p class="card-text">{modelData.date}</p>
-      <a href="#" class="btn btn-primary" onclick="saveReservation()">예매하기</a>
-    </div>
-  </div>
+  <h5 class="infoDesc id" , style="overflow: hidden"></h5>
+  <ul class="info" style="margin-top: 100px; margin-left: 100px">
+    <li class="infoItem"><strong class="infoLabel">제목</strong>
+      <div class="infoDesc title"></div>
+    </li>
+    <li class="infoItem"><strong class="infoLabel">장소</strong>
+      <div class="infoDesc place"></div>
+    </li>
+    <li class="infoItem"><strong class="infoLabel">공연 날짜</strong>
+      <div class="infoDesc date"></div>
+    </li>
+    <li class="infoItem"><strong class="infoLabel">가격</strong>
+      <div class="infoDesc price"></div>
+    </li>
+    <select name="ticketCount" id="ticketCount">
+      <option value="1">1장</option>
+      <option value="2">2장</option>
+    </select>
+    <button id="bookingButton" onclick="saveReservation()">예매하기</button>
+  </ul>
 </div>
 </body>
 <script>
   $(document).ready(function () {
-    // 여기에 작동시키고자 하는 함수를 작성합니다.
-    console.log("DOM이 로드되면 바로 실행되는 함수입니다.");
+    getEventInfo();
   });
+
+  function getEventInfo() {
+
+    const pathArray = window.location.pathname.split('/');
+    const ticketInfoId = pathArray[pathArray.length - 1];
+    console.log(ticketInfoId);
+
+    $.ajax({
+      type: "GET",
+      url: "/neticket/reservation/" + ticketInfoId,
+      dataType: "json",
+      success: function (event) {
+        $('.title').text(event.title);
+        $('.place').text(event.place);
+        $('.price').text(addCommas(event.price) + '원');
+        $('.date').text(event.date);
+      },
+      error: function (jqXHR, textStatus, errorThrown) {
+        console.error("AJAX request failed: " + textStatus + ", " + errorThrown);
+      }
+    });
+  }
+
+  function addCommas(number) {
+    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
 
   function getAuthTokenFromCookie() {
     return document.cookie.split(';').find(
@@ -146,8 +177,15 @@
     let token = getAuthTokenFromCookie(); // 쿠키에서 토큰 값 추출
     console.log(token)
 
-    let eventId = 1;
-    let count = 1;
+    // select 요소를 찾습니다.
+    let selectElement = document.getElementById('ticketCount');
+
+    // 선택된 option 요소의 value 값을 가져옵니다.
+    let selectedValue = selectElement.value;
+
+    const pathArray = window.location.pathname.split('/');
+    const ticketInfoId = pathArray[pathArray.length - 1];
+    console.log(ticketInfoId);
 
     $.ajax({
       type: "POST",
@@ -158,8 +196,8 @@
         'Authorization': token // Authorization 헤더에 토큰 값 추가
       },
       data: JSON.stringify({
-        ticketInfoId: eventId,
-        count: count
+        ticketInfoId: ticketInfoId,
+        count: selectedValue
       }),
       success: function (response) {
         if (response.success === "success") {
