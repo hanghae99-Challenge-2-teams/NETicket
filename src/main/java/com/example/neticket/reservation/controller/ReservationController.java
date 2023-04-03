@@ -4,6 +4,8 @@ import com.example.neticket.reservation.dto.ReservationRequestDto;
 import com.example.neticket.reservation.dto.ReservationResponseDto;
 import com.example.neticket.reservation.service.ReservationService;
 import com.example.neticket.security.UserDetailsImpl;
+import java.util.HashMap;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -22,10 +24,14 @@ public class ReservationController {
   private final ReservationService reservationService;
 
   // 예매하기
+  @ResponseBody
   @PostMapping("/resv")
-  public String makeReservations(@RequestBody ReservationRequestDto dto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+  public Map<String, Object> makeReservations(@RequestBody ReservationRequestDto dto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
     Long resvId = reservationService.makeReservations(dto, userDetails.getUser());
-    return "redirect:/neticket/reservations/completed/" + resvId;
+    Map<String, Object> response = new HashMap<>();
+    response.put("success", "success");
+    response.put("reservationId", resvId);
+    return response;
   }
 
   // 예매완료
@@ -41,7 +47,5 @@ public class ReservationController {
 //    return reservationService.getMyPage(userDetails.getUser());
 //
 //  }
-
-
 
 }
