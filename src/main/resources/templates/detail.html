@@ -272,21 +272,21 @@
     $('.remainingTime').text(remainingTimeStr);
   }
 
-  // function onBookingButtonClick() {
-  //   // 예매 버튼에 저장된 티켓 정보를 가져옵니다.
-  //   const ticketInfo = $('#bookingButton').data('ticketInfo');
-  //   // 티켓 정보가 없으면 함수를 종료합니다.
-  //   if (!ticketInfo) {
-  //     return;
-  //   }
-  //   // 티켓 정보 ID를 가져옵니다.
-  //   const ticketInfoId = BigInt(ticketInfo.id);
-  //
-  //   // 예매 중 페이지 URL을 생성합니다.
-  //   const url = `/neticket/reservations/in-progress/${ticketInfoId}`;
-  //   // 페이지로 이동합니다.
-  //   window.location.href = url;
-  // }
+  function onBookingButtonClick() {
+    // 예매 버튼에 저장된 티켓 정보를 가져옵니다.
+    const ticketInfo = $('#bookingButton').data('ticketInfo');
+    // 티켓 정보가 없으면 함수를 종료합니다.
+    if (!ticketInfo) {
+      return;
+    }
+    // 티켓 정보 ID를 가져옵니다.
+    const ticketInfoId = BigInt(ticketInfo.ticketInfoId);
+
+    // 예매 중 페이지 URL을 생성합니다.
+    const url = `/neticket/reservations/in-progress/${ticketInfoId}`;
+    // 페이지로 이동합니다.
+    window.location.href = url;
+  }
 
 
 

@@ -188,7 +188,7 @@
     $(document).on('click', '.col', function() {
       let eventIdString = $(this).data('event-id');
       let eventId = parseInt(eventIdString, 10);
-      getEventDetail(eventId);
+      window.location.href = "/neticket/events/detail/" + eventId;
     });
 
   });
@@ -230,15 +230,15 @@
     })
   }
 
-  function getEventDetail(num) {
-    $.ajax({
-      type: "GET",
-      url: "/neticket/events?page=" + num,
-      success: function () {
-        window.location.href = "/neticket/events/detail/" + num;
-      },
-    })
-  }
+  // function getEventDetail(num) {
+  //   $.ajax({
+  //     type: "GET",
+  //     url: "/neticket/events?page=" + num,
+  //     success: function () {
+  //       window.location.href = "/neticket/events/detail/" + num;
+  //     },
+  //   })
+  // }
 
 
 
