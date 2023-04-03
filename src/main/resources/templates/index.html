@@ -186,9 +186,11 @@
     showEvent(1);
 
     $(document).on('click', '.col', function() {
-      let eventId = $(this).data('event-id');
+      let eventIdString = $(this).data('event-id');
+      let eventId = parseInt(eventIdString, 10);
       getEventDetail(eventId);
     });
+
   });
 
 
@@ -233,10 +235,11 @@
       type: "GET",
       url: "/neticket/events?page=" + num,
       success: function () {
-        window.location.href = "/neticket/events/detail-page/" + num;
+        window.location.href = "/neticket/events/detail/" + num;
       },
     })
   }
+
 
 
   // 페이징 처리
@@ -251,6 +254,7 @@
       pagination.append(pageItem);
     }
   }
+
 
 
 </script>
