@@ -34,7 +34,7 @@ public class PageController {
   @GetMapping("/events/detail/{eventId}")
   public ModelAndView detailPage(@PathVariable Long eventId) {
     Map<String, Object> modelData = new HashMap<>();
-    modelData.put("eventId",eventId);
+    modelData.put("eventId", eventId);
     return new ModelAndView("detail", modelData);
   }
 
@@ -42,15 +42,13 @@ public class PageController {
   @GetMapping("/reservations/in-progress/{ticketInfoId}")
   public ModelAndView myPage(@PathVariable Long ticketInfoId) {
     Map<String, Object> modelData = new HashMap<>();
-    modelData.put("ticketInfoId",ticketInfoId);
+    modelData.put("ticketInfoId", ticketInfoId);
     return new ModelAndView("reservation", modelData);
   }
 
   // 예약완료 페이지 이동
   @GetMapping("/reservations/completed/{resvId}")
-  public ModelAndView reservationsPage(@PathVariable Long resvId) {
-    Map<String, Object> modelData = new HashMap<>();
-    modelData.put("resvId",resvId);
-    return new ModelAndView("completed", modelData);
+  public ModelAndView reservationsPage() {
+    return new ModelAndView("completed");
   }
 }
