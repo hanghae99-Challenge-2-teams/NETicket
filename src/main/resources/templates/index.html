@@ -121,10 +121,10 @@
   </div>
   <nav class="col-8">
     <ul class="nav justify-content-end" style="margin-right: 50px">
-      <a class="nav-link" href="/neticket/login-page" style="color: black">로그인</a>
+      <a class="nav-link" href="/neticket/login" style="color: black">로그인</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/neticket/signup-page" style="color: black">회원가입</a>
+        <a class="nav-link" href="/neticket/signup" style="color: black">회원가입</a>
       </li>
     </ul>
   </nav>
@@ -188,7 +188,7 @@
     $(document).on('click', '.col', function() {
       let eventIdString = $(this).data('event-id');
       let eventId = parseInt(eventIdString, 10);
-      getEventDetail(eventId);
+      window.location.href = "/neticket/events/detail/" + eventId;
     });
 
   });
@@ -230,15 +230,15 @@
     })
   }
 
-  function getEventDetail(num) {
-    $.ajax({
-      type: "GET",
-      url: "/neticket/events?page=" + num,
-      success: function () {
-        window.location.href = "/neticket/events/detail/" + num;
-      },
-    })
-  }
+  // function getEventDetail(num) {
+  //   $.ajax({
+  //     type: "GET",
+  //     url: "/neticket/events?page=" + num,
+  //     success: function () {
+  //       window.location.href = "/neticket/events/detail/" + num;
+  //     },
+  //   })
+  // }
 
 
 
