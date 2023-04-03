@@ -48,9 +48,7 @@ public class PageController {
 
   // 예약완료 페이지 이동
   @GetMapping("/reservations/completed/{resvId}")
-  public ModelAndView reservationsPage(@PathVariable Long resvId) {
-    Map<String, Object> modelData = new HashMap<>();
-    modelData.put("resvId",resvId);
-    return new ModelAndView("completed", modelData);
+  public ModelAndView reservationsPage() {
+    return new ModelAndView("completed");
   }
 }
