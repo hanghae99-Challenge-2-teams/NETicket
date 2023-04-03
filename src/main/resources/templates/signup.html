@@ -144,7 +144,7 @@
           console.log(data);
           $("#alert-text").text("회원가입이 완료되었습니다.");
           $("#alert").addClass("alert-success").removeClass("fade");
-          window.location.href = "/neticket/login-page";
+          window.location.href = "/neticket/login";
         },
         error: function (jqXHR, textStatus, errorThrown) {
           console.log(jqXHR);
@@ -217,7 +217,7 @@
           </div>
         </div>
         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-          <a href="/neticket/login-page">
+          <a href="/neticket/login">
             <button type="button" class="btn btn-warning" id="loginpage">로그인</button>
           </a>
           <button type="button" class="btn btn-primary me-2" id="signup-btn">회원가입</button>

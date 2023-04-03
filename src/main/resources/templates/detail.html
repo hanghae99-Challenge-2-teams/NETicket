@@ -150,10 +150,10 @@
   </div>
   <nav class="col-8">
     <ul class="nav justify-content-end" style="margin-right: 50px">
-      <a class="nav-link" href="/neticket/login-page" style="color: black">로그인</a>
+      <a class="nav-link" href="/neticket/login" style="color: black">로그인</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/neticket/signup-page" style="color: black">회원가입</a>
+        <a class="nav-link" href="/neticket/signup" style="color: black">회원가입</a>
       </li>
     </ul>
   </nav>
@@ -192,6 +192,9 @@
     <li class="infoItem"><strong class="infoLabel">공연 날짜</strong>
       <div class="infoDesc date"></div>
     </li>
+    <li class="infoItem"><strong class="infoLabel">예매 가능</strong>
+      <div class="infoDesc isAvailable"></div>
+    </li>
     <li class="infoItem"><strong class="infoLabel">예매 오픈 시각</strong>
       <div class="infoDesc remainingTime1" id="">00:00:00</div>
     </li>
@@ -228,6 +231,7 @@
         $('.place').text(event.place);
         $('.price').text(addCommas(event.price) + '원');
         $('.date').text(event.date);
+        $('.isAvailable').text(event.ticketInfoDto.available ? '예매 가능' : '예매 불가능');
         $('.remainingTime1').text(event.ticketInfoDto.openDate);
         // 이벤트의 티켓 정보를 저장합니다.
         $('#bookingButton').data('ticketInfo', event.ticketInfoDto);
@@ -283,7 +287,7 @@
     const ticketInfoId = BigInt(ticketInfo.ticketInfoId);
 
     // 예매 중 페이지 URL을 생성합니다.
-    const url = `/neticket/reservations/in-progress/${ticketInfoId}`;
+    const url = `/neticket/reservations/in-progress/`+ticketInfoId;
     // 페이지로 이동합니다.
     window.location.href = url;
   }
