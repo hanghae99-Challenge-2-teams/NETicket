@@ -19,12 +19,12 @@ public class ReservationResponseDto {
 
     public ReservationResponseDto(Reservation reservation) {
       this.id = reservation.getId();
-      this.image = reservation.getShowTime().getEvent().getImage();
-      this.title = reservation.getShowTime().getEvent().getTitle();
-      this.place = reservation.getShowTime().getEvent().getPlace();
-      this.date = reservation.getShowTime().getDate();
+      this.image = reservation.getTicketInfo().getEvent().getImage();
+      this.title = reservation.getTicketInfo().getEvent().getTitle();
+      this.place = reservation.getTicketInfo().getEvent().getPlace();
+      this.date = reservation.getTicketInfo().getEvent().getDate();
       this.count = reservation.getCount();
-      this.totalPrice = reservation.getShowTime().getEvent().getPrice() * this.count;
+      this.totalPrice = reservation.getTicketInfo().getEvent().getPrice() * this.count;
     }
 
 }

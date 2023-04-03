@@ -67,10 +67,6 @@ public class UserService {
     }
 
     response.addHeader(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(user.getEmail(), user.getRole()));
-    // Cookie 생성 및 직접 브라우저에 Set 위와 아래 방법중 택일
-//        Cookie cookie = new Cookie(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(user.getEmail(), user.getRole());
-////        cookie.setPath("/");
-//        response.addCookie(cookie);
   }
 
 }
