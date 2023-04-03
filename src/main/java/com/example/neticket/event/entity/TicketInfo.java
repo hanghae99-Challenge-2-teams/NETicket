@@ -22,7 +22,7 @@ public class TicketInfo {
   private Long id;
 
   @Column(nullable = false)
-  private boolean isAvailable;
+  private boolean isAvailable = false;
 
   @Column(nullable = false)
   private int totalSeats;
@@ -42,4 +42,7 @@ public class TicketInfo {
     this.reservedSeats += count;
   }
 
+  public void setAvailable(boolean available) {
+    isAvailable = available;
+  }
 }

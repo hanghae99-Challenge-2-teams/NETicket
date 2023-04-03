@@ -26,9 +26,17 @@ public class ReservationService {
     TicketInfo ticketInfo = ticketInfoRepository.findById(dto.getTicketInfoId()).orElseThrow(
         () -> new IllegalArgumentException("공연회차 정보가 없습니다.")
     );
+    if (!ticketInfo.isAvailable()) {
+      throw new IllegalArgumentException("현재 예매가 불가능한 공연입니다.");
+    }
 
      if (ticketInfo.getTotalSeats() >= ticketInfo.getReservedSeats() + dto.getCount()) {
        ticketInfo.reserveSeats(dto.getCount());
+
+       // 만약 ReservedSeats와 TotalSeats가 같아지면 isAvailable을 false로 변경
+       if (ticketInfo.getTotalSeats() == ticketInfo.getReservedSeats()) {
+         ticketInfo.setAvailable(false);
+       }
        Reservation reservation = new Reservation(dto, user, ticketInfo);
        reservationRepository.saveAndFlush(reservation);
        return reservation.getId();
