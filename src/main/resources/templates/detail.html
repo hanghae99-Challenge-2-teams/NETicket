@@ -257,9 +257,10 @@
     const now = new Date();
     // 남은 시간을 계산합니다.
     const remainingTime = openTime - now;
-    // 남은 시간이 음수이면 예매가 종료된 것으로 판단하고, 버튼을 비활성화합니다.
+    // 남은 시간이 음수이면 예매가 종료된 것으로 판단하고, 버튼을 활성화합니다.
     if (remainingTime < 0) {
-      $('#bookingButton').prop('disabled', true).text('예매 종료');
+      $('#bookingButton').prop('disabled', false).text('예매하기');
+      $('.remainingTime').text('');
       return;
     }
     // 시간, 분, 초를 계산합니다.
@@ -270,6 +271,23 @@
     const remainingTimeStr = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
     $('.remainingTime').text(remainingTimeStr);
   }
+
+  // function onBookingButtonClick() {
+  //   // 예매 버튼에 저장된 티켓 정보를 가져옵니다.
+  //   const ticketInfo = $('#bookingButton').data('ticketInfo');
+  //   // 티켓 정보가 없으면 함수를 종료합니다.
+  //   if (!ticketInfo) {
+  //     return;
+  //   }
+  //   // 티켓 정보 ID를 가져옵니다.
+  //   const ticketInfoId = BigInt(ticketInfo.id);
+  //
+  //   // 예매 중 페이지 URL을 생성합니다.
+  //   const url = `/neticket/reservations/in-progress/${ticketInfoId}`;
+  //   // 페이지로 이동합니다.
+  //   window.location.href = url;
+  // }
+
 
 
 </script>
