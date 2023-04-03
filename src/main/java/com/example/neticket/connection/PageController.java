@@ -38,9 +38,9 @@ public class PageController {
     return new ModelAndView("detail", modelData);
   }
 
-  // 예매 중 이동
+  // 예매중 이동
   @GetMapping("/reservations/in-progress/{ticketInfoId}")
-  public ModelAndView myPage(@PathVariable Long ticketInfoId) {
+  public ModelAndView reservation(@PathVariable Long ticketInfoId) {
     Map<String, Object> modelData = new HashMap<>();
     modelData.put("ticketInfoId",ticketInfoId);
     return new ModelAndView("reservation", modelData);
@@ -48,7 +48,7 @@ public class PageController {
 
   // 예약완료 페이지 이동
   @GetMapping("/reservations/completed/{resvId}")
-  public ModelAndView reservationsPage() {
+  public ModelAndView reservationConfirmed() {
     return new ModelAndView("completed");
   }
 }
