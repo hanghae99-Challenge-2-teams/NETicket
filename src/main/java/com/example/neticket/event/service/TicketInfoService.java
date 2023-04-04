@@ -2,7 +2,6 @@ package com.example.neticket.event.service;
 
 import com.example.neticket.event.entity.TicketInfo;
 import com.example.neticket.event.repository.TicketInfoRepository;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -24,8 +23,8 @@ public class TicketInfoService {
   public void updateTicketInfoAtMidnight() {
     List<TicketInfo> ticketInfos = ticketInfoRepository.findAll();
     for (TicketInfo ticketInfo : ticketInfos) {
-      LocalDate eventDate = ticketInfo.getEvent().getDate();
-      if (LocalDate.now().isAfter(eventDate)) {
+      LocalDateTime eventDate = ticketInfo.getEvent().getDate();
+      if (LocalDateTime.now().isAfter(eventDate)) {
         ticketInfo.setAvailable(false);
       }
       ticketInfoRepository.saveAll(ticketInfos);

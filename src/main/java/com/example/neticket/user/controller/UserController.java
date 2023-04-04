@@ -1,18 +1,20 @@
 package com.example.neticket.user.controller;
 
+import com.example.neticket.event.dto.MessageResponseDto;
 import com.example.neticket.user.dto.LoginRequestDto;
 import com.example.neticket.user.dto.SignupRequestDto;
 import com.example.neticket.user.service.UserService;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Controller;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
 @RequestMapping("/neticket")
 public class UserController {
@@ -21,21 +23,17 @@ public class UserController {
 
   // 회원가입
   @PostMapping("/signup")
-  public String signup(@RequestBody @Valid SignupRequestDto dto) {
-
-    userService.signup(dto);
-
-    return "redirect:/neticket/login";
+  public ResponseEntity<MessageResponseDto> signup(@RequestBody @Valid SignupRequestDto dto) {
+    MessageResponseDto signup = userService.signup(dto);
+    return ResponseEntity.status(HttpStatus.CREATED).body(signup);
   }
 
   // 로그인
-  @ResponseBody
   @PostMapping("/login")
-  public String login (@RequestBody @Valid LoginRequestDto dto, HttpServletResponse response){
-
-    userService.login(dto, response);
-
-    return "success";
+  public ResponseEntity<MessageResponseDto> login(@RequestBody @Valid LoginRequestDto dto,
+      HttpServletResponse response) {
+    MessageResponseDto login = userService.login(dto, response);
+    return ResponseEntity.ok().body(login);
   }
 
 }

@@ -2,6 +2,7 @@ package com.example.neticket.reservation.dto;
 
 import com.example.neticket.reservation.entity.Reservation;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,7 +14,7 @@ public class ReservationResponseDto {
     private String image;
     private String title;
     private String place;
-    private LocalDate date;
+    private LocalDateTime date;
     private int totalPrice;
     private int count;
 
