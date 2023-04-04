@@ -5,6 +5,7 @@ import com.example.neticket.event.dto.EventResponseDto;
 import com.example.neticket.event.service.EventService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,18 +21,19 @@ public class EventController {
 
 //  메인 페이지 조회
   @GetMapping
-  public Page<EventResponseDto> getEvents(@RequestParam(value = "page") int page) {
-    return eventService.getEvents(page-1);
+  public ResponseEntity<Page<EventResponseDto>> getEvents(@RequestParam(value = "page") int page) {
+    Page<EventResponseDto> events = eventService.getEvents(page - 1);
+    return ResponseEntity.ok().body(events);
 
   }
 
 //  상세 페이지 조회
   @GetMapping("/{eventId}")
-  public DetailEventResponseDto getDetailEvent(@PathVariable Long eventId) {
-    return eventService.getDetailEvent(eventId);
+  public ResponseEntity<DetailEventResponseDto> getDetailEvent(@PathVariable Long eventId) {
+    DetailEventResponseDto detailEvent = eventService.getDetailEvent(eventId);
+    return ResponseEntity.ok().body(detailEvent);
 
   }
-
 
   /**
    * 검색기능
@@ -45,13 +47,16 @@ public class EventController {
    * @param isAsc : 오름차순이면 true, 내림차순이면 false
    * @return : 검색결과를 Page<EventResponseDto>로 반환
    */
+  // 쿼리스트링 값 예외처리 추후에 해야함
   @GetMapping("/search")
-  public Page<EventResponseDto> searchEvents(@RequestParam(value = "keyword") String keyword,
+  public ResponseEntity<Page<EventResponseDto>> searchEvents(@RequestParam(value = "keyword") String keyword,
       @RequestParam int page, @RequestParam String sortBy, @RequestParam boolean isAsc) {
     if (keyword.isBlank()) {
       throw new IllegalArgumentException("검색어를 입력해 주세요.");
     }
-    return eventService.searchEvents(keyword, page-1, sortBy, isAsc);
+    Page<EventResponseDto> searchEvents = eventService.searchEvents(keyword, page - 1, sortBy,
+        isAsc);
+    return ResponseEntity.ok().body(searchEvents);
 
   }
 

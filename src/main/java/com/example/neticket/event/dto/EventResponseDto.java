@@ -2,6 +2,7 @@ package com.example.neticket.event.dto;
 
 import com.example.neticket.event.entity.Event;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import lombok.Getter;
 
 @Getter
@@ -9,7 +10,7 @@ public class EventResponseDto {
 
   private Long id;
   private String title;
-  private LocalDate date;
+  private LocalDateTime date;
   private String place;
   private String image;
 
