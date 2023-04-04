@@ -170,7 +170,7 @@ $(document).ready(function () {
   // 1초마다 남은 시간을 갱신하는 타이머를 시작합니다.
   setInterval(updateRemainingTime, 1000);
 });
-
+let isAvailable;
 function getEventDetails(eventId) {
   $.ajax({
     type: "GET",
@@ -184,7 +184,7 @@ function getEventDetails(eventId) {
       $('.place').text(event.place);
       $('.price').text(addCommas(event.price) + '원');
       $('.date').text(event.date);
-      const isAvailable = event.ticketInfoDto.available;
+      isAvailable = event.ticketInfoDto.available;
       $('.isAvailable').text(isAvailable ? '예매 가능' : '예매 불가능');
       $('.remainingTime1').text(event.ticketInfoDto.openDate);
       // 이벤트의 티켓 정보를 저장합니다.
@@ -236,6 +236,10 @@ function onBookingButtonClick() {
   const ticketInfo = $('#bookingButton').data('ticketInfo');
   // 티켓 정보가 없으면 함수를 종료합니다.
   if (!ticketInfo) {
+    return;
+  }
+  if (!isAvailable) {
+    alert('예매가 불가능한 공연입니다.');
     return;
   }
   // 티켓 정보 ID를 가져옵니다.
