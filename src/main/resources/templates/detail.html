@@ -12,135 +12,18 @@
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
-  <link rel="stylesheet" type="text/css" th:href="@{/css/stylelee.css}">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 
-  <!-- Bootstrap CSS -->
-  <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.3/css/bootstrap.min.css"
-        integrity="sha512-rn8d5WY6jz84r/OQuRU6vz8fUWlbjdpEsXAfX9HTyv2BPhq3ca/PAVKzO7c1KdQ3MqC4iN4A4XVxOxjE41oVtw=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"/>
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <!-- Bootstrap JavaScript -->
   <script
       src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.3/js/bootstrap.bundle.min.js"
       integrity="sha512-1QqnHg9XeMx/d+lKg7Lw/AiJhMV97+Z2d3T3T4ARs4bs4VXbRjxjjpV7zY+ey6rGJB6BZv6NehUj+Mm6M9X6gQ=="
       crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-  <meta charset="UTF-8">
-  <link rel="stylesheet" href="path/to/datepicker.css">
-  <script src="path/to/datepicker.js"></script>
-
+  <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+  <script type="text/javascript" th:src="@{/js/basic.js}"></script>
 
   <title>NETicket 상세페이지</title>
-  <style>
-    body {
-      font-size: 1.4rem;
-      font-weight: normal;
-      font-family: -apple-system, system-ui, BlinkMacSystemFont, "맑은 고딕", "Malgun Gothic", "돋움", Dotum, Helvetica, "Apple SD Gothic Neo", sans-serif;
-      color: #000;
-      height: 100%;
-    }
 
-    .productWrapper .summary .info {
-      display: inline-block;
-      width: 50.5rem;
-      margin-top: 0.4rem;
-      margin-left: 2.5rem;
-      vertical-align: top;
-    }
-
-    .text-container h2 {
-      margin: 0 0 20px 0;
-    }
-
-    .text-container p {
-      line-height: 1.5;
-    }
-
-    .search-container {
-      display: flex;
-      justify-content: center;
-    }
-
-    .search-container input[type="text"] {
-      border: none;
-      border-radius: 5px;
-      margin-right: 10px;
-      font-size: 16px;
-      margin-bottom: 50px;
-      width: 400px;
-    }
-
-    .search-container input[type="submit"] {
-      padding: 10px;
-      border: none;
-      border-radius: 5px;
-      margin-bottom: 50px;
-      background-color: #007bff;
-      color: white;
-      font-size: 16px;
-      cursor: pointer;
-    }
-
-    .image-container {
-      margin-left: 50px;
-    }
-
-    #bookingButton {
-      background-color: blue;
-      color: white;
-      font-weight: bold;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-
-    .infoItem {
-      list-style: none;
-      font-size: 16px;
-    }
-
-    .infoDesc {
-      display: inline;
-    }
-
-    .infoText {
-      display: inline;
-    }
-
-    .info strong {
-      width: 200px;
-      display: inline-block;
-    }
-
-    .info li {
-      margin-bottom: 12px;
-    }
-
-
-    .nav-link {
-      font-size: 14px;
-    }
-
-    #bookingButton {
-      font-size: 15px;
-      width: 100%;
-    }
-
-    .footerContainer p {
-      margin: 0;
-      color: #999;
-    }
-
-    .main .image-container {
-      width: 50%;
-      margin-right: 40px;
-    }
-
-
-  </style>
 <body>
 <div class="row justify-content-between align-items-center py-2">
   <div class="col-4">
@@ -199,101 +82,14 @@
       <div class="infoDesc remainingTime1" id="">00:00:00</div>
     </li>
     <li class="infoItem"><strong class="infoLabel"></strong>
-      <div class="infoDesc remainingTime" id="timer" style="color: red; font-style: italic; font-size: 50px; display: flex; align-content: center; ">00:00:00</div>
+      <div class="infoDesc remainingTime" id="timer"
+           style="color: red; font-style: italic; font-size: 50px; display: flex; align-content: center; ">
+        00:00:00
+      </div>
     </li>
 
     <button id="bookingButton" onclick="onBookingButtonClick()">예매하기</button>
   </ul>
 </div>
 </body>
-
-<script>
-  $(document).ready(function () {
-    // 이벤트 ID를 URL에서 가져옵니다.
-    const eventId = window.location.pathname.split('/').pop();
-
-    // 이벤트 세부 정보를 가져옵니다.
-    getEventDetails(eventId);
-
-    // 1초마다 남은 시간을 갱신하는 타이머를 시작합니다.
-    setInterval(updateRemainingTime, 1000);
-  });
-
-  function getEventDetails(eventId) {
-    $.ajax({
-      type: "GET",
-      url: "/neticket/events/" + eventId,
-      dataType: "json",
-      success: function (event) {
-        const imageUrl = 'https://gykimagebucket.s3.ap-northeast-2.amazonaws.com/uploaded-image/' + event.image;
-        $('.image').attr('src', imageUrl);
-        $('.title').text(event.title);
-        $('.place').text(event.place);
-        $('.price').text(addCommas(event.price) + '원');
-        $('.date').text(event.date);
-        $('.isAvailable').text(event.ticketInfoDto.available ? '예매 가능' : '예매 불가능');
-        $('.remainingTime1').text(event.ticketInfoDto.openDate);
-        // 이벤트의 티켓 정보를 저장합니다.
-        $('#bookingButton').data('ticketInfo', event.ticketInfoDto);
-        // 남은 시간을 표시합니다.
-        updateRemainingTime();
-      },
-      error: function (jqXHR, textStatus, errorThrown) {
-        console.error("AJAX request failed: " + textStatus + ", " + errorThrown);
-      }
-    });
-  }
-
-  function addCommas(number) {
-    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  }
-
-  function updateRemainingTime() {
-    // 예매 버튼에 저장된 티켓 정보를 가져옵니다.
-    const ticketInfo = $('#bookingButton').data('ticketInfo');
-    // 티켓 정보가 없으면 함수를 종료합니다.
-    if (!ticketInfo) {
-      return;
-    }
-    // 티켓 오픈 시간을 가져옵니다.
-    const openTime = new Date(ticketInfo.openDate);
-    // 현재 시간을 가져옵니다.
-    const now = new Date();
-    // 남은 시간을 계산합니다.
-    const remainingTime = openTime - now;
-    // 남은 시간이 음수이면 예매가 종료된 것으로 판단하고, 버튼을 활성화합니다.
-    if (remainingTime < 0) {
-      $('#bookingButton').prop('disabled', false).text('예매하기');
-      $('.remainingTime').text('');
-      return;
-    }
-    // 시간, 분, 초를 계산합니다.
-    const hours = Math.floor(remainingTime / (1000 * 60 * 60));
-    const minutes = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((remainingTime % (1000 * 60)) / 1000);
-    // 타이머를 업데이트합니다.
-    const remainingTimeStr = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-    $('.remainingTime').text(remainingTimeStr);
-  }
-
-  function onBookingButtonClick() {
-    // 예매 버튼에 저장된 티켓 정보를 가져옵니다.
-    const ticketInfo = $('#bookingButton').data('ticketInfo');
-    // 티켓 정보가 없으면 함수를 종료합니다.
-    if (!ticketInfo) {
-      return;
-    }
-    // 티켓 정보 ID를 가져옵니다.
-    const ticketInfoId = BigInt(ticketInfo.ticketInfoId);
-
-    // 예매 중 페이지 URL을 생성합니다.
-    const url = `/neticket/reservations/in-progress/`+ticketInfoId;
-    // 페이지로 이동합니다.
-    window.location.href = url;
-  }
-
-
-
-</script>
-
 </html>
