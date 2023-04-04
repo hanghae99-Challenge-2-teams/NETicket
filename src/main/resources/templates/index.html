@@ -12,105 +12,18 @@
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
-  <link rel="stylesheet" type="text/css" th:href="@{/css/stylejang.css}">
-  <!-- Bootstrap CSS -->
-  <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.3/css/bootstrap.min.css"
-        integrity="sha512-rn8d5WY6jz84r/OQuRU6vz8fUWlbjdpEsXAfX9HTyv2BPhq3ca/PAVKzO7c1KdQ3MqC4iN4A4XVxOxjE41oVtw=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"/>
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
   <!-- Bootstrap JavaScript -->
   <script
       src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.3/js/bootstrap.bundle.min.js"
       integrity="sha512-1QqnHg9XeMx/d+lKg7Lw/AiJhMV97+Z2d3T3T4ARs4bs4VXbRjxjjpV7zY+ey6rGJB6BZv6NehUj+Mm6M9X6gQ=="
       crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-  <meta charset="UTF-8">
-  <link rel="stylesheet" href="path/to/datepicker.css">
-  <script src="path/to/datepicker.js"></script>
+  <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+  <script type="text/javascript" th:src="@{/js/basic.js}"></script>
 
-
-  <meta charset="UTF-8">
   <title>메인 페이지</title>
-  <style>
 
-    body {
-      font-size: 1.4rem;
-      font-weight: normal;
-      font-family: -apple-system, system-ui, BlinkMacSystemFont, "맑은 고딕", "Malgun Gothic", "돋움", Dotum, Helvetica, "Apple SD Gothic Neo", sans-serif;
-      color: #000;
-      height: 100%;
-    }
-
-    .productWrapper .summary .info {
-      display: inline-block;
-      width: 50.5rem;
-      margin-top: 0.4rem;
-      margin-left: 2.5rem;
-      vertical-align: top;
-    }
-
-    .text-container h2 {
-      margin: 0 0 20px 0;
-    }
-
-    .text-container p {
-      line-height: 1.5;
-    }
-
-    .search-container {
-      display: flex;
-      justify-content: center;
-    }
-
-    .search-container input[type="text"] {
-      border: none;
-      border-radius: 5px;
-      margin-right: 10px;
-      font-size: 16px;
-      margin-bottom: 50px;
-      width: 400px;
-    }
-
-    .search-container input[type="submit"] {
-      padding: 10px;
-      border: none;
-      border-radius: 5px;
-      margin-bottom: 50px;
-      background-color: #007bff;
-      color: white;
-      font-size: 16px;
-      cursor: pointer;
-    }
-
-    .image-container {
-      margin-left: 50px;
-    }
-
-
-    .productWrapper .productSide .sideMain {
-      width: 33rem;
-      margin: 0 auto;
-      border: 0.1rem solid #b6bdc7;
-      border-radius: 1.5rem;
-    }
-
-    #bookingButton {
-      background-color: blue;
-      color: white;
-      font-weight: bold;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    footer{
-      display: flex;
-      justify-content: center;
-      margin-top: 100px;
-    }
-
-  </style>
 </head>
 <body>
 <div class="row justify-content-between align-items-center py-2">
@@ -133,7 +46,7 @@
   <input type="text" placeholder="검색">
   <input type="submit" value="검색">
 </form>
-<div style="display: flex; margin-right: 20px" col-2 >
+<div style="display: flex; margin-right: 20px" col-2>
   <div style="margin-left: 50px; margin-top: 50px; margin-right: 20px" class="col-2">
     <p>Category</p>
     <div class="list-group" style="width: 100%; height: 100%">
@@ -144,21 +57,8 @@
     </div>
   </div>
 
-  <div id="event_box" class="row" style="margin-left: 50px; margin-top: 50px; margin-right: 20px"></div>
-
-<!--    <div class="col">-->
-<!--      <div class="card" style="width: 18rem;" data-id="<%= event.getId() %>">-->
-<!--        <img src="<%= event.getImage() %>" class="card-img-top" alt="...">-->
-<!--        <div class="card-body">-->
-<!--          <h5 class="card-title card-title-custom" data-title="<%= event.getTitle() %>"><%= event.getTitle() %></h5>-->
-<!--          <p class="card-text card-text-custom" data-description="">dsfsfadf</p>-->
-<!--          <p class="card-date" data-date="<%= event.getDate() %>"><%= event.getDate() %></p>-->
-<!--          <p class="card-place" data-place="<%= event.getPlace() %>"><%= event.getPlace() %></p>-->
-<!--          <a href="#" class="btn btn-primary">예매하러가기</a>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </div>-->
-
+  <div id="event_box" class="row"
+       style="margin-left: 50px; margin-top: 50px; margin-right: 20px"></div>
 
 </div>
 <footer>
@@ -181,81 +81,4 @@
   </nav>
 </footer>
 </body>
-<script>
-  $(document).ready(function () {
-    showEvent(1);
-
-    $(document).on('click', '.col', function() {
-      let eventIdString = $(this).data('event-id');
-      let eventId = parseInt(eventIdString, 10);
-      window.location.href = "/neticket/events/detail/" + eventId;
-    });
-
-  });
-
-
-  // 행사정보 조회
-  function showEvent(pageNum) {
-    $.ajax({
-      type: "GET",
-      url: "/neticket/events?page=" + pageNum,
-      dataType: "json",
-      headers: {'Content-Type': 'application/json'},
-      success: function (response) {
-        showPaging(response);
-
-        $('#event_box').empty();
-        for (let i = 0; i < response.content.length; i++) {
-          let eventDto = response.content[i];
-          let id = eventDto.id;
-          let image = eventDto.image;
-          let title = eventDto.title;
-          let date = eventDto.date;
-          let place = eventDto.place;
-
-          let tmpevent = `<div class="col" data-event-id="${id}">
-                          <div class="card h-100">
-                            <img src="https://gykimagebucket.s3.ap-northeast-2.amazonaws.com/uploaded-image/${image}"
-                                 class="card-img-top" alt="...">
-                            <div class="card-body">
-                              <h5 class="card-title">${title}</h5>
-                              <h6 class="card-date">${date}</h6>
-                              <p class="card-text">${place}</p>
-                            </div>
-                          </div>
-                        </div>`
-          $('#event_box').append(tmpevent)
-        }
-      },
-    })
-  }
-
-  // function getEventDetail(num) {
-  //   $.ajax({
-  //     type: "GET",
-  //     url: "/neticket/events?page=" + num,
-  //     success: function () {
-  //       window.location.href = "/neticket/events/detail/" + num;
-  //     },
-  //   })
-  // }
-
-
-
-  // 페이징 처리
-  function showPaging(response) {
-    let totalPages = response.totalPages;
-    let currentPage = response.number + 1;
-    let pagination = $('.pagination');
-
-    pagination.empty(); // 이 부분을 추가
-    for (let i = 1; i <= totalPages; i++) {
-      let pageItem = `<li class="page-item ${(i === currentPage) ? 'active' : ''}"><a class="page-link" onclick="showEvent(${i})" href="#">${i}</a></li>`;
-      pagination.append(pageItem);
-    }
-  }
-
-
-
-</script>
 </html>

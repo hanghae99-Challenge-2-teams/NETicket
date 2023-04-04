@@ -14,12 +14,10 @@
 
   <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
   <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
-  <meta charset="UTF-8">
+  <script type="text/javascript" th:src="@{/js/basic.js}"></script>
+
   <title>NETicket 회원가입</title>
   <style>
-    * {
-      font-family: 'Jua', sans-serif;
-    }
 
     body {
       background-color: #f5f5f5;
@@ -88,92 +86,8 @@
       border-color: #005cbf;
     }
 
-    .btn-outline-primary {
-      color: #007bff;
-      border-color: #007bff;
-    }
-
-    .btn-outline-primary:hover {
-      background-color: #007bff;
-      color: #fff;
-    }
-
-    .btn-outline-primary:focus {
-      box-shadow: none;
-    }
-
-    .btn-outline-primary:active {
-      background-color: #007bff;
-      border-color: #007bff;
-      color: #fff;
-    }
-
-    .btn-close {
-      color: #000;
-    }
   </style>
 </head>
-<script>
-  $(document).ready(function () {
-    // 회원가입 버튼 클릭 시
-    $("#signup-btn").click(function () {
-      let email = $("#email").val();
-      let password = $("#password").val();
-      let passwordCheck = $("#passwordCheck").val();
-      let nickname = $("#nickname").val();
-      // let isAdmin = $("#disabledFieldsetCheck").is(":checked");
-
-      // 비밀번호와 비밀번호 확인 값이 일치하지 않을 경우
-      if (password !== passwordCheck) {
-        alert("비밀번호와 비밀번호 확인이 일치하지 않습니다.");
-        return;
-      }
-
-      // 회원가입 요청
-      $.ajax({
-        type: "POST",
-        url: "/neticket/signup",
-        contentType: "application/json",
-        data: JSON.stringify({
-          email: email,
-          password: password,
-          nickname: nickname,
-          // isAdmin: isAdmin
-        }),
-        success: function (data) {
-          alert("회원가입이 완료되었습니다.");
-          window.location.href = "/neticket/login";
-        },
-        error: function (jqXHR, textStatus, errorThrown) {
-          alert("회원가입에 실패했습니다.")
-        }
-      });
-    });
-
-    // 비밀번호 입력값 사용자가 안보이게 가려주기
-    $("#password").focus(function () {
-      $("#password").attr("type", "password");
-    });
-
-    $("#password").blur(function () {
-      if ($("#password").val() === "") {
-        $("#password").attr("type", "text");
-      }
-    });
-
-    $("#passwordCheck").focus(function () {
-      $("#passwordCheck").attr("type", "password");
-    });
-
-    $("#passwordCheck").blur(function () {
-      if ($("#passwordCheck").val() === "") {
-        $("#passwordCheck").attr("type", "text");
-      }
-    });
-  });
-
-
-</script>
 <body>
 <div class="">
   <h1 style="margin-bottom: 70px; margin-top: 100px;">NETicket</h1>
