@@ -1,6 +1,7 @@
 package com.example.neticket.user.service;
 
 
+import com.example.neticket.event.dto.MessageResponseDto;
 import com.example.neticket.jwt.JwtUtil;
 import com.example.neticket.user.dto.LoginRequestDto;
 import com.example.neticket.user.dto.SignupRequestDto;
@@ -9,6 +10,7 @@ import com.example.neticket.user.entity.UserRoleEnum;
 import com.example.neticket.user.repository.UserRepository;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,7 +25,7 @@ public class UserService {
 
   // 회원가입
   @Transactional
-  public void signup(SignupRequestDto dto) {
+  public MessageResponseDto signup(SignupRequestDto dto) {
 
     boolean isEmailExist = userRepository.existsByEmail(dto.getEmail());
     if (isEmailExist) {
@@ -39,21 +41,22 @@ public class UserService {
 
     UserRoleEnum role = UserRoleEnum.USER;
 
-    if(dto.isAdmin()){ // is는 boolean 값을 반전
-      if(!dto.getAdminToken().equals(UserRoleEnum.Authority.ADMIN)){
+    if (dto.isAdmin()) { // is는 boolean 값을 반전
+      if (!dto.getAdminToken().equals(UserRoleEnum.Authority.ADMIN)) {
         throw new IllegalArgumentException("관리자 암호가 틀려 등록이 불가능 합니다.");
       }
       role = UserRoleEnum.ADMIN;
     }
 
-    User user = new User(dto ,password, role);
+    User user = new User(dto, password, role);
     userRepository.saveAndFlush(user);
 
+    return new MessageResponseDto(HttpStatus.CREATED, "회원가입이 완료되었습니다.");
   }
 
   // 로그인
   @Transactional(readOnly = true)
-  public void login(LoginRequestDto dto, HttpServletResponse response) {
+  public MessageResponseDto login(LoginRequestDto dto, HttpServletResponse response) {
 
     User user = userRepository.findByEmail(dto.getEmail()).orElseThrow(
         () -> new IllegalArgumentException("등록된 사용자가 없습니다.")
@@ -62,12 +65,16 @@ public class UserService {
     String encodePassword = user.getPassword();
 
     // 비밀번호 확인
-    if(!passwordEncoder.matches(dto.getPassword(), encodePassword)){
-      throw  new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+    if (!passwordEncoder.matches(dto.getPassword(), encodePassword)) {
+      throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
     }
 
-    response.addHeader(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(user.getEmail(), user.getRole()));
+    response.addHeader(JwtUtil.AUTHORIZATION_HEADER,
+        jwtUtil.createToken(user.getEmail(), user.getRole()));
+
+    return new MessageResponseDto(HttpStatus.OK, "로그인에 성공하셨습니다.");
   }
+
 
 }
 

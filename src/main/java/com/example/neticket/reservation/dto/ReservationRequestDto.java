@@ -1,13 +1,18 @@
 package com.example.neticket.reservation.dto;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import lombok.Getter;
 
 @Getter
 public class ReservationRequestDto {
 
+  @NotNull(message = "티켓 정보가 없습니다.")
   private Long ticketInfoId;
 
-// 추후 최대 예매 자리수에 대해서 의논 정해봐야함
+  @Min(1)
+  @Max(4)
   private int count;
 
 }

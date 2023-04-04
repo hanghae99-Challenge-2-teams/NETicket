@@ -1,10 +1,7 @@
 package com.example.neticket.connection;
 
-import java.util.HashMap;
-import java.util.Map;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -32,18 +29,14 @@ public class PageController {
 
   // 상세페이지 이동
   @GetMapping("/events/detail/{eventId}")
-  public ModelAndView detailPage(@PathVariable Long eventId) {
-    Map<String, Object> modelData = new HashMap<>();
-    modelData.put("eventId",eventId);
-    return new ModelAndView("detail", modelData);
+  public ModelAndView detailPage() {
+    return new ModelAndView("detail");
   }
 
   // 예매중 이동
   @GetMapping("/reservations/in-progress/{ticketInfoId}")
-  public ModelAndView reservation(@PathVariable Long ticketInfoId) {
-    Map<String, Object> modelData = new HashMap<>();
-    modelData.put("ticketInfoId",ticketInfoId);
-    return new ModelAndView("reservation", modelData);
+  public ModelAndView reservation() {
+    return new ModelAndView("reservation");
   }
 
   // 예약완료 페이지 이동
