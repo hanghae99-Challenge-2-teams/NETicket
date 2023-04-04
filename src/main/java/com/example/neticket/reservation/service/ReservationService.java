@@ -36,6 +36,7 @@ public class ReservationService {
       if (ticketInfo.getTotalSeats() == ticketInfo.getReservedSeats()) {
         ticketInfo.setAvailable(false);
       }
+      ticketInfoRepository.save(ticketInfo);
       Reservation reservation = new Reservation(dto, user, ticketInfo);
       reservationRepository.saveAndFlush(reservation);
       return reservation.getId();

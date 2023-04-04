@@ -22,7 +22,7 @@ public class TicketInfoService {
    * 오늘이 공연 당일(혹은 현재 날짜를 지나가면) 공연을 예매 불가로 설정한다.
    */
 
-  @Scheduled(cron = "0 0 * * * ?")
+  @Scheduled(cron = "0 0 0 * * ?")
   public void updateTicketInfoAtMidnight() {
     List<TicketInfo> ticketInfos = ticketInfoRepository.findAll();
     LocalDate today = LocalDate.now();
@@ -42,7 +42,7 @@ public class TicketInfoService {
    * 추후 수정이 필요하다. 정확히 00초가 아니고 딜레이가 생길 가능성이 있다.
    */
 
-  @Scheduled(cron = "0 0 * * * ?")
+  @Scheduled(cron = "0 0 18 * * ?")
   public void updateTicketInfoAt6pm() {
     List<TicketInfo> ticketInfos = ticketInfoRepository.findAll();
     for (TicketInfo ticketInfo : ticketInfos) {
