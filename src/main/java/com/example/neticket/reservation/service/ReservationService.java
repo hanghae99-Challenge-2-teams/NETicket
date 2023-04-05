@@ -19,6 +19,14 @@ public class ReservationService {
   private final ReservationRepository reservationRepository;
   private final TicketInfoRepository ticketInfoRepository;
 
+  // 예매중 페이지에서 공연정보 조회
+  @Transactional(readOnly = true)
+  public DetailEventResponseDto verifyReservation(Long ticketInfoId) {
+    return ticketInfoRepository.findById(ticketInfoId)
+        .map(ticketInfo -> new DetailEventResponseDto(ticketInfo.getEvent()))
+        .orElseThrow(() -> new IllegalArgumentException("공연 정보가 없습니다."));
+  }
+
   // 예매하기
   @Transactional
   public Long makeReservations(ReservationRequestDto dto, User user) {
@@ -43,15 +51,6 @@ public class ReservationService {
     }
     throw new IllegalArgumentException("남은 자리가 없습니다");
   }
-
-  // 예매중 페이지에서 공연정보 조회
-  @Transactional(readOnly = true)
-  public DetailEventResponseDto reservation(Long ticketInfoId) {
-    return ticketInfoRepository.findById(ticketInfoId)
-        .map(ticketInfo -> new DetailEventResponseDto(ticketInfo.getEvent()))
-        .orElseThrow(() -> new IllegalArgumentException("공연 정보가 없습니다."));
-  }
-
 
   // 예매완료
   @Transactional(readOnly = true)

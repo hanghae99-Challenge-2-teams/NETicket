@@ -18,7 +18,7 @@ $(document).ready(function () {
     // 회원가입 요청
     $.ajax({
       type: "POST",
-      url: "/neticket/signup",
+      url: "/api/neticket/signup",
       contentType: "application/json",
       data: JSON.stringify({
         email: email,
@@ -74,7 +74,7 @@ function login() {
 
   $.ajax({
     type: "POST",
-    url: '/neticket/login',
+    url: '/api/neticket/login',
     contentType: "application/json",
     data: JSON.stringify({
       email: useremail,
@@ -85,7 +85,7 @@ function login() {
       // Authorization 헤더 값을 쿠키에 저장합니다.
       document.cookie = 'Authorization=' + xhr.getResponseHeader('Authorization') + ';path=/';
       // 로그인 성공 시, 이동할 페이지로 리다이렉트합니다.
-      window.location.href = "/neticket/events-page";
+      window.location.href = "/neticket";
     },
     error: function (jqXHR, textStatus, errorThrown) {
       // 요청이 실패한 경우, 처리할 코드를 작성합니다.
@@ -102,7 +102,7 @@ $(document).ready(function () {
   $(document).on('click', '.col', function () {
     let eventIdString = $(this).data('event-id');
     let eventId = parseInt(eventIdString, 10);
-    window.location.href = "/neticket/events/detail/" + eventId;
+    window.location.href = "/neticket/events/" + eventId;
   });
 
 });
@@ -111,7 +111,7 @@ $(document).ready(function () {
 function showEvent(pageNum) {
   $.ajax({
     type: "GET",
-    url: "/neticket/events?page=" + pageNum,
+    url: "/api/neticket/events?page=" + pageNum,
     dataType: "json",
     headers: {'Content-Type': 'application/json'},
     success: function (response) {
@@ -174,7 +174,7 @@ let isAvailable;
 function getEventDetails(eventId) {
   $.ajax({
     type: "GET",
-    url: "/neticket/events/" + eventId,
+    url: "/api/neticket/events/" + eventId,
     dataType: "json",
     success: function (event) {
       const imageUrl = 'https://gykimagebucket.s3.ap-northeast-2.amazonaws.com/uploaded-image/'
@@ -265,7 +265,7 @@ function getEventInfo() {
 
   $.ajax({
     type: "GET",
-    url: "/neticket/reservation/" + ticketInfoId,
+    url: "/api/neticket/ticket-info/" + ticketInfoId,
     dataType: "json",
     success: function (event) {
       $('.title').text(event.title);
@@ -305,7 +305,7 @@ function saveReservation() {
 
   $.ajax({
     type: "POST",
-    url: "/neticket/resv",
+    url: "/api/neticket/reservations",
     dataType: "json",
     headers: {
       'Content-Type': 'application/json',
@@ -349,7 +349,7 @@ function showReservationCompleted() {
 
   $.ajax({
     type: "GET",
-    url: "/neticket/resv/" + resvId,
+    url: "/api/neticket/reservations/" + resvId,
     dataType: "json",
     headers: {
       'Content-Type': 'application/json',
@@ -375,15 +375,13 @@ function showReservationCompleted() {
                         <div class="infoDesc">${title}</div>
                       </li>
                       <li class="infoItem"><strong class="infoLabel">공연 장소 : </strong>
-                        <div class="infoDesc">
-                          <a class="infoBtn" data-popup="info-place" role="button" href="#">${place}</a>
-                        </div>
+                        <div class="infoDesc"><p class="infoText">${place}</p></div>
                       </li>
                       <li class="infoItem infoDate"><strong class="infoLabel">공연 날짜 : </strong>
                         <div class="infoDesc"><p class="infoText">${date}</p></div>
                       </li>
                       <li class="infoItem infoPrice"><strong class="infoLabel">가격 : </strong>
-                        <div class="infoDesc"><p class="infoText">${totalPrice}원 : </p></div>
+                        <div class="infoDesc"><p class="infoText">${totalPrice}원</p></div>
                       </li>
                       <li class="infoItem"><strong class="infoLabel">매수 : </strong>
                         <div class="infoDesc"><p class="infoText">${count}매</p></div>

@@ -22,13 +22,13 @@ public class PageController {
   }
 
   // 메인페이지 이동
-  @GetMapping("/events-page")
+  @GetMapping
   public ModelAndView mainPage() {
     return new ModelAndView("index");
   }
 
   // 상세페이지 이동
-  @GetMapping("/events/detail/{eventId}")
+  @GetMapping("/events/{eventId}")
   public ModelAndView detailPage() {
     return new ModelAndView("detail");
   }

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/neticket/events")
+@RequestMapping("/api/neticket/events")
 public class EventController {
 
   private final EventService eventService;
