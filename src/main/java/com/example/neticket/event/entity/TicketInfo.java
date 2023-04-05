@@ -8,6 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.Version;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -18,6 +19,9 @@ public class TicketInfo {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
+
+  @Version
+  private Long version;
 
   @Column(nullable = false)
   private boolean isAvailable = false;
@@ -43,4 +47,5 @@ public class TicketInfo {
   public void setAvailable(boolean available) {
     isAvailable = available;
   }
+
 }

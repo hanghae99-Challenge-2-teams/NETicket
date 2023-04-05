@@ -30,13 +30,12 @@ public class ReservationService {
   // 예매하기
   @Transactional
   public Long makeReservations(ReservationRequestDto dto, User user) {
-    TicketInfo ticketInfo = ticketInfoRepository.findById(dto.getTicketInfoId()).orElseThrow(
+    TicketInfo ticketInfo = ticketInfoRepository.findByIdWithLock(dto.getTicketInfoId()).orElseThrow(
         () -> new IllegalArgumentException("공연회차 정보가 없습니다.")
     );
     if (!ticketInfo.isAvailable()) {
       throw new IllegalArgumentException("현재 예매가 불가능한 공연입니다.");
     }
-
     if (ticketInfo.getTotalSeats() >= ticketInfo.getReservedSeats() + dto.getCount()) {
       ticketInfo.reserveSeats(dto.getCount());
 
