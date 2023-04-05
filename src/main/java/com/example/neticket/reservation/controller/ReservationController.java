@@ -18,20 +18,20 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/neticket")
+@RequestMapping("/api/neticket")
 public class ReservationController {
 
   private final ReservationService reservationService;
 
   // 예매중 확인하기
-  @GetMapping("/reservation/{ticketInfoId}")
-  public ResponseEntity<DetailEventResponseDto> reservation(@PathVariable Long ticketInfoId) {
-    DetailEventResponseDto reservation = reservationService.reservation(ticketInfoId);
+  @GetMapping("/ticket-info/{ticketInfoId}")
+  public ResponseEntity<DetailEventResponseDto> verifyReservation(@PathVariable Long ticketInfoId) {
+    DetailEventResponseDto reservation = reservationService.verifyReservation(ticketInfoId);
     return ResponseEntity.ok().body(reservation);
   }
 
   // 예매하기
-  @PostMapping("/resv")
+  @PostMapping("/reservations")
   public ResponseEntity<Long> makeReservations(
       @RequestBody ReservationRequestDto dto,
       @AuthenticationPrincipal UserDetailsImpl userDetails) {
@@ -40,7 +40,7 @@ public class ReservationController {
   }
 
   // 예매완료
-  @GetMapping("/resv/{resvId}")
+  @GetMapping("/reservations/{resvId}")
   public ResponseEntity<ReservationResponseDto> reservationComplete(
       @PathVariable Long resvId,
       @AuthenticationPrincipal UserDetailsImpl userDetails) {
