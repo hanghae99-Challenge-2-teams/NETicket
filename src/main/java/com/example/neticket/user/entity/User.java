@@ -8,6 +8,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -19,13 +20,13 @@ public class User {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @Column(nullable = false, unique = true)
+  @Column(nullable = false, unique = true, length = 30)
   private String email;
 
   @Column(nullable = false)
   private String password;
 
-  @Column(nullable = false, unique = true)
+  @Column(nullable = false, unique = true, length = 10)
   private String nickname;
 
   @Column(nullable = false)

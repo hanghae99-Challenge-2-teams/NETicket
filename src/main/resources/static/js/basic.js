@@ -95,17 +95,16 @@ function login() {
 }
 
 // 메인 페이지
-
-$(document).ready(function () {
-  showEvent(1);
-
-  $(document).on('click', '.col', function () {
-    let eventIdString = $(this).data('event-id');
-    let eventId = parseInt(eventIdString, 10);
-    window.location.href = "/neticket/events/" + eventId;
-  });
-
-});
+// $(document).ready(function () {
+//   showEvent(1);
+//
+//   $(document).on('click', '.col', function () {
+//     let eventIdString = $(this).data('event-id');
+//     let eventId = parseInt(eventIdString, 10);
+//     window.location.href = "/neticket/events/" + eventId;
+//   });
+//
+// });
 
 // 행사정보 조회
 function showEvent(pageNum) {
@@ -159,18 +158,19 @@ function showPaging(response) {
 
 
 // 상세 페이지
+// $(document).ready(function () {
+//   // 이벤트 ID를 URL에서 가져옵니다.
+//   const eventId = window.location.pathname.split('/').pop();
+//
+//   // 이벤트 세부 정보를 가져옵니다.
+//   getEventDetails(eventId);
+//
+//   // 1초마다 남은 시간을 갱신하는 타이머를 시작합니다.
+//   setInterval(updateRemainingTime, 1000);
+// });
 
-$(document).ready(function () {
-  // 이벤트 ID를 URL에서 가져옵니다.
-  const eventId = window.location.pathname.split('/').pop();
-
-  // 이벤트 세부 정보를 가져옵니다.
-  getEventDetails(eventId);
-
-  // 1초마다 남은 시간을 갱신하는 타이머를 시작합니다.
-  setInterval(updateRemainingTime, 1000);
-});
 let isAvailable;
+
 function getEventDetails(eventId) {
   $.ajax({
     type: "GET",
@@ -252,10 +252,9 @@ function onBookingButtonClick() {
 }
 
 // 예약 중 페이지
-
-$(document).ready(function () {
-  getEventInfo();
-});
+// $(document).ready(function () {
+//   getEventInfo();
+// });
 
 function getEventInfo() {
 
@@ -328,10 +327,9 @@ function saveReservation() {
 
 
 // 예약 완료 페이지
-
-$(document).ready(function () {
-  showReservationCompleted();
-});
+// $(document).ready(function () {
+//   showReservationCompleted();
+// });
 
 function getAuthTokenFromCookie() {
   return document.cookie.split(';').find(
