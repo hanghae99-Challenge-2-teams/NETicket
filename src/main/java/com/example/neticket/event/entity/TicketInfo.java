@@ -30,7 +30,7 @@ public class TicketInfo {
   private int totalSeats;
 
   @Column(nullable = false)
-  private int reservedSeats;
+  private int leftSeats;
 
   @Column(nullable = false)
   private LocalDateTime openDate;
@@ -40,8 +40,8 @@ public class TicketInfo {
   @JoinColumn(name = "event_id", nullable = false)
   private Event event;
 
-  public void reserveSeats(int count) {
-    this.reservedSeats += count;
+  public int reserveSeats(int count) {
+    return this.leftSeats -= count;
   }
 
   public void setAvailable(boolean available) {

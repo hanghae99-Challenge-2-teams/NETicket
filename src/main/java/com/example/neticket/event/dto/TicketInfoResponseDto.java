@@ -16,7 +16,7 @@ public class TicketInfoResponseDto {
   public TicketInfoResponseDto(TicketInfo ticketInfo) {
     this.ticketInfoId = ticketInfo.getId();
     this.openDate = ticketInfo.getOpenDate();
-    this.leftSeats = ticketInfo.getTotalSeats() - ticketInfo.getReservedSeats();
+    this.leftSeats = ticketInfo.getLeftSeats();
     this.isAvailable = ticketInfo.isAvailable();
   }
 }
