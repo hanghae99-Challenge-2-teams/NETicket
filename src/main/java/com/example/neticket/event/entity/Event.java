@@ -18,13 +18,13 @@ public class Event {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @Column(nullable = false)
+  @Column(nullable = false, length = 50)
   private String title;
 
   @Column(nullable = false)
   private String image;
 
-  @Column(nullable = false)
+  @Column(nullable = false, length = 30)
   private String place;
 
   @Column(nullable = false)

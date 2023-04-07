@@ -92,4 +92,16 @@
   </ul>
 </div>
 </body>
+<script>
+  $(document).ready(function () {
+    // 이벤트 ID를 URL에서 가져옵니다.
+    const eventId = window.location.pathname.split('/').pop();
+
+    // 이벤트 세부 정보를 가져옵니다.
+    getEventDetails(eventId);
+
+    // 1초마다 남은 시간을 갱신하는 타이머를 시작합니다.
+    setInterval(updateRemainingTime, 1000);
+  });
+</script>
 </html>
