@@ -83,7 +83,8 @@ function login() {
     success: function (response, status, xhr) {
       alert("로그인 성공!")
       // Authorization 헤더 값을 쿠키에 저장합니다.
-      document.cookie = 'Authorization=' + xhr.getResponseHeader('Authorization') + ';path=/';
+      document.cookie = 'Authorization=' + xhr.getResponseHeader(
+          'Authorization') + ';path=/';
       // 로그인 성공 시, 이동할 페이지로 리다이렉트합니다.
       window.location.href = "/neticket";
     },
@@ -156,7 +157,6 @@ function showPaging(response) {
   }
 }
 
-
 // 상세 페이지
 // $(document).ready(function () {
 //   // 이벤트 ID를 URL에서 가져옵니다.
@@ -226,7 +226,8 @@ function updateRemainingTime() {
   const minutes = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60));
   const seconds = Math.floor((remainingTime % (1000 * 60)) / 1000);
   // 타이머를 업데이트합니다.
-  const remainingTimeStr = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2,
+  const remainingTimeStr = `${hours.toString().padStart(2,
+      '0')}:${minutes.toString().padStart(2,
       '0')}:${seconds.toString().padStart(2, '0')}`;
   $('.remainingTime').text(remainingTimeStr);
 }
@@ -284,7 +285,8 @@ function addCommas(number) {
 
 function getAuthTokenFromCookie() {
   return document.cookie.split(';').find(
-      cookie => cookie.trim().startsWith('Authorization='))?.split('=')[1] || null;
+          cookie => cookie.trim().startsWith('Authorization='))?.split('=')[1]
+      || null;
 }
 
 function saveReservation() {
@@ -325,7 +327,6 @@ function saveReservation() {
   })
 }
 
-
 // 예약 완료 페이지
 // $(document).ready(function () {
 //   showReservationCompleted();
@@ -333,7 +334,8 @@ function saveReservation() {
 
 function getAuthTokenFromCookie() {
   return document.cookie.split(';').find(
-      cookie => cookie.trim().startsWith('Authorization='))?.split('=')[1] || null;
+          cookie => cookie.trim().startsWith('Authorization='))?.split('=')[1]
+      || null;
 }
 
 function showReservationCompleted() {
@@ -389,4 +391,121 @@ function showReservationCompleted() {
       $('#getresv').append(temp)
     },
   })
+}
+
+
+// addevent
+function addevent() {
+  $("#eventForm").on("submit", function (event) {
+    event.preventDefault();
+
+    let formData = new FormData(this);
+    let eventRequestDto = {
+      title: $("#title").val(),
+      place: $("#place").val(),
+      price: $("#price").val(),
+      date: $("#date").val() + "T00:00:00",
+      openDate: $("#openDate").val() + "T00:00:00",
+      totalSeat: $("#totalSeat").val()
+    };
+
+    const json = JSON.stringify(eventRequestDto);
+    const blob = new Blob([json], {type: "application/json"});
+    formData.append("dto", blob);
+
+    // Check if the image input has a file
+    let imageFile = $('#image')[0].files[0];
+    if (imageFile) {
+      formData.append("image", imageFile);
+    }
+    let token = getAuthTokenFromCookie(); // 쿠키에서 토큰 값 추출
+
+    // AJAX 요청을 수행합니다.
+    $.ajax({
+      url: "/api/neticket/events",
+      type: "POST",
+      enctype: 'multipart/form-data',
+      data: formData,
+      headers: {
+        'Authorization': token // Authorization 헤더에 토큰 값 추가
+      },
+      processData: false,
+      contentType: false,
+      success: function (response) {
+        if (response.statusCode === 201) {
+          alert(response.msg);
+        } else {
+          alert("오류가 발생했습니다. 다시 시도해주세요.");
+        }
+      },
+      error: function (jqXHR, textStatus, errorThrown) {
+        // 오류 발생 시 처리할 내용을 작성합니다.
+        alert("오류가 발생했습니다. 다시 시도해주세요.");
+      }
+    });
+  });
+}
+
+// 마이페이지
+function showMyPage() {
+
+  let token = getAuthTokenFromCookie(); // 쿠키에서 토큰 값 추출
+  console.log(token)
+
+  $.ajax({
+    type: "GET",
+    url: "/api/neticket/user",
+    dataType: "json",
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': token // Authorization 헤더에 토큰 값 추가
+    },
+    success: function (response) {
+      console.log(response)
+      $('#getresv').empty(); // 이 부분을 추가
+
+      // response 객체가 배열이 아닌 경우에도 배열로 처리
+      let responseArray = Array.isArray(response) ? response : [response];
+
+      for (let i = 0; i < responseArray.length; i++) {
+        let image = responseArray[i].image;
+        let id = responseArray[i].id;
+        let title = responseArray[i].title;
+        let place = responseArray[i].place;
+        let date = responseArray[i].date;
+        let totalPrice = responseArray[i].totalPrice;
+        let count = responseArray[i].count;
+
+        let temp = `<h5 class="card-header">예매완료</h5>
+                    <div class="card-body" id="getresv">
+                    <ul class="info">
+                      <li class="infoItem"><strong class="infoLabel"></strong>
+                        <div class="infoDesc">
+                          <img src="https://gykimagebucket.s3.ap-northeast-2.amazonaws.com/uploaded-image/${image}"
+                        </div>
+                      </li>
+                      <li class="infoItem"><strong class="infoLabel">예매 번호 : </strong>
+                        <div class="infoDesc" id="resvId">${id}</div>
+                      </li>
+                      <li class="infoItem"><strong class="infoLabel">공연 제목 : </strong>
+                        <div class="infoDesc">${title}</div>
+                      </li>
+                      <li class="infoItem"><strong class="infoLabel">공연 장소 : </strong>
+                        <div class="infoDesc"><p class="infoText">${place}</p></div>
+                      </li>
+                      <li class="infoItem infoDate"><strong class="infoLabel">공연 날짜 : </strong>
+                        <div class="infoDesc"><p class="infoText">${date}</p></div>
+                      </li>
+                      <li class="infoItem infoPrice"><strong class="infoLabel">총 가격 : </strong>
+                        <div class="infoDesc"><p class="infoText">${totalPrice}원</p></div>
+                      </li>
+                      <li class="infoItem"><strong class="infoLabel">매수 : </strong>
+                        <div class="infoDesc"><p class="infoText">${count}매</p></div>
+                      </li>
+                    </ul>
+                  </div>`
+        $('#getmypage').append(temp)
+      }
+    }
+  });
 }

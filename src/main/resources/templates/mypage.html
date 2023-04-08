@@ -22,7 +22,9 @@
   <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
   <script type="text/javascript" th:src="@{/js/basic.js}"></script>
 
-  <title>NETicket 상세페이지</title>
+  <title>예약완료 페이지</title>
+
+</head>
 
 <body>
 <div class="row justify-content-between align-items-center py-2">
@@ -33,10 +35,6 @@
   </div>
   <nav class="col-8">
     <ul class="nav justify-content-end" style="margin-right: 50px">
-      <li class="nav-item">
-        <a class="nav-link" href="/neticket/user" style="color: black">마이페이지</a>
-      </li>
-      <li class="nav-item">
       <a class="nav-link" href="/neticket/login" style="color: black">로그인</a>
       </li>
       <li class="nav-item">
@@ -59,69 +57,14 @@
       <a href="#" class="list-group-item list-group-item-action">뮤지컬</a>
     </div>
   </div>
+  <div class="card" id="getmypage">
 
-  <div class="image-container" style="margin-left: 150px; margin-top: 50px">
-    <img class="image"
-         src="" alt=""
-         width="100%" HEIGHT="70%">
   </div>
-
-  <ul class="info" style="margin-top: 100px; margin-left: 100px">
-    <li class="infoItem"><strong class="infoLabel">제목</strong>
-      <div class="infoDesc title"></div>
-    </li>
-    <li class="infoItem"><strong class="infoLabel">장소</strong>
-      <div class="infoDesc place"></div>
-    </li>
-    <li class="infoItem"><strong class="infoLabel">가격</strong>
-      <div class="infoDesc price"></div>
-    </li>
-    <li class="infoItem"><strong class="infoLabel">공연 날짜</strong>
-      <div class="infoDesc date"></div>
-    </li>
-    <li class="infoItem"><strong class="infoLabel">예매 가능</strong>
-      <div class="infoDesc isAvailable"></div>
-    </li>
-    <li class="infoItem"><strong class="infoLabel">예매 오픈 시각</strong>
-      <div class="infoDesc remainingTime1" id="">00:00:00</div>
-    </li>
-    <li class="infoItem"><strong class="infoLabel"></strong>
-      <div class="infoDesc remainingTime" id="timer"
-           style="color: red; font-style: italic; font-size: 50px; display: flex; align-content: center; ">
-        00:00:00
-      </div>
-    </li>
-
-    <button id="bookingButton" onclick="onBookingButtonClick()">예매하기</button>
-    <button id="deleteButton" onclick="deleteItem()">삭제</button>
-
-  </ul>
 </div>
 </body>
 <script>
   $(document).ready(function () {
-    // 이벤트 ID를 URL에서 가져옵니다.
-    const eventId = window.location.pathname.split('/').pop();
-
-    // 이벤트 세부 정보를 가져옵니다.
-    getEventDetails(eventId);
-
-    // 1초마다 남은 시간을 갱신하는 타이머를 시작합니다.
-    setInterval(updateRemainingTime, 1000);
+    showMyPage();
   });
-
-  // 관리자 권한으로 삭제
-  function deleteItem() {
-    // 관리자 권한 체크 (예시로 'isAdmin'이라는 변수를 사용)
-    var isAdmin = true; // 관리자 권한이 있는 경우 true, 없는 경우 false로 설정
-
-    if (isAdmin) {
-      // 삭제 로직 실행
-      console.log("공연 삭제 완료!"); // 실제로는 삭제 로직을 여기에 작성
-    } else {
-      // 관리자 권한이 없는 경우 경고 메시지 출력
-      alert("관리자 권한이 없습니다.");
-    }
-  }
 </script>
 </html>
