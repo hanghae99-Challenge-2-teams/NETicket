@@ -94,59 +94,9 @@
   </div>
 </div>
 </body>
-
-
 <script>
-  $(document).ready(function () {
-    $("#eventForm").on("submit", function (event) {
-      event.preventDefault();
-
-      let formData = new FormData(this);
-      let eventRequestDto = {
-        title: $("#title").val(),
-        place: $("#place").val(),
-        price: $("#price").val(),
-        date: $("#date").val() + "T00:00:00",
-        openDate: $("#openDate").val() + "T00:00:00",
-        totalSeat: $("#totalSeat").val()
-      };
-
-      const json = JSON.stringify(eventRequestDto);
-      const blob = new Blob([json], { type: "application/json" });
-      formData.append("dto", blob);
-
-      // Check if the image input has a file
-      let imageFile = $('#image')[0].files[0];
-      if (imageFile) {
-        formData.append("image", imageFile);
-      }
-      let token = getAuthTokenFromCookie(); // 쿠키에서 토큰 값 추출
-
-      // AJAX 요청을 수행합니다.
-      $.ajax({
-        url: "/api/neticket/events",
-        type: "POST",
-        enctype: 'multipart/form-data',
-        data: formData,
-        headers: {
-          'Authorization': token // Authorization 헤더에 토큰 값 추가
-        },
-        processData: false,
-        contentType: false,
-        success: function (response) {
-          if (response.statusCode === 201) {
-            alert(response.msg);
-          } else {
-            alert("오류가 발생했습니다. 다시 시도해주세요.");
-          }
-        },
-        error: function (jqXHR, textStatus, errorThrown) {
-          // 오류 발생 시 처리할 내용을 작성합니다.
-          alert("오류가 발생했습니다. 다시 시도해주세요.");
-        }
-      });
-    });
-  });
+$(document).ready(function () {
+  addevent();
+});
 </script>
-
 </html>
