@@ -390,3 +390,68 @@ function showReservationCompleted() {
     },
   })
 }
+
+
+// 마이페이지
+function showMyPage() {
+
+  let token = getAuthTokenFromCookie(); // 쿠키에서 토큰 값 추출
+  console.log(token)
+
+  $.ajax({
+    type: "GET",
+    url: "/api/neticket/user",
+    dataType: "json",
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': token // Authorization 헤더에 토큰 값 추가
+    },
+    success: function (response) {
+      console.log(response)
+      $('#getresv').empty(); // 이 부분을 추가
+
+      // response 객체가 배열이 아닌 경우에도 배열로 처리
+      let responseArray = Array.isArray(response) ? response : [response];
+
+      for (let i = 0; i < responseArray.length; i++) {
+        let image = responseArray[i].image;
+        let id = responseArray[i].id;
+        let title = responseArray[i].title;
+        let place = responseArray[i].place;
+        let date = responseArray[i].date;
+        let totalPrice = responseArray[i].totalPrice;
+        let count = responseArray[i].count;
+
+        let temp = `<h5 class="card-header">예매완료</h5>
+                    <div class="card-body" id="getresv">
+                    <ul class="info">
+                      <li class="infoItem"><strong class="infoLabel"></strong>
+                        <div class="infoDesc">
+                          <img src="https://gykimagebucket.s3.ap-northeast-2.amazonaws.com/uploaded-image/${image}"
+                        </div>
+                      </li>
+                      <li class="infoItem"><strong class="infoLabel">예매 번호 : </strong>
+                        <div class="infoDesc" id="resvId">${id}</div>
+                      </li>
+                      <li class="infoItem"><strong class="infoLabel">공연 제목 : </strong>
+                        <div class="infoDesc">${title}</div>
+                      </li>
+                      <li class="infoItem"><strong class="infoLabel">공연 장소 : </strong>
+                        <div class="infoDesc"><p class="infoText">${place}</p></div>
+                      </li>
+                      <li class="infoItem infoDate"><strong class="infoLabel">공연 날짜 : </strong>
+                        <div class="infoDesc"><p class="infoText">${date}</p></div>
+                      </li>
+                      <li class="infoItem infoPrice"><strong class="infoLabel">총 가격 : </strong>
+                        <div class="infoDesc"><p class="infoText">${totalPrice}원</p></div>
+                      </li>
+                      <li class="infoItem"><strong class="infoLabel">매수 : </strong>
+                        <div class="infoDesc"><p class="infoText">${count}매</p></div>
+                      </li>
+                    </ul>
+                  </div>`
+        $('#getmypage').append(temp)
+      }
+    }
+  });
+}
