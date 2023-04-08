@@ -1,5 +1,7 @@
 package com.example.neticket.event.entity;
 
+import com.example.neticket.event.dto.EventRequestDto;
+import com.example.neticket.user.entity.User;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -37,4 +39,11 @@ public class Event {
   @OneToOne(mappedBy = "event")
   private TicketInfo ticketInfo;
 
+  public Event(EventRequestDto eventRequestDto, String key) {
+    this.image = key;
+    this.title = eventRequestDto.getTitle();
+    this.place = eventRequestDto.getPlace();
+    this.price = eventRequestDto.getPrice();
+    this.date = eventRequestDto.getDate();
+  }
 }

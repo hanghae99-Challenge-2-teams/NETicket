@@ -1,7 +1,6 @@
 package com.example.neticket.event.dto;
 
 import com.example.neticket.event.entity.Event;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import lombok.Getter;
 

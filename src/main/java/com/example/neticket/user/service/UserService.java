@@ -3,11 +3,15 @@ package com.example.neticket.user.service;
 
 import com.example.neticket.event.dto.MessageResponseDto;
 import com.example.neticket.jwt.JwtUtil;
+import com.example.neticket.reservation.dto.ReservationResponseDto;
+import com.example.neticket.reservation.repository.ReservationRepository;
 import com.example.neticket.user.dto.LoginRequestDto;
 import com.example.neticket.user.dto.SignupRequestDto;
 import com.example.neticket.user.entity.User;
 import com.example.neticket.user.entity.UserRoleEnum;
 import com.example.neticket.user.repository.UserRepository;
+import java.util.List;
+import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -22,6 +26,7 @@ public class UserService {
   private final UserRepository userRepository;
   private final PasswordEncoder passwordEncoder;
   private final JwtUtil jwtUtil;
+  private final ReservationRepository reservationRepository;
 
   // 회원가입
   @Transactional
@@ -75,6 +80,14 @@ public class UserService {
     return new MessageResponseDto(HttpStatus.OK, "로그인에 성공하셨습니다.");
   }
 
+//  마이페이지 조회
+  @Transactional(readOnly = true)
+  public List<ReservationResponseDto> getUserInfo(User user) {
+    return reservationRepository.findAllByUserOrderByIdDesc(user)
+        .stream()
+        .map(ReservationResponseDto::new)
+        .collect(Collectors.toList());
 
+  }
 }
 
