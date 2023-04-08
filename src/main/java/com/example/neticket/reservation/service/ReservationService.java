@@ -29,7 +29,7 @@ public class ReservationService {
 
   // 예매하기
   @Transactional
-  public Long makeReservations(ReservationRequestDto dto, User user) {
+  public Long makeReservation(ReservationRequestDto dto, User user) {
     TicketInfo ticketInfo = ticketInfoRepository.findByIdWithLock(dto.getTicketInfoId()).orElseThrow(
         () -> new IllegalArgumentException("공연회차 정보가 없습니다.")
     );

@@ -1,5 +1,6 @@
 package com.example.neticket.event.entity;
 
+import com.example.neticket.event.dto.EventRequestDto;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -39,6 +40,13 @@ public class TicketInfo {
   @OneToOne
   @JoinColumn(name = "event_id", nullable = false)
   private Event event;
+
+  public TicketInfo(EventRequestDto eventRequestDto, Event event) {
+    this.openDate = eventRequestDto.getOpenDate();
+    this.totalSeats = eventRequestDto.getTotalSeat();
+    this.leftSeats = eventRequestDto.getTotalSeat();
+    this.event = event;
+  }
 
   public int reserveSeats(int count) {
     return this.leftSeats -= count;
