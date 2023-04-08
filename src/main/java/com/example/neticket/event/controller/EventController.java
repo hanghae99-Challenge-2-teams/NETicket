@@ -52,12 +52,10 @@ public class EventController {
   // 공연 추가하기
   @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
   public MessageResponseDto addEvent(
-      @RequestParam(name = "image", required = false) MultipartFile image,
-      @RequestPart("dto") EventRequestDto eventRequestDto,
+      @RequestParam("image")MultipartFile image,
+      @RequestPart("dto")EventRequestDto eventRequestDto,
       @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
-    if (image != null) {
-      validateImage(image);
-    }
+    validateImage(image);
     return eventService.addEvent(eventRequestDto, userDetails.getUser(), image);
   }
 

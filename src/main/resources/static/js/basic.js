@@ -83,7 +83,8 @@ function login() {
     success: function (response, status, xhr) {
       alert("로그인 성공!")
       // Authorization 헤더 값을 쿠키에 저장합니다.
-      document.cookie = 'Authorization=' + xhr.getResponseHeader('Authorization') + ';path=/';
+      document.cookie = 'Authorization=' + xhr.getResponseHeader(
+          'Authorization') + ';path=/';
       // 로그인 성공 시, 이동할 페이지로 리다이렉트합니다.
       window.location.href = "/neticket";
     },
@@ -156,7 +157,6 @@ function showPaging(response) {
   }
 }
 
-
 // 상세 페이지
 // $(document).ready(function () {
 //   // 이벤트 ID를 URL에서 가져옵니다.
@@ -226,7 +226,8 @@ function updateRemainingTime() {
   const minutes = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60));
   const seconds = Math.floor((remainingTime % (1000 * 60)) / 1000);
   // 타이머를 업데이트합니다.
-  const remainingTimeStr = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2,
+  const remainingTimeStr = `${hours.toString().padStart(2,
+      '0')}:${minutes.toString().padStart(2,
       '0')}:${seconds.toString().padStart(2, '0')}`;
   $('.remainingTime').text(remainingTimeStr);
 }
@@ -284,7 +285,8 @@ function addCommas(number) {
 
 function getAuthTokenFromCookie() {
   return document.cookie.split(';').find(
-      cookie => cookie.trim().startsWith('Authorization='))?.split('=')[1] || null;
+          cookie => cookie.trim().startsWith('Authorization='))?.split('=')[1]
+      || null;
 }
 
 function saveReservation() {
@@ -325,7 +327,6 @@ function saveReservation() {
   })
 }
 
-
 // 예약 완료 페이지
 // $(document).ready(function () {
 //   showReservationCompleted();
@@ -333,7 +334,8 @@ function saveReservation() {
 
 function getAuthTokenFromCookie() {
   return document.cookie.split(';').find(
-      cookie => cookie.trim().startsWith('Authorization='))?.split('=')[1] || null;
+          cookie => cookie.trim().startsWith('Authorization='))?.split('=')[1]
+      || null;
 }
 
 function showReservationCompleted() {

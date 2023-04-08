@@ -58,7 +58,7 @@
       </div>
     </div>
     <div class="col-10">
-      <form id="eventForm" enctype="multipart/form-data">
+      <form id="eventForm" method="post" enctype="multipart/form-data">
         <div class="form-group">
           <label for="title">제목</label>
           <input type="text" class="form-control" id="title" name="title" placeholder="제목을 입력하세요">
@@ -106,24 +106,21 @@
         title: $("#title").val(),
         place: $("#place").val(),
         price: $("#price").val(),
-        date: $("#date").val(),
-        openDate: $("#openDate").val(),
+        date: $("#date").val() + "T00:00:00",
+        openDate: $("#openDate").val() + "T00:00:00",
         totalSeat: $("#totalSeat").val()
       };
 
-      formData.delete("title");
-      formData.delete("place");
-      formData.delete("price");
-      formData.delete("date");
-      formData.delete("openDate");
-      formData.delete("totalSeat");
-
-      formData.append("dto", JSON.stringify(eventRequestDto));
+      const json = JSON.stringify(eventRequestDto);
+      const blob = new Blob([json], { type: "application/json" });
+      formData.append("dto", blob);
 
       // Check if the image input has a file
-      if (!$('#image').val()) {
-        formData.delete("image");
+      let imageFile = $('#image')[0].files[0];
+      if (imageFile) {
+        formData.append("image", imageFile);
       }
+      let token = getAuthTokenFromCookie(); // 쿠키에서 토큰 값 추출
 
       // AJAX 요청을 수행합니다.
       $.ajax({
@@ -131,6 +128,9 @@
         type: "POST",
         enctype: 'multipart/form-data',
         data: formData,
+        headers: {
+          'Authorization': token // Authorization 헤더에 토큰 값 추가
+        },
         processData: false,
         contentType: false,
         success: function (response) {
