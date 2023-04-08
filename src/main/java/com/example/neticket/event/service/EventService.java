@@ -80,9 +80,12 @@ public class EventService {
   // 공연 추가하기
   @Transactional
   public MessageResponseDto addEvent(EventRequestDto eventRequestDto, User user,
-      MultipartFile image) throws IOException{
+      MultipartFile image) throws IOException {
     checkAdmin(user);
-    String key = S3ImageUpload(image);
+    String key = null;
+    if (image != null) {
+      key = S3ImageUpload(image);
+    }
     Event event = eventRepository.save(new Event(eventRequestDto, key));
     ticketInfoRepository.save(new TicketInfo(eventRequestDto, event));
 

@@ -30,9 +30,10 @@ public class EventController {
 
   private final EventService eventService;
   private static final long MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
-  private static final List<String> ALLOWED_IMAGE_CONTENT_TYPES = List.of("image/jpeg", "image/jpg", "image/png", "image/gif");
+  private static final List<String> ALLOWED_IMAGE_CONTENT_TYPES = List.of("image/jpeg", "image/jpg",
+      "image/png", "image/gif");
 
-//  메인 페이지 조회
+  //  메인 페이지 조회
   @GetMapping
   public ResponseEntity<Page<EventResponseDto>> getEvents(@RequestParam(value = "page") int page) {
     Page<EventResponseDto> events = eventService.getEvents(page - 1);
@@ -40,7 +41,7 @@ public class EventController {
 
   }
 
-//  상세 페이지 조회
+  //  상세 페이지 조회
   @GetMapping("/{eventId}")
   public ResponseEntity<DetailEventResponseDto> getDetailEvent(@PathVariable Long eventId) {
     DetailEventResponseDto detailEvent = eventService.getDetailEvent(eventId);
@@ -51,10 +52,12 @@ public class EventController {
   // 공연 추가하기
   @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
   public MessageResponseDto addEvent(
-      @RequestParam("image")MultipartFile image,
-      @RequestPart("dto")EventRequestDto eventRequestDto,
+      @RequestParam(name = "image", required = false) MultipartFile image,
+      @RequestPart("dto") EventRequestDto eventRequestDto,
       @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
-    validateImage(image);
+    if (image != null) {
+      validateImage(image);
+    }
     return eventService.addEvent(eventRequestDto, userDetails.getUser(), image);
   }
 
@@ -68,20 +71,19 @@ public class EventController {
   }
 
   /**
-   * 검색기능
-   * keyword로 공연 제목과 공연 장소를 검색
-   * 저가순은 sordBy에 price, isAsc에 true를 담아 보내주면 된다.
-   * 고가순은 sortBy에 price, isAsc에 false를 담아 보내주면 된다.
-   * 나머지 정렬 방식은 추후 논의 후 결정 (정확도순이나 카테고리 기능 날짜검색 등)
+   * 검색기능 keyword로 공연 제목과 공연 장소를 검색 저가순은 sordBy에 price, isAsc에 true를 담아 보내주면 된다. 고가순은 sortBy에 price,
+   * isAsc에 false를 담아 보내주면 된다. 나머지 정렬 방식은 추후 논의 후 결정 (정확도순이나 카테고리 기능 날짜검색 등)
+   *
    * @param keyword : 검색어
-   * @param page : 현재 페이지. Pageable에서는 0페이지가 첫페이지라 -1
-   * @param sortBy : 정렬 기준
-   * @param isAsc : 오름차순이면 true, 내림차순이면 false
+   * @param page    : 현재 페이지. Pageable에서는 0페이지가 첫페이지라 -1
+   * @param sortBy  : 정렬 기준
+   * @param isAsc   : 오름차순이면 true, 내림차순이면 false
    * @return : 검색결과를 Page<EventResponseDto>로 반환
    */
   // 쿼리스트링 값 예외처리 추후에 해야함
   @GetMapping("/search")
-  public ResponseEntity<Page<EventResponseDto>> searchEvents(@RequestParam(value = "keyword") String keyword,
+  public ResponseEntity<Page<EventResponseDto>> searchEvents(
+      @RequestParam(value = "keyword") String keyword,
       @RequestParam int page, @RequestParam String sortBy, @RequestParam boolean isAsc) {
     if (keyword.isBlank()) {
       throw new IllegalArgumentException("검색어를 입력해 주세요.");
@@ -93,9 +95,15 @@ public class EventController {
   }
 
   private void validateImage(MultipartFile image) {
-    if (image.isEmpty()) throw new IllegalStateException("상품의 이미지를 업로드해주세요.");
-    if (image.getSize() > MAX_FILE_SIZE) throw new IllegalStateException("파일 사이즈가 최대 사이즈(5MB)를 초과합니다.");
-    if (!ALLOWED_IMAGE_CONTENT_TYPES.contains(image.getContentType())) throw new IllegalStateException("파일 형식은 JPEG, JPG, PNG, GIF 중 하나여야 합니다.");
+    if (image.isEmpty()) {
+      throw new IllegalStateException("상품의 이미지를 업로드해주세요.");
+    }
+    if (image.getSize() > MAX_FILE_SIZE) {
+      throw new IllegalStateException("파일 사이즈가 최대 사이즈(5MB)를 초과합니다.");
+    }
+    if (!ALLOWED_IMAGE_CONTENT_TYPES.contains(image.getContentType())) {
+      throw new IllegalStateException("파일 형식은 JPEG, JPG, PNG, GIF 중 하나여야 합니다.");
+    }
   }
 
 }
