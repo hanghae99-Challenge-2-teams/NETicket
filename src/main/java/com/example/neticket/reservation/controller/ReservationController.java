@@ -5,6 +5,7 @@ import com.example.neticket.reservation.dto.ReservationRequestDto;
 import com.example.neticket.reservation.dto.ReservationResponseDto;
 import com.example.neticket.reservation.service.ReservationService;
 import com.example.neticket.security.UserDetailsImpl;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,7 +34,7 @@ public class ReservationController {
   // 예매하기
   @PostMapping("/reservations")
   public ResponseEntity<Long> makeReservations(
-      @RequestBody ReservationRequestDto dto,
+      @RequestBody @Valid ReservationRequestDto dto,
       @AuthenticationPrincipal UserDetailsImpl userDetails) {
     Long resvId = reservationService.makeReservations(dto, userDetails.getUser());
     return ResponseEntity.status(HttpStatus.CREATED).body(resvId);
