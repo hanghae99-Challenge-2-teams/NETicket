@@ -44,4 +44,15 @@ public class PageController {
   public ModelAndView reservationConfirmed() {
     return new ModelAndView("completed");
   }
+
+  @GetMapping("/admin/event")
+  public ModelAndView addEvent() {
+    return new ModelAndView("addevent");
+  }
+
+  @GetMapping("/user")
+  public ModelAndView myPage() {
+    return new ModelAndView("mypage");
+  }
+
 }
