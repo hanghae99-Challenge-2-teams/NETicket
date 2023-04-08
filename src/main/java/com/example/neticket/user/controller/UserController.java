@@ -5,6 +5,7 @@ import com.example.neticket.reservation.dto.ReservationResponseDto;
 import com.example.neticket.security.UserDetailsImpl;
 import com.example.neticket.user.dto.LoginRequestDto;
 import com.example.neticket.user.dto.SignupRequestDto;
+import com.example.neticket.user.entity.UserRoleEnum;
 import com.example.neticket.user.service.UserService;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
@@ -47,5 +48,15 @@ public class UserController {
     List<ReservationResponseDto> userReservationList = userService.getUserInfo(userDetails.getUser());
     return ResponseEntity.ok().body(userReservationList);
   }
+
+  // 사용자 역할 가져오기
+  @GetMapping("/user/role")
+  public ResponseEntity<UserRoleEnum> getUserRole(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+    if (userDetails != null) {
+      return ResponseEntity.ok(userDetails.getUser().getRole());
+    }
+    return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+  }
+
 
 }
