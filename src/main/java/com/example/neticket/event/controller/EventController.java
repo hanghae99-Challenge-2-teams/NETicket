@@ -1,16 +1,27 @@
 package com.example.neticket.event.controller;
 
 import com.example.neticket.event.dto.DetailEventResponseDto;
+import com.example.neticket.event.dto.EventRequestDto;
 import com.example.neticket.event.dto.EventResponseDto;
+import com.example.neticket.event.dto.MessageResponseDto;
 import com.example.neticket.event.service.EventService;
+import com.example.neticket.security.UserDetailsImpl;
+import java.io.IOException;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequiredArgsConstructor
@@ -18,6 +29,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class EventController {
 
   private final EventService eventService;
+  private static final long MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+  private static final List<String> ALLOWED_IMAGE_CONTENT_TYPES = List.of("image/jpeg", "image/jpg", "image/png", "image/gif");
 
 //  메인 페이지 조회
   @GetMapping
@@ -32,6 +45,25 @@ public class EventController {
   public ResponseEntity<DetailEventResponseDto> getDetailEvent(@PathVariable Long eventId) {
     DetailEventResponseDto detailEvent = eventService.getDetailEvent(eventId);
     return ResponseEntity.ok().body(detailEvent);
+
+  }
+
+  // 공연 추가하기
+  @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
+  public MessageResponseDto addEvent(
+      @RequestParam("image")MultipartFile image,
+      @RequestPart("dto")EventRequestDto eventRequestDto,
+      @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
+    validateImage(image);
+    return eventService.addEvent(eventRequestDto, userDetails.getUser(), image);
+  }
+
+  //  공연 삭제 Reservation 기록이 있으면 삭제가 안되기때문에 추후 논의 반드시 필요!!!!!!!!!!!
+  @DeleteMapping("/{eventId}")
+  public ResponseEntity<MessageResponseDto> deleteEvent(@PathVariable Long eventId,
+      @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    MessageResponseDto deleteMessage = eventService.deleteEvent(eventId, userDetails.getUser());
+    return ResponseEntity.ok().body(deleteMessage);
 
   }
 
@@ -58,6 +90,12 @@ public class EventController {
         isAsc);
     return ResponseEntity.ok().body(searchEvents);
 
+  }
+
+  private void validateImage(MultipartFile image) {
+    if (image.isEmpty()) throw new IllegalStateException("상품의 이미지를 업로드해주세요.");
+    if (image.getSize() > MAX_FILE_SIZE) throw new IllegalStateException("파일 사이즈가 최대 사이즈(5MB)를 초과합니다.");
+    if (!ALLOWED_IMAGE_CONTENT_TYPES.contains(image.getContentType())) throw new IllegalStateException("파일 형식은 JPEG, JPG, PNG, GIF 중 하나여야 합니다.");
   }
 
 }

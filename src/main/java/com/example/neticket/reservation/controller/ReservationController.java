@@ -35,7 +35,7 @@ public class ReservationController {
   public ResponseEntity<Long> makeReservations(
       @RequestBody ReservationRequestDto dto,
       @AuthenticationPrincipal UserDetailsImpl userDetails) {
-    Long resvId = reservationService.makeReservations(dto, userDetails.getUser());
+    Long resvId = reservationService.makeReservation(dto, userDetails.getUser());
     return ResponseEntity.status(HttpStatus.CREATED).body(resvId);
   }
 

@@ -1,5 +1,6 @@
 INSERT INTO users VALUES (1, 'test@test.com', 'testuser', '$2a$10$DKtF2Bx/dTcFkIPeqg2CkexmiiEojqEpR3cGQb9BGIUzPLQ/ikvou', 'USER');
-INSERT INTO users VALUES (2, 'jangjh45@naver.com', '장진혁1', '$2a$10$74l14KuZyHZ2WWdCc9uwd.Yg6HszFHpOhi.CQ6PzCzIG59G1OKc/i', 'USER');
+INSERT INTO users VALUES (2, 'admin@admin.com', '관리자', '$2a$10$DKtF2Bx/dTcFkIPeqg2CkexmiiEojqEpR3cGQb9BGIUzPLQ/ikvou', 'ADMIN');
+INSERT INTO users VALUES (3, 'jangjh45@naver.com', '장진혁1', '$2a$10$74l14KuZyHZ2WWdCc9uwd.Yg6HszFHpOhi.CQ6PzCzIG59G1OKc/i', 'USER');
 
 INSERT INTO event VALUES (1,'2023-06-05', '92edd8f1-90a8-4500-be3d-51fc9e60af8a_옥탑방 고양이.jpg', '영등포구민회관', 10000, '뮤지컬 옥탑방 고양이');
 INSERT INTO event VALUES (2,'2023-06-08', 'd993741a-50c3-41d4-b9d1-7592842b401f_클래식음악회.jpg', '세종문화회관', 70000, '클래식 음악회 브람스&슈만');
