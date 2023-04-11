@@ -6,6 +6,7 @@ import com.example.neticket.exception.ExceptionType;
 import com.example.neticket.reservation.dto.ReservationResponseDto;
 import com.example.neticket.security.UserDetailsImpl;
 import com.example.neticket.user.dto.LoginRequestDto;
+import com.example.neticket.user.dto.LoginResponseDto;
 import com.example.neticket.user.dto.SignupRequestDto;
 import com.example.neticket.user.entity.UserRoleEnum;
 import com.example.neticket.user.service.UserService;
@@ -38,9 +39,9 @@ public class UserController {
 
   // 로그인
   @PostMapping("/login")
-  public ResponseEntity<MessageResponseDto> login(@RequestBody @Valid LoginRequestDto dto,
+  public ResponseEntity<LoginResponseDto> login(@RequestBody @Valid LoginRequestDto dto,
       HttpServletResponse response) {
-    MessageResponseDto login = userService.login(dto, response);
+    LoginResponseDto login = userService.login(dto, response);
     return ResponseEntity.ok().body(login);
   }
 

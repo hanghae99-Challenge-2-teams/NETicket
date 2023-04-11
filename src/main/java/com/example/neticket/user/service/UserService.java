@@ -8,6 +8,7 @@ import com.example.neticket.jwt.JwtUtil;
 import com.example.neticket.reservation.dto.ReservationResponseDto;
 import com.example.neticket.reservation.repository.ReservationRepository;
 import com.example.neticket.user.dto.LoginRequestDto;
+import com.example.neticket.user.dto.LoginResponseDto;
 import com.example.neticket.user.dto.SignupRequestDto;
 import com.example.neticket.user.entity.User;
 import com.example.neticket.user.entity.UserRoleEnum;
@@ -54,7 +55,7 @@ public class UserService {
 
   // 로그인
   @Transactional(readOnly = true)
-  public MessageResponseDto login(LoginRequestDto dto, HttpServletResponse response) {
+  public LoginResponseDto login(LoginRequestDto dto, HttpServletResponse response) {
 
     User user = userRepository.findByEmail(dto.getEmail()).orElseThrow(
         () -> new CustomException(ExceptionType.NOT_FOUND_USER_EXCEPTION)
@@ -70,7 +71,7 @@ public class UserService {
     response.addHeader(JwtUtil.AUTHORIZATION_HEADER,
         jwtUtil.createToken(user.getEmail(), user.getRole()));
 
-    return new MessageResponseDto(HttpStatus.OK, "로그인에 성공하셨습니다.");
+    return new LoginResponseDto(user);
   }
 
 //  마이페이지 조회
