@@ -61,14 +61,14 @@ public class EventController {
     return eventService.addEvent(eventRequestDto, userDetails.getUser(), image);
   }
 
-  //  공연 삭제 Reservation 기록이 있으면 삭제가 안되기때문에 추후 논의 반드시 필요!!!!!!!!!!!
-  @DeleteMapping("/{eventId}")
-  public ResponseEntity<MessageResponseDto> deleteEvent(@PathVariable Long eventId,
-      @AuthenticationPrincipal UserDetailsImpl userDetails) {
-    MessageResponseDto deleteMessage = eventService.deleteEvent(eventId, userDetails.getUser());
-    return ResponseEntity.ok().body(deleteMessage);
-
-  }
+//  //  공연 삭제 Reservation 기록이 있으면 삭제가 안되기때문에 추후 논의 반드시 필요!!!!!!!!!!!
+//  @DeleteMapping("/{eventId}")
+//  public ResponseEntity<MessageResponseDto> deleteEvent(@PathVariable Long eventId,
+//      @AuthenticationPrincipal UserDetailsImpl userDetails) {
+//    MessageResponseDto deleteMessage = eventService.deleteEvent(eventId, userDetails.getUser());
+//    return ResponseEntity.ok().body(deleteMessage);
+//
+//  }
 
   /**
    * 검색기능 keyword로 공연 제목과 공연 장소를 검색 저가순은 sordBy에 price, isAsc에 true를 담아 보내주면 된다. 고가순은 sortBy에 price,

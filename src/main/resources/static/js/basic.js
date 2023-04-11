@@ -57,7 +57,7 @@ $(document).ready(function () {
 });
 
 // 로그인 페이지
-// let isAdmin;
+// let isAdmin = false;
 
 function login() {
   let useremail = $('#login_email').val();
@@ -85,9 +85,8 @@ function login() {
       document.cookie = 'Authorization=' + xhr.getResponseHeader(
           'Authorization') + ';path=/';
       // isAdmin 변수에 서버로부터 전달된 값 할당
-      localStorage.setItem('isAdmin', response.admin);
-      // isAdmin = response.admin;
-      if (response.admin){
+      isAdmin = response.admin;
+      if (isAdmin){
         alert("관리자 계정입니다.")
       }
       // 로그인 성공 시, 이동할 페이지로 리다이렉트합니다.
@@ -99,8 +98,6 @@ function login() {
     }
   })
 }
-let trueorfalse = localStorage.getItem('isAdmin');
-let isAdmin = Boolean(trueorfalse);
 
 // 메인 페이지
 // $(document).ready(function () {
@@ -197,40 +194,38 @@ function getEventDetails(eventId) {
       $('.remainingTime1').text(event.ticketInfoDto.openDate);
       // 이벤트의 티켓 정보를 저장합니다.
       $('#bookingButton').data('ticketInfo', event.ticketInfoDto);
-      console.log(isAdmin)
-      if (isAdmin===true) {
-        console.log("안에 들어감")
-        $('#deleteButton').text('삭제').on('click', function () {
-          deleteEvent(eventId);
-        });
-      } else {
-        console.log("else로 빠짐")
-        $('#deleteButton').hide();
-      }
-
-
+      // console.log(isAdmin)
+      // if (isAdmin===true) {
+      //   console.log("안에 들어감")
+      //   $('#deleteButton').text('삭제').on('click', function () {
+      //     deleteEvent(eventId);
+      //   });
+      // } else {
+      //   console.log("else로 빠짐")
+      //   $('#deleteButton').hide();
+      // }
 
       // 남은 시간을 표시합니다.
       updateRemainingTime();
 
     //   공연 삭제
-      function deleteEvent(eventId) {
-        $.ajax({
-          type: "DELETE",
-          url: "/api/neticket/events/" + eventId,
-          headers: {
-            'Authorization': token // Authorization 헤더에 토큰 값 추가
-          },
-          success: function (response) {
-            alert("공연이 삭제되었습니다.");
-            window.location.href = "/neticket"; // 페이지 새로고침
-          },
-          error: function (jqXHR, textStatus, errorThrown) {
-            alert("공연이 삭제되지 않았습니다.");
-            console.error("AJAX request failed: " + textStatus + ", " + errorThrown);
-          }
-        });
-      }
+    //   function deleteEvent(eventId) {
+    //     $.ajax({
+    //       type: "DELETE",
+    //       url: "/api/neticket/events/" + eventId,
+    //       headers: {
+    //         'Authorization': token // Authorization 헤더에 토큰 값 추가
+    //       },
+    //       success: function (response) {
+    //         alert("공연이 삭제되었습니다.");
+    //         window.location.href = "/neticket"; // 페이지 새로고침
+    //       },
+    //       error: function (jqXHR, textStatus, errorThrown) {
+    //         alert("공연이 삭제되지 않았습니다.");
+    //         console.error("AJAX request failed: " + textStatus + ", " + errorThrown);
+    //       }
+    //     });
+    //   }
 
     },
     error: function (jqXHR, textStatus, errorThrown) {
@@ -509,7 +504,6 @@ function showMyPage() {
       let responseArray = Array.isArray(response) ? response : [response];
 
       for (let i = 0; i < responseArray.length; i++) {
-        let image = responseArray[i].image;
         let id = responseArray[i].id;
         let title = responseArray[i].title;
         let place = responseArray[i].place;
@@ -520,11 +514,6 @@ function showMyPage() {
         let temp = `<h5 class="card-header">예매완료</h5>
                     <div class="card-body" id="getresv">
                     <ul class="info">
-                      <li class="infoItem"><strong class="infoLabel"></strong>
-                        <div class="infoDesc">
-                          <img src="https://neticketbucket.s3.ap-northeast-2.amazonaws.com/uploaded-image/${image}"
-                        </div>
-                      </li>
                       <li class="infoItem"><strong class="infoLabel">예매 번호 : </strong>
                         <div class="infoDesc" id="resvId">${id}</div>
                       </li>
