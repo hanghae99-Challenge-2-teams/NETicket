@@ -502,9 +502,46 @@ function showMyPage() {
                       <li class="infoItem"><strong class="infoLabel">매수 : </strong>
                         <div class="infoDesc"><p class="infoText">${count}매</p></div>
                       </li>
+                       <li class="infoItem">
+                        <button type="button" class="btn btn-danger cancelResvBtn" data-resv-id="${id}">예매 취소</button>
+                       </li>
                     </ul>
-                  </div>`
-        $('#getmypage').append(temp)
+                  </div>`;
+        $('#getmypage').append(temp);
+
+
+        disableCancelBtnIfPast(date, $(`button[data-resv-id="${id}"]`));
+
+        // 예매 취소 버튼 클릭 이벤트 추가
+        $('.cancelResvBtn').off('click').on('click', function () {
+          let resvId = $(this).data('resv-id');
+          if (confirm("정말로 예매를 취소하시겠습니까?")) {
+            $.ajax({
+              url: `/api/neticket/reservations/${resvId}`,
+              type: "DELETE",
+              success: function (response) {
+                alert("예매가 취소되었습니다.");
+                // window.location.href = "/neticket/user";
+                showMyPage();
+              },
+              error: function (jqXHR, textStatus, errorThrown) {
+                alert("예매 취소에 실패했습니다. 다시 시도해주세요.");
+              },
+            });
+          }
+        });
+        // 오늘날짜랑 비교해서 행사일이 오늘이거나 오늘보다 이전이면 예매취소 버튼 비활성화
+        function disableCancelBtnIfPast(date, btn) {
+          let eventday = new Date(date);
+          let today = new Date();
+
+          if (eventday <= today) {
+            btn.prop('disabled', true);
+          } else {
+            btn.prop('disabled', false);
+          }
+        }
+
       }
     }
   });
