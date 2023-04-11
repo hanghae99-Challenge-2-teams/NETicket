@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    //    throw로 발생시킨 오류 처리
+    //    CustomException 으로 발생시킨 예외 처리
     @ExceptionHandler(CustomException.class)
     public ResponseEntity<MessageResponseDto> handleCustomException(CustomException e){
         String message = e.getMessage();
