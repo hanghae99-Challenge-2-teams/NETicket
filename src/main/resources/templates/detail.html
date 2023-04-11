@@ -93,7 +93,7 @@
     </li>
 
     <button id="bookingButton" onclick="onBookingButtonClick()">예매하기</button>
-    <button id="deleteButton" onclick="deleteItem()">삭제</button>
+    <button id="deleteButton" onclick="deleteEvent(eventId)">삭제</button>
 
   </ul>
 </div>
@@ -111,17 +111,17 @@
   });
 
   // 관리자 권한으로 삭제
-  function deleteItem() {
-    // 관리자 권한 체크 (예시로 'isAdmin'이라는 변수를 사용)
-    var isAdmin = true; // 관리자 권한이 있는 경우 true, 없는 경우 false로 설정
-
-    if (isAdmin) {
-      // 삭제 로직 실행
-      console.log("공연 삭제 완료!"); // 실제로는 삭제 로직을 여기에 작성
-    } else {
-      // 관리자 권한이 없는 경우 경고 메시지 출력
-      alert("관리자 권한이 없습니다.");
-    }
-  }
+  // function deleteItem() {
+  //   // 관리자 권한 체크 (예시로 'isAdmin'이라는 변수를 사용)
+  //   var isAdmin = true; // 관리자 권한이 있는 경우 true, 없는 경우 false로 설정
+  //
+  //   if (isAdmin) {
+  //     // 삭제 로직 실행
+  //     console.log("공연 삭제 완료!"); // 실제로는 삭제 로직을 여기에 작성
+  //   } else {
+  //     // 관리자 권한이 없는 경우 경고 메시지 출력
+  //     alert("관리자 권한이 없습니다.");
+  //   }
+  // }
 </script>
 </html>

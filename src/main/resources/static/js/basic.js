@@ -7,7 +7,6 @@ $(document).ready(function () {
     let password = $("#password").val();
     let passwordCheck = $("#passwordCheck").val();
     let nickname = $("#nickname").val();
-    // let isAdmin = $("#disabledFieldsetCheck").is(":checked");
 
     // 비밀번호와 비밀번호 확인 값이 일치하지 않을 경우
     if (password !== passwordCheck) {
@@ -23,8 +22,7 @@ $(document).ready(function () {
       data: JSON.stringify({
         email: email,
         password: password,
-        nickname: nickname,
-        // isAdmin: isAdmin
+        nickname: nickname
       }),
       success: function (data) {
         alert("회원가입이 완료되었습니다.");
@@ -59,6 +57,7 @@ $(document).ready(function () {
 });
 
 // 로그인 페이지
+// let isAdmin;
 
 function login() {
   let useremail = $('#login_email').val();
@@ -85,6 +84,12 @@ function login() {
       // Authorization 헤더 값을 쿠키에 저장합니다.
       document.cookie = 'Authorization=' + xhr.getResponseHeader(
           'Authorization') + ';path=/';
+      // isAdmin 변수에 서버로부터 전달된 값 할당
+      localStorage.setItem('isAdmin', response.admin);
+      // isAdmin = response.admin;
+      if (response.admin){
+        alert("관리자 계정입니다.")
+      }
       // 로그인 성공 시, 이동할 페이지로 리다이렉트합니다.
       window.location.href = "/neticket";
     },
@@ -94,6 +99,8 @@ function login() {
     }
   })
 }
+let trueorfalse = localStorage.getItem('isAdmin');
+let isAdmin = Boolean(trueorfalse);
 
 // 메인 페이지
 // $(document).ready(function () {
@@ -172,6 +179,7 @@ function showPaging(response) {
 let isAvailable;
 
 function getEventDetails(eventId) {
+  let token = getAuthTokenFromCookie();
   $.ajax({
     type: "GET",
     url: "/api/neticket/events/" + eventId,
@@ -189,8 +197,41 @@ function getEventDetails(eventId) {
       $('.remainingTime1').text(event.ticketInfoDto.openDate);
       // 이벤트의 티켓 정보를 저장합니다.
       $('#bookingButton').data('ticketInfo', event.ticketInfoDto);
+      console.log(isAdmin)
+      if (isAdmin===true) {
+        console.log("안에 들어감")
+        $('#deleteButton').text('삭제').on('click', function () {
+          deleteEvent(eventId);
+        });
+      } else {
+        console.log("else로 빠짐")
+        $('#deleteButton').hide();
+      }
+
+
+
       // 남은 시간을 표시합니다.
       updateRemainingTime();
+
+    //   공연 삭제
+      function deleteEvent(eventId) {
+        $.ajax({
+          type: "DELETE",
+          url: "/api/neticket/events/" + eventId,
+          headers: {
+            'Authorization': token // Authorization 헤더에 토큰 값 추가
+          },
+          success: function (response) {
+            alert("공연이 삭제되었습니다.");
+            window.location.href = "/neticket"; // 페이지 새로고침
+          },
+          error: function (jqXHR, textStatus, errorThrown) {
+            alert("공연이 삭제되지 않았습니다.");
+            console.error("AJAX request failed: " + textStatus + ", " + errorThrown);
+          }
+        });
+      }
+
     },
     error: function (jqXHR, textStatus, errorThrown) {
       console.error("AJAX request failed: " + textStatus + ", " + errorThrown);
@@ -481,7 +522,7 @@ function showMyPage() {
                     <ul class="info">
                       <li class="infoItem"><strong class="infoLabel"></strong>
                         <div class="infoDesc">
-                          <img src="https://gykimagebucket.s3.ap-northeast-2.amazonaws.com/uploaded-image/${image}"
+                          <img src="https://neticketbucket.s3.ap-northeast-2.amazonaws.com/uploaded-image/${image}"
                         </div>
                       </li>
                       <li class="infoItem"><strong class="infoLabel">예매 번호 : </strong>
