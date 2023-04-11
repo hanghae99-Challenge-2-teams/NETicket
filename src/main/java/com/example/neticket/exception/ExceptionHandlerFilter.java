@@ -15,10 +15,10 @@ import org.springframework.web.filter.OncePerRequestFilter;
 @Slf4j
 public class ExceptionHandlerFilter extends OncePerRequestFilter {
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) {
         try {
             filterChain.doFilter(request,response);
-        }catch(UsernameNotFoundException e) {
+        }catch(CustomException e) {
             jwtExceptionHandler(response,e.getMessage(), HttpStatus.BAD_REQUEST);
         }catch (RuntimeException e){
             jwtExceptionHandler(response,e.getMessage().split(":")[0], HttpStatus.BAD_REQUEST);

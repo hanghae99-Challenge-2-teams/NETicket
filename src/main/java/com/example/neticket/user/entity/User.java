@@ -31,13 +31,12 @@ public class User {
 
   @Column(nullable = false)
   @Enumerated(value = EnumType.STRING)
-  private UserRoleEnum role;
+  private UserRoleEnum role = UserRoleEnum.USER;
 
-  public User(SignupRequestDto dto, String password, UserRoleEnum role) {
+  public User(SignupRequestDto dto, String password) {
     this.email = dto.getEmail();
     this.password = password;
     this.nickname = dto.getNickname();
-    this.role = role;
   }
 
 }

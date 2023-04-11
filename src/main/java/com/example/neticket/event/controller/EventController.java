@@ -5,6 +5,8 @@ import com.example.neticket.event.dto.EventRequestDto;
 import com.example.neticket.event.dto.EventResponseDto;
 import com.example.neticket.event.dto.MessageResponseDto;
 import com.example.neticket.event.service.EventService;
+import com.example.neticket.exception.CustomException;
+import com.example.neticket.exception.ExceptionType;
 import com.example.neticket.security.UserDetailsImpl;
 import java.io.IOException;
 import java.util.List;
@@ -54,7 +56,7 @@ public class EventController {
   public MessageResponseDto addEvent(
       @RequestParam("image")MultipartFile image,
       @RequestPart("dto")EventRequestDto eventRequestDto,
-      @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
+      @AuthenticationPrincipal UserDetailsImpl userDetails) {
     validateImage(image);
     return eventService.addEvent(eventRequestDto, userDetails.getUser(), image);
   }
@@ -84,7 +86,7 @@ public class EventController {
       @RequestParam(value = "keyword") String keyword,
       @RequestParam int page, @RequestParam String sortBy, @RequestParam boolean isAsc) {
     if (keyword.isBlank()) {
-      throw new IllegalArgumentException("검색어를 입력해 주세요.");
+      throw new CustomException(ExceptionType.ZERO_WORD_EXCEPTION);
     }
     Page<EventResponseDto> searchEvents = eventService.searchEvents(keyword, page - 1, sortBy,
         isAsc);
@@ -94,14 +96,18 @@ public class EventController {
 
   private void validateImage(MultipartFile image) {
     if (image.isEmpty()) {
-      throw new IllegalStateException("상품의 이미지를 업로드해주세요.");
+      throw new CustomException(ExceptionType.NO_IMAGE_EXCEPTION);
     }
     if (image.getSize() > MAX_FILE_SIZE) {
-      throw new IllegalStateException("파일 사이즈가 최대 사이즈(5MB)를 초과합니다.");
+      throw new CustomException(ExceptionType.IMAGE_SIZE_EXCEPTION);
     }
     if (!ALLOWED_IMAGE_CONTENT_TYPES.contains(image.getContentType())) {
-      throw new IllegalStateException("파일 형식은 JPEG, JPG, PNG, GIF 중 하나여야 합니다.");
+      throw new CustomException(ExceptionType.IMAGE_FORMAT_EXCEPTION);
     }
+  }
+
+  private void validateSearch(String keyword, int page, String sortBy, boolean isAsc) {
+//    쿼리스트링으로 받을꺼면 추후 작성해야. dto로 받을꺼면 @Valid로 가능
   }
 
 }

@@ -3,6 +3,8 @@ package com.example.neticket.reservation.service;
 import com.example.neticket.event.dto.DetailEventResponseDto;
 import com.example.neticket.event.entity.TicketInfo;
 import com.example.neticket.event.repository.TicketInfoRepository;
+import com.example.neticket.exception.CustomException;
+import com.example.neticket.exception.ExceptionType;
 import com.example.neticket.reservation.dto.ReservationRequestDto;
 import com.example.neticket.reservation.dto.ReservationResponseDto;
 import com.example.neticket.reservation.entity.Reservation;
@@ -24,17 +26,17 @@ public class ReservationService {
   public DetailEventResponseDto verifyReservation(Long ticketInfoId) {
     return ticketInfoRepository.findById(ticketInfoId)
         .map(ticketInfo -> new DetailEventResponseDto(ticketInfo.getEvent()))
-        .orElseThrow(() -> new IllegalArgumentException("공연 정보가 없습니다."));
+        .orElseThrow(() -> new CustomException(ExceptionType.NOT_FOUND_TICKET_INFO_EXCEPTION));
   }
 
   // 예매하기
   @Transactional
   public Long makeReservation(ReservationRequestDto dto, User user) {
     TicketInfo ticketInfo = ticketInfoRepository.findByIdWithLock(dto.getTicketInfoId()).orElseThrow(
-        () -> new IllegalArgumentException("공연회차 정보가 없습니다.")
+        () -> new CustomException(ExceptionType.NOT_FOUND_TICKET_INFO_EXCEPTION)
     );
     if (!ticketInfo.isAvailable()) {
-      throw new IllegalArgumentException("현재 예매가 불가능한 공연입니다.");
+      throw new CustomException(ExceptionType.RESERVATION_UNAVAILABLE_EXCEPTION);
     }
     if (0 <= ticketInfo.getLeftSeats() - dto.getCount()) {
       int getLeftSeats = ticketInfo.reserveSeats(dto.getCount());
@@ -48,7 +50,7 @@ public class ReservationService {
       reservationRepository.saveAndFlush(reservation);
       return reservation.getId();
     }
-    throw new IllegalArgumentException("남은 자리가 없습니다");
+    throw new CustomException(ExceptionType.OUT_OF_TICKET_EXCEPTION);
   }
 
   // 예매완료
@@ -56,11 +58,11 @@ public class ReservationService {
   public ReservationResponseDto reservationComplete(Long resvId, User user) {
 
     Reservation reservation = reservationRepository.findById(resvId).orElseThrow(
-        () -> new IllegalArgumentException("예매한 공연이 없습니다.")
+        () -> new CustomException(ExceptionType.NOT_FOUND_RESERVATION_EXCEPTION)
     );
 
     if (!reservation.getUser().getId().equals(user.getId())) {
-      throw new IllegalArgumentException("예약정보가 회원정보와 일치하지 않습니다.");
+      throw new CustomException(ExceptionType.USER_RESERVATION_NOT_MATCHING_EXCEPTION);
     }
 
     return new ReservationResponseDto(reservation);

@@ -128,7 +128,7 @@ function showEvent(pageNum) {
 
         let tmpevent = `<div class="col" data-event-id="${id}">
                           <div class="card h-100">
-                            <img src="https://gykimagebucket.s3.ap-northeast-2.amazonaws.com/uploaded-image/${image}"
+                            <img src="https://neticketbucket.s3.ap-northeast-2.amazonaws.com/uploaded-image/${image}"
                                  class="card-img-top" alt="...">
                             <div class="card-body">
                               <h5 class="card-title">${title}</h5>
@@ -177,7 +177,7 @@ function getEventDetails(eventId) {
     url: "/api/neticket/events/" + eventId,
     dataType: "json",
     success: function (event) {
-      const imageUrl = 'https://gykimagebucket.s3.ap-northeast-2.amazonaws.com/uploaded-image/'
+      const imageUrl = 'https://neticketbucket.s3.ap-northeast-2.amazonaws.com/uploaded-image/'
           + event.image;
       $('.image').attr('src', imageUrl);
       $('.title').text(event.title);
