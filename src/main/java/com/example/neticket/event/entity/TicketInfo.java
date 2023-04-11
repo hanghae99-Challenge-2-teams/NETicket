@@ -48,12 +48,16 @@ public class TicketInfo {
     this.event = event;
   }
 
-  public int reserveSeats(int count) {
+  public int minusSeats(int count) {
     return this.leftSeats -= count;
   }
 
   public void setAvailable(boolean available) {
     isAvailable = available;
+  }
+
+  public void plusSeats(int count){
+    this.leftSeats += count;
   }
 
 }

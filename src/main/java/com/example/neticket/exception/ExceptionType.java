@@ -27,7 +27,8 @@ public enum ExceptionType {
   USER_RESERVATION_NOT_MATCHING_EXCEPTION(HttpStatus.BAD_REQUEST, "예매기록이 회원정보와 일치하지 않습니다."),
   EXISTED_EMAIL_EXCEPTION(HttpStatus.BAD_REQUEST, "이미 가입된 이메일입니다."),
   EXISTED_NICKNAME_EXCEPTION(HttpStatus.BAD_REQUEST, "이미 가입된 닉네임입니다."),
-  PASSWORD_NOT_MATCHING_EXCEPTION(HttpStatus.BAD_REQUEST, "비밀번호가 일치하지 않습니다.");
+  PASSWORD_NOT_MATCHING_EXCEPTION(HttpStatus.BAD_REQUEST, "비밀번호가 일치하지 않습니다."),
+  CANCEL_DEADLINE_PASSED_EXCEPTION(HttpStatus.BAD_REQUEST, "공연날짜가 지나 예매취소가 불가능합니다.");
 
   private final HttpStatus httpStatus;
   private final String message;

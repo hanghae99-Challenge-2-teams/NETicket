@@ -46,4 +46,5 @@ public class Event {
     this.price = eventRequestDto.getPrice();
     this.date = eventRequestDto.getDate();
   }
+
 }
