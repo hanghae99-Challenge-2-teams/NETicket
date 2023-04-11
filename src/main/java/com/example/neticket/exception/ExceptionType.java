@@ -29,14 +29,9 @@ public enum ExceptionType {
   EXISTED_NICKNAME_EXCEPTION(HttpStatus.BAD_REQUEST, "이미 가입된 닉네임입니다."),
   PASSWORD_NOT_MATCHING_EXCEPTION(HttpStatus.BAD_REQUEST, "비밀번호가 일치하지 않습니다."),
 
-  //  안쓴 예외,
+  //  안쓴 예외
   INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "알 수 없는 오류가 발생하였습니다."),
-  ALREADY_EXISTS_EXCEPTION(HttpStatus.CONFLICT, "이미 값이 존재합니다."),
-  ACCESS_DENIED_EXCEPTION(HttpStatus.FORBIDDEN, "로그인 후 사용해주세요."),
-  NOT_FOUND_KEY_EXCEPTION(HttpStatus.NOT_FOUND, "요청하신 키를 찾을 수 없습니다."),
-  OVER_EXIST_EXCEPTION(HttpStatus.BAD_REQUEST, "최대 요청 개수를 초과하였습니다."),
-  ONE_WORD_EXCEPTION(HttpStatus.BAD_REQUEST, "두 글자 이상부터 검색이 가능합니다."),
-  EMPTY_RESULT_EXCEPTION(HttpStatus.BAD_REQUEST, "조회된 상품이 없습니다.");
+  ACCESS_DENIED_EXCEPTION(HttpStatus.FORBIDDEN, "로그인 후 사용해주세요.");
 
 
   private final HttpStatus httpStatus;
