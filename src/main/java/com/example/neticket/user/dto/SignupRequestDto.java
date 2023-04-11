@@ -22,8 +22,4 @@ public class SignupRequestDto {
   @Pattern(regexp = "^[가-힣a-zA-Z0-9]{2,10}$", message = "닉네임은 2 ~10자 한글,영어, 숫자만 가능합니다.")
   private String nickname;
 
-  private boolean admin = false; // is는 반전
-
-  private String adminToken = ""; // 토큰 초기값으로 만든다.
-
 }

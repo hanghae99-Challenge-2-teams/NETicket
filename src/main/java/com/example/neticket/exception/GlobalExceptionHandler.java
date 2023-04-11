@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalExceptionHandler {
 
     //    throw로 발생시킨 오류 처리
-    @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<MessageResponseDto> handleRuntimeException(RuntimeException e){
-        String message = e.getMessage().split(":")[0];
+    @ExceptionHandler(CustomException.class)
+    public ResponseEntity<MessageResponseDto> handleCustomException(CustomException e){
+        String message = e.getMessage();
         MessageResponseDto messageResponseDto = new MessageResponseDto(HttpStatus.BAD_REQUEST, message);
         return new ResponseEntity<>(messageResponseDto, HttpStatus.BAD_REQUEST);
     }
