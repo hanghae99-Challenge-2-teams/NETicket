@@ -95,19 +95,19 @@ public class EventService {
     return new MessageResponseDto(HttpStatus.CREATED, "공연 추가 완료했습니다.");
   }
 
-  //  공연삭제
-  @Transactional
-  public MessageResponseDto deleteEvent(Long eventId, User user) {
-    checkAdmin(user);
-    Event event = eventRepository.findById(eventId).orElseThrow(
-        () -> new CustomException(ExceptionType.NOT_FOUND_EVENT_EXCEPTION)
-    );
-
-    S3ImageDelete(event.getImage());
-    ticketInfoRepository.delete(event.getTicketInfo());
-    eventRepository.delete(event);
-    return new MessageResponseDto(HttpStatus.OK,"공연정보와 예매정보가 정상적으로 삭제되었습니다.");
-  }
+//  //  공연삭제 추후 논의과정 거쳐 마저 구현
+//  @Transactional
+//  public MessageResponseDto deleteEvent(Long eventId, User user) {
+//    checkAdmin(user);
+//    Event event = eventRepository.findById(eventId).orElseThrow(
+//        () -> new CustomException(ExceptionType.NOT_FOUND_EVENT_EXCEPTION)
+//    );
+//
+//    S3ImageDelete(event.getImage());
+//    ticketInfoRepository.delete(event.getTicketInfo());
+//    eventRepository.delete(event);
+//    return new MessageResponseDto(HttpStatus.OK,"공연정보와 예매정보가 정상적으로 삭제되었습니다.");
+//  }
 
   // 검색기능
   @Transactional(readOnly = true)
