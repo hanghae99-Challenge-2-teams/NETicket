@@ -1,5 +1,7 @@
 package com.example.neticket.jwt;
 
+import com.example.neticket.exception.CustomException;
+import com.example.neticket.exception.ExceptionType;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import java.io.IOException;
@@ -27,7 +29,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         // token 유효성 검사 토큰이 비어있으면 통과
         if (token != null) {
             if (!jwtUtil.validateToken(token)){
-                throw new JwtException("토큰이 유효하지 않습니다.");
+                throw new CustomException(ExceptionType.TOKEN_VALIDATION_EXCEPTION);
             }
             Claims info = jwtUtil.getUserInfoFromToken(token);
             // 인증 객체 생성

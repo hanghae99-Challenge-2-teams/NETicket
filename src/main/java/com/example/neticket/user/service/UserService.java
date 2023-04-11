@@ -2,6 +2,8 @@ package com.example.neticket.user.service;
 
 
 import com.example.neticket.event.dto.MessageResponseDto;
+import com.example.neticket.exception.CustomException;
+import com.example.neticket.exception.ExceptionType;
 import com.example.neticket.jwt.JwtUtil;
 import com.example.neticket.reservation.dto.ReservationResponseDto;
 import com.example.neticket.reservation.repository.ReservationRepository;
@@ -34,26 +36,17 @@ public class UserService {
 
     boolean isEmailExist = userRepository.existsByEmail(dto.getEmail());
     if (isEmailExist) {
-      throw new IllegalArgumentException("이미 가입된 이메일입니다.");
+      throw new CustomException(ExceptionType.EXISTED_EMAIL_EXCEPTION);
     }
 
     boolean isNickExist = userRepository.existsByNickname(dto.getNickname());
     if (isNickExist) {
-      throw new IllegalArgumentException("이미 가입된 닉네임입니다.");
+      throw new CustomException(ExceptionType.EXISTED_NICKNAME_EXCEPTION);
     }
 
     String password = passwordEncoder.encode(dto.getPassword());
 
-    UserRoleEnum role = UserRoleEnum.USER;
-
-    if (dto.isAdmin()) { // is는 boolean 값을 반전
-      if (!dto.getAdminToken().equals(UserRoleEnum.Authority.ADMIN)) {
-        throw new IllegalArgumentException("관리자 암호가 틀려 등록이 불가능 합니다.");
-      }
-      role = UserRoleEnum.ADMIN;
-    }
-
-    User user = new User(dto, password, role);
+    User user = new User(dto, password);
     userRepository.saveAndFlush(user);
 
     return new MessageResponseDto(HttpStatus.CREATED, "회원가입이 완료되었습니다.");
@@ -64,14 +57,14 @@ public class UserService {
   public MessageResponseDto login(LoginRequestDto dto, HttpServletResponse response) {
 
     User user = userRepository.findByEmail(dto.getEmail()).orElseThrow(
-        () -> new IllegalArgumentException("등록된 사용자가 없습니다.")
+        () -> new CustomException(ExceptionType.NOT_FOUND_USER_EXCEPTION)
     );
 
     String encodePassword = user.getPassword();
 
     // 비밀번호 확인
     if (!passwordEncoder.matches(dto.getPassword(), encodePassword)) {
-      throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+      throw new CustomException(ExceptionType.PASSWORD_NOT_MATCHING_EXCEPTION);
     }
 
     response.addHeader(JwtUtil.AUTHORIZATION_HEADER,

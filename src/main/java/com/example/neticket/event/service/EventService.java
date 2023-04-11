@@ -8,6 +8,8 @@ import com.example.neticket.event.entity.Event;
 import com.example.neticket.event.entity.TicketInfo;
 import com.example.neticket.event.repository.EventRepository;
 import com.example.neticket.event.repository.TicketInfoRepository;
+import com.example.neticket.exception.CustomException;
+import com.example.neticket.exception.ExceptionType;
 import com.example.neticket.user.entity.User;
 import com.example.neticket.user.entity.UserRoleEnum;
 import java.io.IOException;
@@ -21,6 +23,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import software.amazon.awssdk.core.exception.SdkClientException;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
@@ -36,7 +39,7 @@ public class EventService {
   private final String bucketName;
 
   // S3 이미지 업로드 메서드
-  private String S3ImageUpload(MultipartFile image) throws IOException {
+  private String S3ImageUpload(MultipartFile image) {
     String key = UUID.randomUUID() + "_" + image.getOriginalFilename(); // 또는 다른 고유한 키 생성 방법
 
     PutObjectRequest request = PutObjectRequest.builder()
@@ -45,9 +48,12 @@ public class EventService {
         .contentType(image.getContentType())
         .contentLength(image.getSize())
         .build();
-
-    s3Client.putObject(request,
-        RequestBody.fromInputStream(image.getInputStream(), image.getSize()));
+    try {
+      s3Client.putObject(request,
+          RequestBody.fromInputStream(image.getInputStream(), image.getSize()));
+    } catch (SdkClientException | IOException e)  {
+      throw new CustomException(ExceptionType.IO_EXCEPTION);
+    }
     return key;
   }
 
@@ -74,13 +80,13 @@ public class EventService {
   public DetailEventResponseDto getDetailEvent(Long eventId) {
     return eventRepository.findById(eventId)
         .map(DetailEventResponseDto::new)
-        .orElseThrow(() -> new IllegalArgumentException("조회하려는 공연 정보가 없습니다."));
+        .orElseThrow(() -> new CustomException(ExceptionType.NOT_FOUND_EVENT_EXCEPTION));
   }
 
   // 공연 추가하기
   @Transactional
   public MessageResponseDto addEvent(EventRequestDto eventRequestDto, User user,
-      MultipartFile image) throws IOException{
+      MultipartFile image){
     checkAdmin(user);
     String key = S3ImageUpload(image);
     Event event = eventRepository.save(new Event(eventRequestDto, key));
@@ -94,7 +100,7 @@ public class EventService {
   public MessageResponseDto deleteEvent(Long eventId, User user) {
     checkAdmin(user);
     Event event = eventRepository.findById(eventId).orElseThrow(
-        () -> new IllegalArgumentException("해당 공연 정보가 없습니다.")
+        () -> new CustomException(ExceptionType.NOT_FOUND_EVENT_EXCEPTION)
     );
 
     S3ImageDelete(event.getImage());
@@ -117,7 +123,7 @@ public class EventService {
 
   public void checkAdmin(User user) {
     if (!user.getRole().equals(UserRoleEnum.ADMIN)) {
-      throw new IllegalArgumentException("관리자가 아닙니다.");
+      throw new CustomException(ExceptionType.USER_UNAUTHORIZED_EXCEPTION);
     }
   }
 

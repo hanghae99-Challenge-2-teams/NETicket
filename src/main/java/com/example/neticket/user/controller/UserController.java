@@ -1,6 +1,8 @@
 package com.example.neticket.user.controller;
 
 import com.example.neticket.event.dto.MessageResponseDto;
+import com.example.neticket.exception.CustomException;
+import com.example.neticket.exception.ExceptionType;
 import com.example.neticket.reservation.dto.ReservationResponseDto;
 import com.example.neticket.security.UserDetailsImpl;
 import com.example.neticket.user.dto.LoginRequestDto;
@@ -55,7 +57,8 @@ public class UserController {
     if (userDetails != null) {
       return ResponseEntity.ok(userDetails.getUser().getRole());
     }
-    return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+//    return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+    throw new CustomException(ExceptionType.USER_UNAUTHORIZED_EXCEPTION);
   }
 
 
