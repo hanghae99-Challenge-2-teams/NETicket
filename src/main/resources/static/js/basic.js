@@ -517,12 +517,15 @@ function showMyPage() {
           let resvId = $(this).data('resv-id');
           if (confirm("정말로 예매를 취소하시겠습니까?")) {
             $.ajax({
-              url: `/api/neticket/reservations/${resvId}`,
+              url: "/api/neticket/reservations/" + resvId,
+              headers: {
+                'Authorization': token // Authorization 헤더에 토큰 값 추가
+              },
               type: "DELETE",
               success: function (response) {
                 alert("예매가 취소되었습니다.");
-                // window.location.href = "/neticket/user";
-                showMyPage();
+                window.location.href = "/neticket/user";
+                // showMyPage();
               },
               error: function (jqXHR, textStatus, errorThrown) {
                 alert("예매 취소에 실패했습니다. 다시 시도해주세요.");

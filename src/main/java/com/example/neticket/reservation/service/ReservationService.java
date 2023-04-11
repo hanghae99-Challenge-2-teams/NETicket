@@ -1,7 +1,6 @@
 package com.example.neticket.reservation.service;
 
 import com.example.neticket.event.dto.DetailEventResponseDto;
-import com.example.neticket.event.entity.Event;
 import com.example.neticket.event.entity.TicketInfo;
 import com.example.neticket.event.repository.TicketInfoRepository;
 import com.example.neticket.exception.CustomException;
@@ -12,7 +11,6 @@ import com.example.neticket.reservation.entity.Reservation;
 import com.example.neticket.reservation.repository.ReservationRepository;
 import com.example.neticket.user.entity.User;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -76,21 +74,21 @@ public class ReservationService {
     Reservation reservation = reservationRepository.findById(resvId).orElseThrow(
         () -> new CustomException(ExceptionType.NOT_FOUND_RESERVATION_EXCEPTION)
     );
-
     checkReservationUser(reservation, user);
 
-    LocalDate deadline = LocalDate.from(reservation.getTicketInfo().getEvent().getDate());
-    if(LocalDate.now().isBefore(deadline) || LocalDate.now().equals(deadline)){
+//    공연날이 오늘이거나 오늘보다 이전이면 예매 취소 불가능
+    LocalDate eventDay = LocalDate.from(reservation.getTicketInfo().getEvent().getDate());
+    if(LocalDate.now().isAfter(eventDay) || LocalDate.now().equals(eventDay)){
       throw new CustomException(ExceptionType.CANCEL_DEADLINE_PASSED_EXCEPTION);
     }
 
     // 예매 취소 후 좌석 수 업데이트
     reservation.getTicketInfo().plusSeats(reservation.getCount());
-
     reservationRepository.delete(reservation);
 
   }
 
+//  예매 기록의 사용자와 현재 토큰상의 사용자 일치 여부 판별 메서드
   private void checkReservationUser(Reservation reservation, User user) {
     if (!reservation.getUser().getId().equals(user.getId())) {
       throw new CustomException(ExceptionType.USER_RESERVATION_NOT_MATCHING_EXCEPTION);

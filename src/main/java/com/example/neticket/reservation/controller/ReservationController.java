@@ -2,7 +2,6 @@ package com.example.neticket.reservation.controller;
 
 import com.example.neticket.event.dto.DetailEventResponseDto;
 import com.example.neticket.event.dto.MessageResponseDto;
-import com.example.neticket.event.entity.Event;
 import com.example.neticket.reservation.dto.ReservationRequestDto;
 import com.example.neticket.reservation.dto.ReservationResponseDto;
 import com.example.neticket.reservation.service.ReservationService;
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -58,7 +56,7 @@ public class ReservationController {
   @DeleteMapping("/reservations/{resvId}")
   public ResponseEntity<MessageResponseDto> deleteReservation(@PathVariable Long resvId, @AuthenticationPrincipal UserDetailsImpl userDetails){
     reservationService.deleteReservation(resvId, userDetails.getUser());
-    return ResponseEntity.ok(new MessageResponseDto(HttpStatus.OK, "예매 내역 삭제 완료"));
+    return ResponseEntity.ok(new MessageResponseDto(HttpStatus.OK, "예매 기록이 성공적으로 삭제되었습니다."));
   }
 
 }
