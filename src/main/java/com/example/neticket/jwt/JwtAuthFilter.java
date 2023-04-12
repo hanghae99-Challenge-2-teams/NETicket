@@ -1,5 +1,7 @@
 package com.example.neticket.jwt;
 
+import com.example.neticket.exception.CustomException;
+import com.example.neticket.exception.ExceptionType;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import java.io.IOException;
@@ -24,10 +26,10 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         // request의 header에서 토큰을 가져옴
         String token = jwtUtil.resolveToken(request);
-        // token 유효성 검사 토큰이 비어있거나 "Bearer undefined"면 인증객체 만들지 않고 통과
-        if (token != null && !token.equals("undefined")) {
+        // token 유효성 검사 토큰이 비어있으면 통과
+        if (token != null) {
             if (!jwtUtil.validateToken(token)){
-                throw new JwtException("토큰이 유효하지 않습니다.");
+                throw new CustomException(ExceptionType.TOKEN_VALIDATION_EXCEPTION);
             }
             Claims info = jwtUtil.getUserInfoFromToken(token);
             // 인증 객체 생성
