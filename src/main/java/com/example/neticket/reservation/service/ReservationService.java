@@ -41,12 +41,8 @@ public class ReservationService {
       throw new CustomException(ExceptionType.RESERVATION_UNAVAILABLE_EXCEPTION);
     }
     if (0 <= ticketInfo.getLeftSeats() - dto.getCount()) {
-      int getLeftSeats = ticketInfo.minusSeats(dto.getCount());
+      ticketInfo.minusSeats(dto.getCount());
 
-      // 만약 ReservedSeats와 TotalSeats가 같아지면 isAvailable을 false로 변경
-      if (getLeftSeats == 0) {
-        ticketInfo.setAvailable(false);
-      }
       ticketInfoRepository.save(ticketInfo);
       Reservation reservation = new Reservation(dto, user, ticketInfo);
       reservationRepository.saveAndFlush(reservation);

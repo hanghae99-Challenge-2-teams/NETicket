@@ -52,7 +52,7 @@ public class PageController {
 
   @GetMapping("/user")
   public ModelAndView myPage() {
-    return new ModelAndView("mypage");
+      return new ModelAndView("mypage");
   }
 
 }
