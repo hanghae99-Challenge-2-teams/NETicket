@@ -14,8 +14,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(CustomException.class)
     public ResponseEntity<MessageResponseDto> handleCustomException(CustomException e){
         String message = e.getMessage();
-        MessageResponseDto messageResponseDto = new MessageResponseDto(HttpStatus.BAD_REQUEST, message);
-        return new ResponseEntity<>(messageResponseDto, HttpStatus.BAD_REQUEST);
+        MessageResponseDto messageResponseDto = new MessageResponseDto(e.getHttpStatus(), message);
+        return new ResponseEntity<>(messageResponseDto, e.getHttpStatus());
     }
 
     //    @Valid 오류 처리

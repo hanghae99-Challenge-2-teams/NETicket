@@ -99,18 +99,8 @@ function login() {
   })
 }
 
-// 메인 페이지
-// $(document).ready(function () {
-//   showEvent(1);
-//
-//   $(document).on('click', '.col', function () {
-//     let eventIdString = $(this).data('event-id');
-//     let eventId = parseInt(eventIdString, 10);
-//     window.location.href = "/neticket/events/" + eventId;
-//   });
-//
-// });
 
+// 메인페이지
 // 행사정보 조회
 function showEvent(pageNum) {
   $.ajax({
@@ -154,6 +144,7 @@ function showPaging(response) {
   let pagination = $('.pagination');
 
   pagination.empty(); // 이 부분을 추가
+
   for (let i = 1; i <= totalPages; i++) {
     let pageItem = `<li class="page-item ${(i === currentPage) ? 'active'
         : ''}"><a class="page-link" onclick="showEvent(${i})" href="#">${i}</a></li>`;
@@ -161,22 +152,11 @@ function showPaging(response) {
   }
 }
 
-// 상세 페이지
-// $(document).ready(function () {
-//   // 이벤트 ID를 URL에서 가져옵니다.
-//   const eventId = window.location.pathname.split('/').pop();
-//
-//   // 이벤트 세부 정보를 가져옵니다.
-//   getEventDetails(eventId);
-//
-//   // 1초마다 남은 시간을 갱신하는 타이머를 시작합니다.
-//   setInterval(updateRemainingTime, 1000);
-// });
+// 상세페이지
 
 let isAvailable;
 
 function getEventDetails(eventId) {
-  let token = getAuthTokenFromCookie();
   $.ajax({
     type: "GET",
     url: "/api/neticket/events/" + eventId,
@@ -194,38 +174,8 @@ function getEventDetails(eventId) {
       $('.remainingTime1').text(event.ticketInfoDto.openDate);
       // 이벤트의 티켓 정보를 저장합니다.
       $('#bookingButton').data('ticketInfo', event.ticketInfoDto);
-      // console.log(isAdmin)
-      // if (isAdmin===true) {
-      //   console.log("안에 들어감")
-      //   $('#deleteButton').text('삭제').on('click', function () {
-      //     deleteEvent(eventId);
-      //   });
-      // } else {
-      //   console.log("else로 빠짐")
-      //   $('#deleteButton').hide();
-      // }
-
       // 남은 시간을 표시합니다.
       updateRemainingTime();
-
-    //   공연 삭제
-    //   function deleteEvent(eventId) {
-    //     $.ajax({
-    //       type: "DELETE",
-    //       url: "/api/neticket/events/" + eventId,
-    //       headers: {
-    //         'Authorization': token // Authorization 헤더에 토큰 값 추가
-    //       },
-    //       success: function (response) {
-    //         alert("공연이 삭제되었습니다.");
-    //         window.location.href = "/neticket"; // 페이지 새로고침
-    //       },
-    //       error: function (jqXHR, textStatus, errorThrown) {
-    //         alert("공연이 삭제되지 않았습니다.");
-    //         console.error("AJAX request failed: " + textStatus + ", " + errorThrown);
-    //       }
-    //     });
-    //   }
 
     },
     error: function (jqXHR, textStatus, errorThrown) {
@@ -288,16 +238,12 @@ function onBookingButtonClick() {
   window.location.href = url;
 }
 
-// 예약 중 페이지
-// $(document).ready(function () {
-//   getEventInfo();
-// });
+// 예매 중 페이지
 
 function getEventInfo() {
 
   const pathArray = window.location.pathname.split('/');
   const ticketInfoId = pathArray[pathArray.length - 1];
-  console.log(ticketInfoId);
 
   $.ajax({
     type: "GET",
@@ -310,13 +256,10 @@ function getEventInfo() {
       $('.date').text(event.date);
     },
     error: function (jqXHR, textStatus, errorThrown) {
+      alert("요청이 실패하였습니다.");
       console.error("AJAX request failed: " + textStatus + ", " + errorThrown);
     }
   });
-}
-
-function addCommas(number) {
-  return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
 function getAuthTokenFromCookie() {
@@ -328,7 +271,6 @@ function getAuthTokenFromCookie() {
 function saveReservation() {
 
   let token = getAuthTokenFromCookie(); // 쿠키에서 토큰 값 추출
-  console.log(token)
 
   // select 요소를 찾습니다.
   let selectElement = document.getElementById('ticketCount');
@@ -338,7 +280,6 @@ function saveReservation() {
 
   const pathArray = window.location.pathname.split('/');
   const ticketInfoId = pathArray[pathArray.length - 1];
-  console.log(ticketInfoId);
 
   $.ajax({
     type: "POST",
@@ -364,24 +305,13 @@ function saveReservation() {
 }
 
 // 예약 완료 페이지
-// $(document).ready(function () {
-//   showReservationCompleted();
-// });
-
-function getAuthTokenFromCookie() {
-  return document.cookie.split(';').find(
-          cookie => cookie.trim().startsWith('Authorization='))?.split('=')[1]
-      || null;
-}
 
 function showReservationCompleted() {
 
   let token = getAuthTokenFromCookie(); // 쿠키에서 토큰 값 추출
-  console.log(token)
 
   const pathArray = window.location.pathname.split('/');
   const resvId = pathArray[pathArray.length - 1];
-  console.log(resvId);
 
   $.ajax({
     type: "GET",
@@ -392,7 +322,6 @@ function showReservationCompleted() {
       'Authorization': token // Authorization 헤더에 토큰 값 추가
     },
     success: function (response) {
-      console.log(response)
       $('#getresv').empty(); // 이 부분을 추가
       let id = response.id;
       let title = response.title;
@@ -429,8 +358,8 @@ function showReservationCompleted() {
   })
 }
 
+// 관리자 공연 추가 페이지
 
-// addevent
 function addevent() {
   $("#eventForm").on("submit", function (event) {
     event.preventDefault();
@@ -440,8 +369,8 @@ function addevent() {
       title: $("#title").val(),
       place: $("#place").val(),
       price: $("#price").val(),
-      date: $("#date").val() + "T00:00:00",
-      openDate: $("#openDate").val() + "T00:00:00",
+      date: $("#date").val() + "T18:00:00",
+      openDate: $("#openDate").val() + "T18:00:00",
       totalSeat: $("#totalSeat").val()
     };
 
@@ -470,8 +399,7 @@ function addevent() {
       success: function (response) {
         if (response.statusCode === 201) {
           alert(response.msg);
-        } else {
-          alert("오류가 발생했습니다. 다시 시도해주세요.");
+          window.location.href = "/neticket";
         }
       },
       error: function (jqXHR, textStatus, errorThrown) {
@@ -486,7 +414,6 @@ function addevent() {
 function showMyPage() {
 
   let token = getAuthTokenFromCookie(); // 쿠키에서 토큰 값 추출
-  console.log(token)
 
   $.ajax({
     type: "GET",
@@ -497,7 +424,6 @@ function showMyPage() {
       'Authorization': token // Authorization 헤더에 토큰 값 추가
     },
     success: function (response) {
-      console.log(response)
       $('#getresv').empty(); // 이 부분을 추가
 
       // response 객체가 배열이 아닌 경우에도 배열로 처리
