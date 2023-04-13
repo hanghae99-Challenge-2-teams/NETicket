@@ -22,4 +22,9 @@ public class SignupRequestDto {
   @Pattern(regexp = "^[가-힣a-zA-Z0-9]{2,10}$", message = "닉네임은 2 ~10자 한글,영어, 숫자만 가능합니다.")
   private String nickname;
 
+  public SignupRequestDto(String email, String password, String nickname) {
+    this.email = email;
+    this.password = password;
+    this.nickname = nickname;
+  }
 }

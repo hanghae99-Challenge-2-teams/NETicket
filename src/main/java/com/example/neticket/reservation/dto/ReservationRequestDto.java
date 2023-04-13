@@ -15,4 +15,8 @@ public class ReservationRequestDto {
   @Max(4)
   private int count;
 
+  public ReservationRequestDto(Long ticketInfoId, int count) {
+    this.ticketInfoId = ticketInfoId;
+    this.count = count;
+  }
 }

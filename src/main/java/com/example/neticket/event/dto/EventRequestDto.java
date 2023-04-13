@@ -13,4 +13,13 @@ public class EventRequestDto {
   private LocalDateTime openDate;
   private int totalSeat;
 
+  public EventRequestDto(String title, String place, int price, LocalDateTime date,
+      LocalDateTime openDate, int totalSeat) {
+    this.title = title;
+    this.place = place;
+    this.price = price;
+    this.date = date;
+    this.openDate = openDate;
+    this.totalSeat = totalSeat;
+  }
 }
