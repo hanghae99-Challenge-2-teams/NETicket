@@ -13,6 +13,8 @@ import com.example.neticket.user.entity.User;
 import java.time.LocalDate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
@@ -33,6 +35,16 @@ public class ReservationService {
   // 예매하기
   @Transactional
   public Long makeReservation(ReservationRequestDto dto, User user) {
+    TicketInfo ticketInfo = checkAndMinusLeftSeat(dto);
+    if (ticketInfo == null) {
+      System.out.println("티켓인포가 null!!");
+    }
+    return reservationRepository.saveAndFlush(new Reservation(dto, user, ticketInfo)).getId();
+  }
+
+//   남은 좌석 수 차감. 예매하기의 자식 트랜잭션.
+  @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED)
+  public TicketInfo checkAndMinusLeftSeat(ReservationRequestDto dto) {
     TicketInfo ticketInfo = ticketInfoRepository.findByIdWithLock(dto.getTicketInfoId())
         .orElseThrow(
             () -> new CustomException(ExceptionType.NOT_FOUND_TICKET_INFO_EXCEPTION)
@@ -40,16 +52,13 @@ public class ReservationService {
     if (!ticketInfo.isAvailable()) {
       throw new CustomException(ExceptionType.RESERVATION_UNAVAILABLE_EXCEPTION);
     }
-    if (0 <= ticketInfo.getLeftSeats() - dto.getCount()) {
-      ticketInfo.minusSeats(dto.getCount());
-
-      ticketInfoRepository.save(ticketInfo);
-      Reservation reservation = new Reservation(dto, user, ticketInfo);
-      reservationRepository.saveAndFlush(reservation);
-      return reservation.getId();
+    if (0 > ticketInfo.getLeftSeats() - dto.getCount()) {
+      throw new CustomException(ExceptionType.OUT_OF_TICKET_EXCEPTION);
     }
-    throw new CustomException(ExceptionType.OUT_OF_TICKET_EXCEPTION);
+    ticketInfo.minusSeats(dto.getCount());
+    return ticketInfoRepository.save(ticketInfo);
   }
+
 
   // 예매완료
   @Transactional(readOnly = true)
