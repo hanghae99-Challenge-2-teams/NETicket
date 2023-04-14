@@ -36,9 +36,6 @@ public class ReservationService {
   @Transactional
   public Long makeReservation(ReservationRequestDto dto, User user) {
     TicketInfo ticketInfo = checkAndMinusLeftSeat(dto);
-    if (ticketInfo == null) {
-      System.out.println("티켓인포가 null!!");
-    }
     return reservationRepository.saveAndFlush(new Reservation(dto, user, ticketInfo)).getId();
   }
 
