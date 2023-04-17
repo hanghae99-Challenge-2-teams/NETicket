@@ -45,10 +45,16 @@ public class RedisRepository {
     return redisTemplate.opsForValue().get(key);
   }
 
-//  값 변경. count만큼 남은좌석수 깎기
+//  값 변경. count만큼 남은좌석수 차감
   public void decrementLeftSeatInRedis(Long ticketInfoId, int count){
     String key = "ls" + ticketInfoId;
     redisTemplate.opsForValue().decrement(key, count);
+  }
+
+  //  값 변경. count만큼 남은좌석수 추가. 예매취소에 사용
+  public void incrementLeftSeatInRedis(Long ticketInfoId, int count){
+    String key = "ls" + ticketInfoId;
+    redisTemplate.opsForValue().increment(key, count);
   }
 
 //  키 삭제. 삭제전 leftSeats 반영
@@ -56,6 +62,11 @@ public class RedisRepository {
     String key = "ls" + ticketInfoId;
     saveTicketInfoFromRedis();
     redisTemplate.delete(key);
+  }
+
+//  현재 Redis에 등록된 key 목록 반환
+  public Set<String> findAllLeftSeatsKeysInRedis() {
+    return redisTemplate.keys("ls*");
   }
 
 }

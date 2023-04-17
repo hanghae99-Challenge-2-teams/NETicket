@@ -121,7 +121,7 @@ public class EventService {
 
   }
 
-  public void checkAdmin(User user) {
+  private void checkAdmin(User user) {
     if (!user.getRole().equals(UserRoleEnum.ADMIN)) {
       throw new CustomException(ExceptionType.USER_UNAUTHORIZED_EXCEPTION);
     }
