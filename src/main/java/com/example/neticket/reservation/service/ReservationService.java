@@ -14,6 +14,7 @@ import com.example.neticket.reservation.repository.ReservationRepository;
 import com.example.neticket.user.entity.User;
 import java.time.LocalDate;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -28,6 +29,7 @@ public class ReservationService {
   private final RedisRepository redisRepository;
 
   // 1. 예매중 페이지에서 공연정보 조회
+  @Cacheable(value = "DetailEventResponseDto", key = "#ticketInfoId", cacheManager = "cacheManager")
   @Transactional(readOnly = true)
   public DetailEventResponseDto verifyReservation(Long ticketInfoId) {
     return ticketInfoRepository.findById(ticketInfoId)
