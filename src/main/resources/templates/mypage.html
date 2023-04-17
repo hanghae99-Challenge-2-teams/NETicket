@@ -64,6 +64,34 @@
 <script>
   $(document).ready(function () {
     showMyPage();
+    const authToken = getCookie('Authorization');
+
+    if (authToken) {
+      // 인증 토큰이 있으면 사용자 권한 정보를 확인
+      const payload = JSON.parse(atob(authToken.split('.')[1]));
+      const userRole = payload.auth;
+      const userNickname = payload.sub;
+      console.log(userRole)
+
+      // 회원가입 링크의 텍스트를 사용자 닉네임으로 변경
+      const signupLink = document.querySelector('.nav-link[href="/neticket/signup"]');
+      signupLink.innerText = userNickname;
+      signupLink.href = '/neticket/user';
+
+      // 인증 토큰이 있는 경우, 로그아웃 버튼으로 변경
+      const loginButton = document.querySelector('.nav-link[href="/neticket/login"]');
+      loginButton.innerText = '로그아웃';
+      loginButton.addEventListener('click', function (event) {
+        // 로그아웃 처리
+        event.preventDefault();
+        document.cookie = 'Authorization=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+        window.location.href = '/neticket/';
+      });
+    } else {
+      // 인증 토큰이 없는 경우, 로그인 버튼으로 변경
+      const loginButton = document.querySelector('.nav-link[href="/neticket/login"]');
+      loginButton.innerText = '로그인';
+    }
   });
 </script>
 </html>
