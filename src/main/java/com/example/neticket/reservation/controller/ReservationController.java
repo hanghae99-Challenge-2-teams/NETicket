@@ -59,4 +59,16 @@ public class ReservationController {
     return ResponseEntity.ok(new MessageResponseDto(HttpStatus.OK, "예매 기록이 성공적으로 삭제되었습니다."));
   }
 
+  //  ADMIN. DB에서 남은 좌석수만 가져와서 Redis에 (key-value)형태로 저장
+  @PostMapping("/cache/{ticketInfoId}")
+  public MessageResponseDto saveLeftSeatsInRedis(@PathVariable Long ticketInfoId) {
+    return reservationService.saveLeftSeatsInRedis(ticketInfoId);
+  }
+
+  //  ADMIN. 해당하는 공연의 남은 좌석수 Redis에서 삭제(삭제되기전 모든 캐시 DB에 반영)
+  @DeleteMapping("/cache/{ticketInfoId}")
+  public MessageResponseDto deleteLeftSeatsFromRedis(@PathVariable Long ticketInfoId) {
+    return reservationService.deleteLeftSeatsFromRedis(ticketInfoId);
+  }
+
 }
