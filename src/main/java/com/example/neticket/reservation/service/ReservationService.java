@@ -131,7 +131,7 @@ public class ReservationService {
     );
   }
 
-  //  5. ADMIN. DB에서 남은 좌석수만 가져와서 Redis에 (key-value)형태로 저장.
+  //  5. ADMIN. DB에서 남은 좌석수만 가져와서 Redis에 (key-value)형태로 저장. 이미 저장되어있으면 예외처리
   @Transactional
   public MessageResponseDto saveLeftSeatsInRedis(Long ticketInfoId, User user) {
     checkAdmin(user);
@@ -160,6 +160,14 @@ public class ReservationService {
   public List<String> findAllLeftSeatsKeysInRedis(User user) {
     checkAdmin(user);
     return new ArrayList<>(redisRepository.findAllLeftSeatsKeysInRedis());
+  }
+
+//  8. ADMIN. Redis와 DB의 LeftSeats를 정확한 값으로 Refresh
+  @Transactional
+  public MessageResponseDto refreshLeftSeats(Long ticketInfoId, User user) {
+    checkAdmin(user);
+    redisRepository.refreshLeftSeats(ticketInfoId);
+    return new MessageResponseDto(HttpStatus.OK, "redis와 DB의 남은 좌석수를 올바르게 맞췄습니다.");
   }
 
 

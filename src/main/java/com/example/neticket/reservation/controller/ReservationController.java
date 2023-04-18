@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -76,6 +77,12 @@ public class ReservationController {
   @GetMapping("/cache/left-seats")
   public List<String> findAllLeftSeatsKeysInRedis(@AuthenticationPrincipal UserDetailsImpl userDetails) {
     return reservationService.findAllLeftSeatsKeysInRedis(userDetails.getUser());
+  }
+
+//  ADMIN. 해당 ticketInfoId에 해당하는 남은 좌석 수를 정확히 세서 DB와 Redis에 refresh.
+  @PatchMapping("/cache/left-seats/{ticketInfoId}")
+  public MessageResponseDto refreshLeftSeats(@PathVariable Long ticketInfoId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    return reservationService.refreshLeftSeats(ticketInfoId, userDetails.getUser());
   }
 
 }
