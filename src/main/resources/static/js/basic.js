@@ -424,11 +424,53 @@ function addevent() {
     });
   });
 }
+function loadCacheList() {
+  let token = getAuthTokenFromCookie();
+  $.ajax({
+    url: "/api/neticket/cache/left-seats",
+    type: 'GET',
+    dataType: 'json',
+    headers: {
+      'Authorization': token // Authorization 헤더에 토큰 값 추가
+    },
+    success: function(response) {
+      let keys = response;
+
+      // 받아온 캐시 키 목록을 보여줍니다.
+      let $select = $('#inputGroupSelect04');
+      $select.empty();
+      $select.append('<option selected>Left Seats 캐시 목록</option>');
+      $.each(keys, function(i, key) {
+        // "ls" 문자열을 제외하고 숫자만 추출합니다.
+        let number = parseInt(key.substring(2));
+
+        // 셀렉트 옵션을 생성하여 추가합니다.
+        $select.append('<option value="' + number + '">' + key + '</option>');
+      });
+      $('#deleteButton').click(function() {
+        // 선택된 옵션의 값을 가져옵니다.
+        let cacheEventNum = $('#inputGroupSelect04 option:selected').val();
+        deleteLeftSeatsCache(cacheEventNum);
+      });
+
+      $('#refreshButton').click(function() {
+        // 선택된 옵션의 값을 가져옵니다.
+        let cacheEventNum = $('#inputGroupSelect04 option:selected').val();
+        refreshLeftSeatsCache(cacheEventNum);
+      });
+    },
+    error: function(xhr, status, error) {
+      console.error(error);
+      alert("오류가 발생했습니다. 다시 시도해주세요.");
+    }
+  });
+
+}
+
 
 function cacheEventAdd() {
   let token = getAuthTokenFromCookie();
   let cacheEventNum = document.getElementById("cacheSave").value;
-  console.log(cacheEventNum)
 
   $.ajax({
     type: "POST",
@@ -438,17 +480,18 @@ function cacheEventAdd() {
       'Authorization': token // Authorization 헤더에 토큰 값 추가
     },
     success: function (response) {
-      console.log(response.status)
-      console.log(response.message)
-      alert("캐시가 활성화 되었습니다.")
+      location.reload();
+      alert("캐시가 활성화 되었습니다.");
     },
+    error: function(xhr, status, error) {
+      console.error(error);
+      alert("캐시 생성에 실패했습니다.");
+    }
   });
 }
 
-function cacheEventDelete() {
+function deleteLeftSeatsCache(cacheEventNum) {
   let token = getAuthTokenFromCookie();
-  let cacheEventNum = document.getElementById("cacheDelete").value;
-  console.log(cacheEventNum)
 
   $.ajax({
     type: "DELETE",
@@ -458,12 +501,37 @@ function cacheEventDelete() {
       'Authorization': token // Authorization 헤더에 토큰 값 추가
     },
     success: function (response) {
-      console.log(response.status)
-      console.log(response.message)
-      alert("캐시가 삭제 되었습니다.")
+      location.reload();
+      alert("캐시가 성공적으로 삭제되었습니다.");
     },
+    error: function(xhr, status, error) {
+      console.error(error);
+      alert("캐시 삭제를 실패했습니다.");
+    }
   });
 }
+
+function refreshLeftSeatsCache(cacheEventNum) {
+  let token = getAuthTokenFromCookie();
+
+  $.ajax({
+    type: "PATCH",
+    url: "/api/neticket/cache/left-seats/" + cacheEventNum,
+    dataType: "json",
+    headers: {
+      'Authorization': token // Authorization 헤더에 토큰 값 추가
+    },
+    success: function (response) {
+      alert("캐시가 성공적으로 갱신되었습니다.");
+    },
+    error: function(xhr, status, error) {
+      console.error(error);
+      alert("캐시 갱신에 실패했습니다.");
+    }
+  });
+}
+
+
 
 // 마이페이지
 function showMyPage() {
