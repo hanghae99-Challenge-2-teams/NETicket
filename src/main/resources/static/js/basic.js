@@ -426,13 +426,17 @@ function addevent() {
 }
 
 function cacheEventAdd() {
+  let token = getAuthTokenFromCookie();
   let cacheEventNum = document.getElementById("cacheSave").value;
   console.log(cacheEventNum)
 
   $.ajax({
     type: "POST",
-    url: "/api/neticket/cache/" + cacheEventNum,
+    url: "/api/neticket/cache/left-seats/" + cacheEventNum,
     dataType: "json",
+    headers: {
+      'Authorization': token // Authorization 헤더에 토큰 값 추가
+    },
     success: function (response) {
       console.log(response.status)
       console.log(response.message)
@@ -442,13 +446,17 @@ function cacheEventAdd() {
 }
 
 function cacheEventDelete() {
+  let token = getAuthTokenFromCookie();
   let cacheEventNum = document.getElementById("cacheDelete").value;
   console.log(cacheEventNum)
 
   $.ajax({
     type: "DELETE",
-    url: "/api/neticket/cache/" + cacheEventNum,
+    url: "/api/neticket/cache/left-seats/" + cacheEventNum,
     dataType: "json",
+    headers: {
+      'Authorization': token // Authorization 헤더에 토큰 값 추가
+    },
     success: function (response) {
       console.log(response.status)
       console.log(response.message)
