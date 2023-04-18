@@ -82,7 +82,7 @@ public class RedisRepository {
     );
     Integer accurateReservedSeats = reservationRepository.sumCountByTicketInfoId(ticketInfoId);
     if (accurateReservedSeats == null) {
-      throw new CustomException(ExceptionType.NOT_FOUND_CACHE_EXCEPTION);
+      throw new CustomException(ExceptionType.NOT_FOUND_RESERVATION_EXCEPTION);
     }
     int accurateLeftSeats = ticketInfo.getTotalSeats() - accurateReservedSeats;
     String key = "ls" + ticketInfoId;

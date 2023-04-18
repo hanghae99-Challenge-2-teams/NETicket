@@ -45,15 +45,20 @@
     <input type="text" placeholder="검색">
     <input type="submit" value="검색">
   </form>
+  <div class="input-group">
+    <select class="form-select" id="inputGroupSelect04" aria-label="Example select with button addon">
+      <option selected>Left Seats 캐시 목록</option>
+      <option value="1">One</option>
+      <option value="2">Two</option>
+      <option value="3">Three</option>
+    </select>
+    <button type="button" class="btn btn-danger" id="deleteButton">삭제</button>
+    <button type="button" class="btn btn-info" id="refreshButton">갱신</button>
+  </div>
   <div class="input-group mb-3">
     <input type="text" class="form-control" placeholder="캐시를 생성할 공연 번호를 입력하세요."
            aria-label="Recipient's username" id="cacheSave" aria-describedby="button-addon2">
     <button class="btn btn-outline-secondary" onclick="cacheEventAdd()" type="button" id="button-addon2">생성</button>
-  </div>
-  <div class="input-group mb-3">
-    <input type="text" class="form-control" placeholder="캐시를 삭제할 공연 번호를 입력하세요."
-           aria-label="Recipient's username" id="cacheDelete" aria-describedby="button-addon2">
-    <button class="btn btn-outline-secondary" onclick="cacheEventDelete()" type="button" id="button-addon3">삭제</button>
   </div>
   <div class="row">
     <div class="col-10">
@@ -96,6 +101,7 @@
 <script>
   $(document).ready(function () {
     addevent();
+    loadCacheList();
     const authToken = getCookie('Authorization');
 
     if (authToken) {
