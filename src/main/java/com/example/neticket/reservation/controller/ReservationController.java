@@ -6,6 +6,7 @@ import com.example.neticket.reservation.dto.ReservationRequestDto;
 import com.example.neticket.reservation.dto.ReservationResponseDto;
 import com.example.neticket.reservation.service.ReservationService;
 import com.example.neticket.security.UserDetailsImpl;
+import java.util.List;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -57,6 +58,24 @@ public class ReservationController {
   public ResponseEntity<MessageResponseDto> deleteReservation(@PathVariable Long resvId, @AuthenticationPrincipal UserDetailsImpl userDetails){
     reservationService.deleteReservation(resvId, userDetails.getUser());
     return ResponseEntity.ok(new MessageResponseDto(HttpStatus.OK, "예매 기록이 성공적으로 삭제되었습니다."));
+  }
+
+  //  ADMIN. DB에서 남은 좌석수만 가져와서 Redis에 (key-value)형태로 저장
+  @PostMapping("/cache/left-seats/{ticketInfoId}")
+  public MessageResponseDto saveLeftSeatsInRedis(@PathVariable Long ticketInfoId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    return reservationService.saveLeftSeatsInRedis(ticketInfoId, userDetails.getUser());
+  }
+
+  //  ADMIN. 해당하는 공연의 남은 좌석수 Redis에서 삭제(삭제되기전 모든 캐시 DB에 반영)
+  @DeleteMapping("/cache/left-seats/{ticketInfoId}")
+  public MessageResponseDto deleteLeftSeatsFromRedis(@PathVariable Long ticketInfoId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    return reservationService.deleteLeftSeatsFromRedis(ticketInfoId, userDetails.getUser());
+  }
+
+  //  ADMIN. Redis에 등록된 모든 leftSeats 키값 리스트 반환
+  @GetMapping("/cache/left-seats")
+  public List<String> findAllLeftSeatsKeysInRedis(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+    return reservationService.findAllLeftSeatsKeysInRedis(userDetails.getUser());
   }
 
 }

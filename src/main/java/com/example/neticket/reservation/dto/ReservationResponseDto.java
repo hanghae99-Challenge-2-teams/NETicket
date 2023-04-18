@@ -1,5 +1,6 @@
 package com.example.neticket.reservation.dto;
 
+import com.example.neticket.event.entity.TicketInfo;
 import com.example.neticket.reservation.entity.Reservation;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -17,14 +18,14 @@ public class ReservationResponseDto {
     private int totalPrice;
     private int count;
 
-    public ReservationResponseDto(Reservation reservation) {
+    public ReservationResponseDto(Reservation reservation, TicketInfo ticketInfo) {
       this.id = reservation.getId();
-      this.image = reservation.getTicketInfo().getEvent().getImage();
-      this.title = reservation.getTicketInfo().getEvent().getTitle();
-      this.place = reservation.getTicketInfo().getEvent().getPlace();
-      this.date = reservation.getTicketInfo().getEvent().getDate();
+      this.image = ticketInfo.getEvent().getImage();
+      this.title = ticketInfo.getEvent().getTitle();
+      this.place = ticketInfo.getEvent().getPlace();
+      this.date = ticketInfo.getEvent().getDate();
       this.count = reservation.getCount();
-      this.totalPrice = reservation.getTicketInfo().getEvent().getPrice() * this.count;
+      this.totalPrice = ticketInfo.getEvent().getPrice() * this.count;
     }
 
 }
