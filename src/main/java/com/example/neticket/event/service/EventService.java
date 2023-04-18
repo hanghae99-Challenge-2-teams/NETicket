@@ -15,6 +15,7 @@ import com.example.neticket.user.entity.UserRoleEnum;
 import java.io.IOException;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -76,6 +77,7 @@ public class EventService {
   }
 
   // 상세 페이지 조회
+  @Cacheable(value = "DetailEventResponseDto", key = "#eventId", cacheManager = "cacheManager")
   @Transactional(readOnly = true)
   public DetailEventResponseDto getDetailEvent(Long eventId) {
     return eventRepository.findById(eventId)
@@ -121,7 +123,7 @@ public class EventService {
 
   }
 
-  public void checkAdmin(User user) {
+  private void checkAdmin(User user) {
     if (!user.getRole().equals(UserRoleEnum.ADMIN)) {
       throw new CustomException(ExceptionType.USER_UNAUTHORIZED_EXCEPTION);
     }

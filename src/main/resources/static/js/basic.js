@@ -99,6 +99,21 @@ function login() {
   })
 }
 
+function getCookie(name) {
+  const cookieString = document.cookie;
+  const cookies = cookieString.split(';');
+
+  for (let i = 0; i < cookies.length; i++) {
+    const cookie = cookies[i].trim();
+
+    if (cookie.startsWith(name + '=')) {
+      return cookie.substring(name.length + 1);
+    }
+  }
+
+  return null;
+}
+
 
 // 메인페이지
 // 행사정보 조회
@@ -407,6 +422,46 @@ function addevent() {
         alert("오류가 발생했습니다. 다시 시도해주세요.");
       }
     });
+  });
+}
+
+function cacheEventAdd() {
+  let token = getAuthTokenFromCookie();
+  let cacheEventNum = document.getElementById("cacheSave").value;
+  console.log(cacheEventNum)
+
+  $.ajax({
+    type: "POST",
+    url: "/api/neticket/cache/left-seats/" + cacheEventNum,
+    dataType: "json",
+    headers: {
+      'Authorization': token // Authorization 헤더에 토큰 값 추가
+    },
+    success: function (response) {
+      console.log(response.status)
+      console.log(response.message)
+      alert("캐시가 활성화 되었습니다.")
+    },
+  });
+}
+
+function cacheEventDelete() {
+  let token = getAuthTokenFromCookie();
+  let cacheEventNum = document.getElementById("cacheDelete").value;
+  console.log(cacheEventNum)
+
+  $.ajax({
+    type: "DELETE",
+    url: "/api/neticket/cache/left-seats/" + cacheEventNum,
+    dataType: "json",
+    headers: {
+      'Authorization': token // Authorization 헤더에 토큰 값 추가
+    },
+    success: function (response) {
+      console.log(response.status)
+      console.log(response.message)
+      alert("캐시가 삭제 되었습니다.")
+    },
   });
 }
 
