@@ -43,13 +43,13 @@ public class ReservationService {
   @Transactional(isolation = Isolation.READ_COMMITTED)
   public Long makeReservation(ReservationRequestDto dto, User user) {
     //    먼저 redis 캐시를 조회
-    Integer leftSeats = redisRepository.findLeftSeatsFromRedis(dto.getTicketInfoId());
-    if (leftSeats == null) {
-    //    캐시가 없으면 DB를 통해 남은 좌석 수 차감
-      decrementLeftSeatInDB(dto);
+    Boolean hasLeftSeats = redisRepository.hasLeftSeatsInRedis(dto.getTicketInfoId());
+    if (hasLeftSeats) {
+      //    캐시가 있으면 redis에서 남은 좌석 수 차감
+      decrementLeftSeatInRedis(dto);
     } else {
-    //    캐시가 있으면 redis에서 남은 좌석 수 차감
-      decrementLeftSeatInRedis(dto, leftSeats);
+      //    캐시가 없으면 DB를 통해 남은 좌석 수 차감
+      decrementLeftSeatInDB(dto);
     }
 
     Reservation reservation = new Reservation(dto, user);
@@ -58,11 +58,11 @@ public class ReservationService {
   }
 
   //  2-1. redis로 좌석 수 변경
-  private void decrementLeftSeatInRedis(ReservationRequestDto dto, Integer leftSeats) {
-    if (leftSeats - dto.getCount() < 0) {
+  private void decrementLeftSeatInRedis(ReservationRequestDto dto) {
+    Boolean success = redisRepository.decrementLeftSeatInRedis(dto.getTicketInfoId(), dto.getCount());
+    if (!success) {
       throw new CustomException(ExceptionType.OUT_OF_TICKET_EXCEPTION);
     }
-    redisRepository.decrementLeftSeatInRedis(dto.getTicketInfoId(), dto.getCount());
   }
 
   // 2-2. 캐시 없으면 DB로 좌석수 변경
@@ -103,13 +103,13 @@ public class ReservationService {
       throw new CustomException(ExceptionType.CANCEL_DEADLINE_PASSED_EXCEPTION);
     }
 
-    Integer leftSeats = redisRepository.findLeftSeatsFromRedis(ticketInfo.getId());
-    if (leftSeats == null) {
-      //    캐시가 없으면 DB를 통해 남은 좌석 수에 추가
-      ticketInfo.plusSeats(reservation.getCount());
-    } else {
+    Boolean hasLeftSeats = redisRepository.hasLeftSeatsInRedis(ticketInfo.getId());
+    if (hasLeftSeats) {
       //    캐시가 있으면 redis에서 남은 좌석 수에 추가
       redisRepository.incrementLeftSeatInRedis(ticketInfo.getId(), reservation.getCount());
+    } else {
+      //    캐시가 없으면 DB를 통해 남은 좌석 수에 추가
+      ticketInfo.plusSeats(reservation.getCount());
     }
     reservationRepository.delete(reservation);
   }
