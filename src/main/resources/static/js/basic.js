@@ -290,6 +290,9 @@ function getEventInfo() {
     url: "/api/neticket/ticket-info/" + ticketInfoId,
     dataType: "json",
     success: function (event) {
+      const imageUrl = 'https://neticketbucket.s3.ap-northeast-2.amazonaws.com/uploaded-image/'
+          + event.image;
+      $('.image').attr('src', imageUrl);
       $('.title').text(event.title);
       $('.place').text(event.place);
       $('.price').text(addCommas(event.price) + '원');
