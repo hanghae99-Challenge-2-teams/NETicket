@@ -67,7 +67,9 @@ public class ReservationService {
 
   // 2-2. 캐시 없으면 DB로 좌석수 변경
   private void decrementLeftSeatInDB(ReservationRequestDto dto) {
-    TicketInfo ticketInfo = checkTicketInfoById(dto.getTicketInfoId());
+    TicketInfo ticketInfo = ticketInfoRepository.findByIdWithLock(dto.getTicketInfoId()).orElseThrow(
+        () -> new CustomException(ExceptionType.NOT_FOUND_TICKET_INFO_EXCEPTION)
+    );
     if (!ticketInfo.isAvailable()) {
       throw new CustomException(ExceptionType.RESERVATION_UNAVAILABLE_EXCEPTION);
     }
