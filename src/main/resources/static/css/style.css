@@ -1,10 +1,19 @@
 body {
   font-size: 1.4rem;
   font-weight: normal;
-  font-family: -apple-system, system-ui, BlinkMacSystemFont, "맑은 고딕", "Malgun Gothic", "돋움", Dotum, Helvetica, "Apple SD Gothic Neo", sans-serif;
+  font-family: 'Roboto', sans-serif;
   color: #000;
   height: 100%;
+  background-color: #f8f9fa; /* 배경색 변경 */
 }
+
+
+.card-img-top {
+  width: 100%;
+  height: 250px; /* 원하는 높이를 설정하세요 */
+  object-fit: cover;
+}
+
 
 .text-container h2 {
   margin: 0 0 20px 0;
@@ -45,6 +54,23 @@ footer {
   margin-top: 100px;
 }
 
+.info {
+  margin-top: 0; /* 위쪽 마진을 없애기 위해 변경 */
+  /* margin-left: 100px; */
+  width: 600px; /* 가로 크기 고정 */
+  padding: 20px;
+  border-radius: 4px;
+  background-color: #fff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 그림자 추가 */
+}
+
+
+.infoSection {
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #e9ecef;
+}
+
 .infoItem {
   list-style: none;
   font-size: 16px;
@@ -70,6 +96,7 @@ footer {
 .nav-link {
   font-size: 14px;
 }
+
 
 .productWrapper .summary .info {
   display: inline-block;
@@ -114,5 +141,113 @@ footer {
 .main .image-container {
   width: 50%;
   margin-right: 40px;
+}
+
+.image{
+  margin-top: 50px;
+  width: 400px;
+  height: 400px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.content-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 50px;
+  margin-left: 50px;
+  margin-right: 50px;
+}
+
+.category-container {
+  flex: 0 0 20%;
+  max-width: 20%;
+  margin-right: 30px;
+}
+
+.card-container {
+  display: flex;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-gap: 20px;
+}
+
+.card-wrapper {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 20px;
+}
+
+#eventForm {
+  background-color: white;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+  margin-bottom: 10px;
+}
+
+.form-control-file {
+  margin-top: 10px;
+}
+
+#saveButton {
+  float: right;
+  width: 120px;
+}
+
+.event-form-container {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+  margin-bottom: 40px;
+}
+
+#eventForm {
+  width: 90%;
+  max-width: 800px;
+}
+
+label {
+  font-size: 1.1rem; /* 원하는 글씨 크기로 변경 */
+}
+
+.reservation-card {
+  margin-top: 100px;
+  margin-left: 100px;
+  padding: 20px;
+  width: auto;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.reservation-header {
+  margin-bottom: 16px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.reservation-info-item {
+  list-style: none;
+  font-size: 16px;
+  margin-bottom: 12px;
+}
+
+.reservation-info-label {
+  display: inline-block;
+  width: 120px;
+  font-weight: bold;
+}
+
+.reservation-info-text {
+  display: inline;
 }
 
