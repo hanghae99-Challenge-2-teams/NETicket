@@ -217,3 +217,37 @@ footer {
 label {
   font-size: 1.1rem; /* 원하는 글씨 크기로 변경 */
 }
+
+.reservation-card {
+  margin-top: 100px;
+  margin-left: 100px;
+  padding: 20px;
+  width: auto;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.reservation-header {
+  margin-bottom: 16px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.reservation-info-item {
+  list-style: none;
+  font-size: 16px;
+  margin-bottom: 12px;
+}
+
+.reservation-info-label {
+  display: inline-block;
+  width: 120px;
+  font-weight: bold;
+}
+
+.reservation-info-text {
+  display: inline;
+}
+

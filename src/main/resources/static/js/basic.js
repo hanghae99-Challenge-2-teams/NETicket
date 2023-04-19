@@ -365,38 +365,15 @@ function showReservationCompleted() {
       'Authorization': token // Authorization 헤더에 토큰 값 추가
     },
     success: function (response) {
-      // $('#getresv').empty(); // 이 부분을 추가
-      let id = response.id;
-      let title = response.title;
-      let place = response.place;
-      let date = response.date;
-      let totalPrice = response.totalPrice;
-      let count = response.count;
-
-      let temp = `<h5 class="card-header">예매완료</h5>
-                    <div class="card-body" id="getresv">
-                    <ul class="info">
-                      <li class="infoItem"><strong class="infoLabel">예매 번호 : </strong>
-                        <div class="infoDesc" id="resvId">${id}</div>
-                      </li>
-                      <li class="infoItem"><strong class="infoLabel">공연 제목 : </strong>
-                        <div class="infoDesc">${title}</div>
-                      </li>
-                      <li class="infoItem"><strong class="infoLabel">공연 장소 : </strong>
-                        <div class="infoDesc"><p class="infoText">${place}</p></div>
-                      </li>
-                      <li class="infoItem infoDate"><strong class="infoLabel">공연 날짜 : </strong>
-                        <div class="infoDesc"><p class="infoText">${date}</p></div>
-                      </li>
-                      <li class="infoItem infoPrice"><strong class="infoLabel">가격 : </strong>
-                        <div class="infoDesc"><p class="infoText">${totalPrice}원</p></div>
-                      </li>
-                      <li class="infoItem"><strong class="infoLabel">매수 : </strong>
-                        <div class="infoDesc"><p class="infoText">${count}매</p></div>
-                      </li>
-                    </ul>
-                  </div>`
-      $('#getresv').append(temp)
+      const imageUrl = 'https://neticketbucket.s3.ap-northeast-2.amazonaws.com/uploaded-image/'
+          + response.image;
+      $('.image').attr('src', imageUrl);
+      $('.id').text(response.id)
+      $('.title').text(response.title)
+      $('.place').text(response.place);
+      $('.date').text(response.date);
+      $('.totalPrice').text(response.totalPrice);
+      $('.count').text(response.count);
     },
   })
 }
