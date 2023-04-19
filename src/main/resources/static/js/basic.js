@@ -86,7 +86,7 @@ function login() {
           'Authorization') + ';path=/';
       // isAdmin 변수에 서버로부터 전달된 값 할당
       isAdmin = response.admin;
-      if (isAdmin){
+      if (isAdmin) {
         alert("관리자 계정입니다.")
       }
       // 로그인 성공 시, 이동할 페이지로 리다이렉트합니다.
@@ -113,7 +113,6 @@ function getCookie(name) {
 
   return null;
 }
-
 
 // 메인페이지
 // 행사정보 조회
@@ -158,12 +157,38 @@ function showPaging(response) {
   let currentPage = response.number + 1;
   let pagination = $('.pagination');
 
-  pagination.empty(); // 이 부분을 추가
+  pagination.empty();
 
-  for (let i = 1; i <= totalPages; i++) {
-    let pageItem = `<li class="page-item ${(i === currentPage) ? 'active'
-        : ''}"><a class="page-link" onclick="showEvent(${i})" href="#">${i}</a></li>`;
+//let startPage = Math.floor((currentPage - 1) / 10) * 10 + 1;
+  let startPage = Math.floor((currentPage - 1) / 2) * 2 + 1; // 페이지 2개로 실험
+  // let endPage = startPage + 9;
+  let endPage = startPage + 1;
+  if (endPage > totalPages) {
+    endPage = totalPages;
+  }
+
+  if (startPage > 1) {
+    pagination.append(`<li class="page-item">
+                          <a class="page-link" onclick="showEvent(${startPage
+    - 1})" href="#" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                          </a>
+                        </li>`);
+  }
+
+  for (let i = startPage; i <= endPage; i++) {
+    let pageItem = `<li class="page-item ${(i === currentPage) ? 'active' : ''}">
+                      <a class="page-link" onclick="showEvent(${i})" href="#">${i}</a>
+                    </li>`;
     pagination.append(pageItem);
+  }
+
+  if (endPage < totalPages) {
+    pagination.append(`<li class="page-item">
+                          <a class="page-link" onclick="showEvent(${endPage + 1})" href="#" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                          </a>
+                        </li>`);
   }
 }
 
@@ -337,7 +362,7 @@ function showReservationCompleted() {
       'Authorization': token // Authorization 헤더에 토큰 값 추가
     },
     success: function (response) {
-      $('#getresv').empty(); // 이 부분을 추가
+      // $('#getresv').empty(); // 이 부분을 추가
       let id = response.id;
       let title = response.title;
       let place = response.place;
@@ -492,8 +517,7 @@ function showMyPage() {
         let totalPrice = responseArray[i].totalPrice;
         let count = responseArray[i].count;
 
-        let temp = `<h5 class="card-header">예매완료</h5>
-                    <div class="card-body" id="getresv">
+        let temp = `
                     <ul class="info">
                       <li class="infoItem"><strong class="infoLabel">예매 번호 : </strong>
                         <div class="infoDesc" id="resvId">${id}</div>
@@ -517,9 +541,10 @@ function showMyPage() {
                         <button type="button" class="btn btn-danger cancelResvBtn" data-resv-id="${id}">예매 취소</button>
                        </li>
                     </ul>
-                  </div>`;
-        $('#getmypage').append(temp);
-
+                  `;
+        // $('#getmypage').append(temp);
+        // $('.card-container').append(temp);
+        $('.card-wrapper').append(temp);
 
         disableCancelBtnIfPast(date, $(`button[data-resv-id="${id}"]`));
 
@@ -544,6 +569,7 @@ function showMyPage() {
             });
           }
         });
+
         // 오늘날짜랑 비교해서 행사일이 오늘이거나 오늘보다 이전이면 예매취소 버튼 비활성화
         function disableCancelBtnIfPast(date, btn) {
           let eventday = new Date(date);
