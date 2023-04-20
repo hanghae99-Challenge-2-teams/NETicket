@@ -4,7 +4,7 @@ body {
   font-family: 'Gowun Dodum', sans-serif;
   color: #000;
   height: 100%;
-  background-color: #f6f6f6; /* 배경색 변경 */
+  background-color: #fffcfc; /* 배경색 변경 */
   margin-left: 100px;
   margin-right: 100px;
 }
@@ -64,7 +64,7 @@ footer {
   width: 600px; /* 가로 크기 고정 */
   padding: 20px;
   border-radius: 20px;
-  background-color: #f7f5f5;
+  background-color: #ffffff;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 그림자 추가 */
 }
 

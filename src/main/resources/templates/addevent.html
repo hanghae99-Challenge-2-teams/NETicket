@@ -2,23 +2,7 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="header :: head"></head>
 <body>
-<div class="container">
-  <div class="row justify-content-between align-items-center py-2">
-    <div class="col-4">
-      <h1 style="margin-top: 30px; margin-left: 70px">
-        <a href="/neticket" style="text-decoration: none; color: black;">NETicket</a>
-      </h1>
-    </div>
-    <nav class="col-8">
-      <ul class="nav justify-content-end" style="margin-right: 50px">
-        <a class="nav-link" href="/neticket/login" style="color: black">로그인</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/neticket/signup" style="color: black">회원가입</a>
-        </li>
-      </ul>
-    </nav>
-  </div>
+<div th:replace="navbar :: navbar"></div>
   <div class="row">
     <div class="event-form-container">
       <form id="eventForm" method="post" enctype="multipart/form-data">
