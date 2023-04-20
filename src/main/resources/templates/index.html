@@ -1,73 +1,34 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport"
-        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
-        rel="stylesheet"
-        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
-        crossorigin="anonymous">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
-
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
-
-  <!-- Bootstrap JavaScript -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-          integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-          crossorigin="anonymous"></script>
-
-  <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
-  <script type="text/javascript" th:src="@{/js/basic.js}"></script>
-
-  <title>메인 페이지</title>
-
-</head>
+<head th:replace="header :: head"></head>
 <body>
-<div class="row justify-content-between align-items-center py-2">
-  <div class="col-4">
-    <h1 style="margin-top: 30px; margin-left: 70px"><a href="/neticket"
-                                                       style="text-decoration: none;color: black;">NETicket</a>
-    </h1>
-  </div>
-  <nav class="col-8">
-    <ul class="nav justify-content-end" style="margin-right: 50px">
-      <li class="nav-item">
-        <a class="nav-link" href="/neticket/admin/event" style="color: black; display: none">공연
-          추가</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/neticket/login" style="color: black">로그인</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/neticket/signup" style="color: black">회원가입</a>
-      </li>
-    </ul>
-  </nav>
-</div>
-<form action="#" method="get" class="search-container">
-  <input type="text" placeholder="검색">
-  <input type="submit" value="검색">
-</form>
-<div style="display: flex; margin-right: 20px" col-2>
-  <div style="margin-left: 50px; margin-top: 50px; margin-right: 20px" class="col-2">
-    <p>Category</p>
-    <div class="list-group" style="width: 100%; height: 100%">
-      <a href="#" class="list-group-item list-group-item-action">공연</a>
-      <a href="#" class="list-group-item list-group-item-action">영화</a>
-      <a href="#" class="list-group-item list-group-item-action">연극</a>
-      <a href="#" class="list-group-item list-group-item-action">뮤지컬</a>
+<div th:replace="navbar :: navbar"></div>
+
+<div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">
+  <div class="carousel-inner">
+    <div class="carousel-item active" data-bs-interval="1500">
+      <img src="https://cdn.photographylife.com/wp-content/uploads/2017/01/What-is-landscape-photography.jpg" class="d-block w-100" alt="...">
+    </div>
+    <div class="carousel-item" data-bs-interval="1500">
+      <img src="https://item.kakaocdn.net/do/9fc764ca0704ce3ebaba47c50f8b7e8f617ea012db208c18f6e83b1a90a7baa7" class="d-block w-100" alt="...">
+    </div>
+    <div class="carousel-item" data-bs-interval="1500">
+      <img src="https://item.kakaocdn.net/do/96e7959eb631928b9df544c27ef9029a9f5287469802eca457586a25a096fd31" class="d-block w-100" alt="...">
     </div>
   </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
 
   <div id="event_box" class="row"
        style="margin-left: 50px; margin-top: 50px; margin-right: 20px"></div>
 
-</div>
 <footer>
   <nav aria-label="Page navigation example" class="justify-content-center">
     <ul class="pagination">

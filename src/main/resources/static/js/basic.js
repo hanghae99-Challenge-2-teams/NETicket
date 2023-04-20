@@ -116,6 +116,81 @@ function getCookie(name) {
 
 // 메인페이지
 // 행사정보 조회
+// function showEvent(pageNum) {
+//   $.ajax({
+//     type: "GET",
+//     url: "/api/neticket/events?page=" + pageNum,
+//     dataType: "json",
+//     headers: {'Content-Type': 'application/json'},
+//     success: function (response) {
+//       showPaging(response);
+//
+//       $('#event_box').empty();
+//       for (let i = 0; i < response.content.length; i++) {
+//         let eventDto = response.content[i];
+//         let id = eventDto.id;
+//         let image = eventDto.image;
+//         let title = eventDto.title;
+//         let date = eventDto.date;
+//         let place = eventDto.place;
+//
+//         let tmpevent = `<div class="col" data-event-id="${id}">
+//                           <div class="card h-100">
+//                             <img src="https://neticketbucket.s3.ap-northeast-2.amazonaws.com/uploaded-image/${image}"
+//                                  class="card-img-top" alt="...">
+//                             <div class="card-body">
+//                               <h5 class="card-title">${title}</h5>
+//                               <h6 class="card-date">${date}</h6>
+//                               <p class="card-text">${place}</p>
+//                             </div>
+//                           </div>
+//                         </div>`
+//         $('#event_box').append(tmpevent)
+//       }
+//     },
+//   })
+// }
+
+function createCard(id, image, title, date, place) {
+  let card = document.createElement('div');
+  card.classList.add('property-card');
+
+  let imageContainer = document.createElement('img');
+  imageContainer.classList.add('property-image');
+  imageContainer.style.display = 'block';
+  imageContainer.style.backgroundSize = 'cover';
+
+  imageContainer.src = `https://neticketbucket.s3.ap-northeast-2.amazonaws.com/uploaded-image/${image}`;
+
+  imageContainer.onerror = function() {
+    imageContainer.src = 'path/to/default/image.jpg'; // 대체 이미지 경로로 수정
+  };
+
+  let descriptionContainer = document.createElement('div');
+  descriptionContainer.classList.add('property-description');
+  descriptionContainer.innerHTML = `<h5>${title}</h5><h6>${date}</h6><p>${place}</p>`;
+
+  let socialIconsContainer = document.createElement('div');
+  socialIconsContainer.classList.add('property-social-icons');
+  socialIconsContainer.innerHTML = `<a href="#" class="property-social-icon"><i class="fa fa-facebook"></i></a>
+                                    <a href="#" class="property-social-icon"><i class="fa fa-twitter"></i></a>
+                                    <a href="#" class="property-social-icon"><i class="fa fa-google-plus"></i></a>`;
+
+  card.appendChild(imageContainer);
+  card.appendChild(descriptionContainer);
+  card.appendChild(socialIconsContainer);
+
+  card.addEventListener('click', function() {
+    // 카드 클릭 이벤트 처리
+  });
+
+  return card;
+}
+
+
+
+
+// showEvent 함수 내부
 function showEvent(pageNum) {
   $.ajax({
     type: "GET",
@@ -125,30 +200,34 @@ function showEvent(pageNum) {
     success: function (response) {
       showPaging(response);
 
-      $('#event_box').empty();
-      for (let i = 0; i < response.content.length; i++) {
-        let eventDto = response.content[i];
-        let id = eventDto.id;
-        let image = eventDto.image;
-        let title = eventDto.title;
-        let date = eventDto.date;
-        let place = eventDto.place;
+      let eventBox = document.querySelector('#event_box');
+      eventBox.innerHTML = '';
+      let numCardsPerRow = 5;
+      for (let i = 0; i < response.content.length; i += numCardsPerRow) {
+        let row = document.createElement('div');
+        row.classList.add('row');
+        eventBox.appendChild(row);
 
-        let tmpevent = `<div class="col" data-event-id="${id}">
-                          <div class="card h-100">
-                            <img src="https://neticketbucket.s3.ap-northeast-2.amazonaws.com/uploaded-image/${image}"
-                                 class="card-img-top" alt="...">
-                            <div class="card-body">
-                              <h5 class="card-title">${title}</h5>
-                              <h6 class="card-date">${date}</h6>
-                              <p class="card-text">${place}</p>
-                            </div>
-                          </div>
-                        </div>`
-        $('#event_box').append(tmpevent)
+        for (let j = 0; j < numCardsPerRow; j++) {
+          if (i + j >= response.content.length) break;
+
+          let eventDto = response.content[i + j];
+          let id = eventDto.id;
+          let image = eventDto.image;
+          let title = eventDto.title;
+          let date = eventDto.date;
+          let place = eventDto.place;
+
+          let card = createCard(id, image, title, date, place);
+          let cardColumn = document.createElement('div');
+          cardColumn.classList.add('col');
+          cardColumn.dataset.eventId = id;
+          cardColumn.appendChild(card);
+          row.appendChild(cardColumn);
+        }
       }
     },
-  })
+  });
 }
 
 // 페이징 처리

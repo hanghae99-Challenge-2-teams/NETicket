@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+</head>
+<body>
+<div th:fragment="navbar">
+<div class="row justify-content-between align-items-center py-2">
+  <div class="col-4">
+    <a href="/neticket">
+      <img src="/images/logo2.png" alt="NETicket"
+           style="width: 150px; object-fit: contain; margin-top: 30px; margin-left: 70px;">
+    </a>
+  </div>
+  <nav class="col-8">
+    <ul class="nav justify-content-end" style="margin-right: 50px">
+      <li class="nav-item">
+        <a class="nav-link" href="/neticket/admin/event" style="color: black; display: none">공연
+          추가</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/neticket/login" style="color: black">로그인</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/neticket/signup" style="color: black">회원가입</a>
+      </li>
+    </ul>
+    <form action="#" method="get" class="search-container">
+      <input type="text" placeholder="검색">
+      <input type="submit" value="검색">
+    </form>
+  </nav>
+</div>
+</div>
+</body>
+</html>
