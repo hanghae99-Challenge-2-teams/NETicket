@@ -460,12 +460,6 @@ function loadCacheList() {
         let cacheEventNum = $('#inputGroupSelect04 option:selected').val();
         deleteLeftSeatsCache(cacheEventNum);
       });
-
-      $('#refreshButton').click(function() {
-        // 선택된 옵션의 값을 가져옵니다.
-        let cacheEventNum = $('#inputGroupSelect04 option:selected').val();
-        refreshLeftSeatsCache(cacheEventNum);
-      });
     },
     error: function(xhr, status, error) {
       console.error(error);
@@ -519,8 +513,9 @@ function deleteLeftSeatsCache(cacheEventNum) {
   });
 }
 
-function refreshLeftSeatsCache(cacheEventNum) {
+function refreshLeftSeatsCache() {
   let token = getAuthTokenFromCookie();
+  let cacheEventNum = document.getElementById("cacheRefresh").value;
 
   $.ajax({
     type: "PATCH",
@@ -530,11 +525,11 @@ function refreshLeftSeatsCache(cacheEventNum) {
       'Authorization': token // Authorization 헤더에 토큰 값 추가
     },
     success: function (response) {
-      alert("캐시가 성공적으로 갱신되었습니다.");
+      alert("남은 좌석 수가 성공적으로 갱신되었습니다.");
     },
     error: function(xhr, status, error) {
       console.error(error);
-      alert("캐시 갱신에 실패했습니다.");
+      alert("남은 좌석 수 갱신에 실패했습니다.");
     }
   });
 }

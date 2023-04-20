@@ -16,8 +16,6 @@ import java.time.Duration;
 import java.time.LocalDate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -71,7 +69,7 @@ public class ReservationService {
   @Transactional(isolation = Isolation.READ_COMMITTED)
   public Long makeReservation(ReservationRequestDto dto, User user) {
     //    먼저 redis 캐시를 조회
-    Boolean hasLeftSeats = redisRepository.hasLeftSeatsInRedis(dto.getTicketInfoId());
+    boolean hasLeftSeats = redisRepository.hasLeftSeatsInRedis(dto.getTicketInfoId());
     if (hasLeftSeats) {
       //    캐시가 있으면 redis에서 남은 좌석 수 차감
       decrementLeftSeatInRedis(dto);
@@ -133,7 +131,7 @@ public class ReservationService {
       throw new CustomException(ExceptionType.CANCEL_DEADLINE_PASSED_EXCEPTION);
     }
 
-    Boolean hasLeftSeats = redisRepository.hasLeftSeatsInRedis(ticketInfo.getId());
+    boolean hasLeftSeats = redisRepository.hasLeftSeatsInRedis(ticketInfo.getId());
     if (hasLeftSeats) {
       //    캐시가 있으면 redis에서 남은 좌석 수에 추가
       redisRepository.incrementLeftSeatInRedis(ticketInfo.getId(), reservation.getCount());

@@ -55,13 +55,19 @@
             <option value="3">Three</option>
           </select>
           <button type="button" class="btn btn-danger" id="deleteButton">삭제</button>
-          <button type="button" class="btn btn-info" id="refreshButton">갱신</button>
         </div>
         <div class="input-group mb-3">
           <input type="text" class="form-control" placeholder="캐시를 생성할 공연 번호를 입력하세요."
                  aria-label="Recipient's username" id="cacheSave" aria-describedby="button-addon2">
           <button class="btn btn-outline-secondary" onclick="cacheEventAdd()" type="button"
                   id="button-addon2">생성
+          </button>
+        </div>
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" placeholder="남은 좌석 수를 갱신할 공연 번호를 입력하세요."
+                 aria-label="Recipient's username" id="cacheRefresh" aria-describedby="button-addon3">
+          <button class="btn btn-outline-secondary" onclick="refreshLeftSeatsCache()" type="button"
+                  id="button-addon3">갱신
           </button>
         </div>
 
