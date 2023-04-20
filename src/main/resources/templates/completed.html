@@ -51,6 +51,7 @@
 <div style="display: flex; margin-right: 20px" col-2>
   <div style="margin-left: 50px; margin-top: 50px; margin-right: 20px" class="col-2">
     <p>Category</p>
+    <p id="responseTime">응답시간</p>
     <div class="list-group" style="width: 100%; height: 100%">
       <a href="#" class="list-group-item list-group-item-action">공연</a>
       <a href="#" class="list-group-item list-group-item-action">영화</a>
@@ -105,6 +106,10 @@
 <script>
   $(document).ready(function () {
     showReservationCompleted();
+    let responseTime = localStorage.getItem('responseTime');
+    if (responseTime) {
+      $('#responseTime').text(`예매 응답시간 : ${responseTime} ms`);
+    }
     const authToken = getCookie('Authorization');
 
     if (authToken) {
