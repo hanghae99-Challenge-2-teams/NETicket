@@ -9,9 +9,10 @@
         rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
         crossorigin="anonymous">
-  <link rel="preconnect" href="https://fonts.gstatic.com">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
 
   <!-- Bootstrap JavaScript -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
@@ -50,6 +51,7 @@
 <div style="display: flex; margin-right: 20px" col-2>
   <div style="margin-left: 50px; margin-top: 50px; margin-right: 20px" class="col-2">
     <p>Category</p>
+    <p id="responseTime"></p>
     <div class="list-group" style="width: 100%; height: 100%">
       <a href="#" class="list-group-item list-group-item-action">공연</a>
       <a href="#" class="list-group-item list-group-item-action">영화</a>
@@ -57,8 +59,47 @@
       <a href="#" class="list-group-item list-group-item-action">뮤지컬</a>
     </div>
   </div>
-  <div class="card" id="getresv">
-
+  <div class="image-container" style="margin-left: 150px; margin-top: 50px">
+    <img class="image"
+         src="" alt=""
+         width="100%" HEIGHT="70%">
+  </div>
+  <div class="card reservation-card" id="getresv">
+    <ul class="info">
+      <h5 class="reservation-header">예매완료</h5>
+      <li class="reservation-info-item">
+        <strong class="reservation-info-label">예매 번호 : </strong>
+        <div class="infoDesc id" id="resvId"></div>
+      </li>
+      <li class="reservation-info-item">
+        <strong class="reservation-info-label">공연 제목 : </strong>
+        <div class="infoDesc title"></div>
+      </li>
+      <li class="reservation-info-item">
+        <strong class="reservation-info-label">공연 장소 : </strong>
+        <div class="infoDesc place">
+          <p class="reservation-info-text"></p>
+        </div>
+      </li>
+      <li class="reservation-info-item">
+        <strong class="reservation-info-label">공연 날짜 : </strong>
+        <div class="infoDesc date">
+          <p class="reservation-info-text"></p>
+        </div>
+      </li>
+      <li class="reservation-info-item">
+        <strong class="reservation-info-label">가격 : </strong>
+        <div class="infoDesc totalPrice">
+          <p class="reservation-info-text"></p>
+        </div>
+      </li>
+      <li class="reservation-info-item">
+        <strong class="reservation-info-label">매수 : </strong>
+        <div class="infoDesc count">
+          <p class="reservation-info-text"></p>
+        </div>
+      </li>
+    </ul>
   </div>
 </div>
 </body>
@@ -78,6 +119,14 @@
       const signupLink = document.querySelector('.nav-link[href="/neticket/signup"]');
       signupLink.innerText = userNickname;
       signupLink.href = '/neticket/user';
+
+      // admin 유저만 response 시간 표시
+      if (userRole === 'ADMIN') {
+        let responseTime = localStorage.getItem('responseTime');
+        if (responseTime) {
+          $('#responseTime').text(`예매 응답시간 : ${responseTime} ms`);
+        }
+      }
 
       // 인증 토큰이 있는 경우, 로그아웃 버튼으로 변경
       const loginButton = document.querySelector('.nav-link[href="/neticket/login"]');

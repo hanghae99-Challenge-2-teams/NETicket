@@ -13,6 +13,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
+import org.springframework.data.redis.connection.lettuce.LettuceClientConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
@@ -29,11 +31,23 @@ public class RedisConfig {
   @Value("${spring.redis.port}")
   private int port;
 
+
   @Bean
   public RedisConnectionFactory redisConnectionFactory() {
-//    return new RedissonConnectionFactory();
-    return new LettuceConnectionFactory(host, port);
+    LettuceClientConfiguration clientConfig = LettuceClientConfiguration.builder()
+        .commandTimeout(Duration.ofMillis(500)) // 타임아웃 설정
+        .build();
+
+    RedisStandaloneConfiguration serverConfig = new RedisStandaloneConfiguration(host, port);
+
+    return new LettuceConnectionFactory(serverConfig, clientConfig);
   }
+
+//  @Bean
+//  public RedisConnectionFactory redisConnectionFactory() {
+////    return new RedissonConnectionFactory();
+//    return new LettuceConnectionFactory(host, port);
+//  }
 
 //  @Bean(destroyMethod = "shutdown")
 //  public RedissonClient redissonClient() {
@@ -45,12 +59,33 @@ public class RedisConfig {
 //  }
 
   //  LeftSeats에 사용하는 redisTemplate
-  @Bean
+  @Bean(name = "leftSeat")
   public RedisTemplate<String, Integer> redisTemplate() {
     RedisTemplate<String, Integer> redisTemplate = new RedisTemplate<>();
     redisTemplate.setConnectionFactory(redisConnectionFactory());
     redisTemplate.setKeySerializer(new StringRedisSerializer());
     redisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer<>(Integer.class));
+    return redisTemplate;
+  }
+
+  @Bean(name = "eventDto")
+  public RedisTemplate<String, DetailEventResponseDto> redisTemplate(
+      RedisConnectionFactory redisConnectionFactory) {
+    ObjectMapper objectMapper = new ObjectMapper();
+    objectMapper.registerModule(new JavaTimeModule());
+    objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+
+    Jackson2JsonRedisSerializer<DetailEventResponseDto> serializer = new Jackson2JsonRedisSerializer<>(
+        DetailEventResponseDto.class);
+    serializer.setObjectMapper(objectMapper);
+
+    RedisTemplate<String, DetailEventResponseDto> redisTemplate = new RedisTemplate<>();
+    redisTemplate.setConnectionFactory(redisConnectionFactory);
+    redisTemplate.setKeySerializer(new StringRedisSerializer());
+    redisTemplate.setValueSerializer(serializer);
+    redisTemplate.setHashKeySerializer(new StringRedisSerializer());
+    redisTemplate.setHashValueSerializer(serializer);
+
     return redisTemplate;
   }
 
@@ -74,4 +109,5 @@ public class RedisConfig {
         .cacheDefaults(cacheConfig)
         .build();
   }
+
 }

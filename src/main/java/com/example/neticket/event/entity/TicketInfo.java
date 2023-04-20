@@ -9,7 +9,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
-import javax.persistence.Version;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -17,12 +16,10 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class TicketInfo {
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
-
-  @Version
-  private Long version;
 
   @Column(nullable = false)
   private boolean isAvailable = false;
@@ -36,7 +33,7 @@ public class TicketInfo {
   @Column(nullable = false)
   private LocalDateTime openDate;
 
-//  공연회차-티켓예매정보  양방향 일대일 관계로 설정
+  //  공연회차-티켓예매정보  양방향 일대일 관계로 설정
   @OneToOne
   @JoinColumn(name = "event_id", nullable = false)
   private Event event;
@@ -56,7 +53,7 @@ public class TicketInfo {
     return this.leftSeats -= count;
   }
 
-  public void plusSeats(int count){
+  public void plusSeats(int count) {
     this.leftSeats += count;
   }
 
