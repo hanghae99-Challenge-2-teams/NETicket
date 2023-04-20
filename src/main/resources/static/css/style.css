@@ -4,7 +4,7 @@ body {
   font-family: 'Gowun Dodum', sans-serif;
   color: #000;
   height: 100%;
-  background-color: #fffcfc; /* 배경색 변경 */
+  background-color: #f5f5f5ad; /* 배경색 변경 */
   margin-left: 100px;
   margin-right: 100px;
 }
@@ -208,18 +208,26 @@ footer {
 
 #saveButton {
   float: right;
-  width: 120px;
+  width: 70px;
+  background-color: #e15561;
+  color: white;
 }
 
 .event-form-container {
   display: flex;
   justify-content: center;
-  padding: 20px;
   background-color: white;
-  border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   margin-top: 20px;
   margin-bottom: 40px;
+  background-color: rgba(255, 192, 203, 0.3); /* 핑크빛 배경 */
+  border-radius: 15px; /* 둥글게 처리 */
+  padding: 15px; /* 내부 여백 추가 */
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); /* 그림자 효과 */
+
+}
+
+.btn {
+  border-radius: 50px; /* 둥글게 처리 */
 }
 
 #eventForm {
@@ -477,6 +485,7 @@ opacity:1;
   margin-top: 0;
   margin-bottom: 0;
 }
+
 
 
 
