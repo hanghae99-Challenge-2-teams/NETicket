@@ -7,6 +7,8 @@ import com.example.neticket.exception.ExceptionType;
 import java.util.Collections;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.data.redis.core.script.RedisScript;
@@ -16,6 +18,7 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class RedisRepository {
+
   private final RedisTemplate<String, Integer> redisTemplate;
   private final TicketInfoRepository ticketInfoRepository;
   private final ReservationRepository reservationRepository;
