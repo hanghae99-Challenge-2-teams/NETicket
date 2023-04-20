@@ -3,43 +3,47 @@
 <head th:replace="header :: head"></head>
 <body>
 <div th:replace="navbar :: navbar"></div>
-  <div class="image-container" style="margin-left: 150px; margin-top: 50px">
-    <img class="image"
-         src="" alt=""
-         width="100%" HEIGHT="70%">
-  </div>
 
-  <ul class="info" style="margin-top: 100px; margin-left: 100px">
-    <li class="infoItem"><strong class="infoLabel">제목</strong>
-      <div class="infoDesc title"></div>
-    </li>
-    <li class="infoItem"><strong class="infoLabel">장소</strong>
-      <div class="infoDesc place"></div>
-    </li>
-    <li class="infoItem"><strong class="infoLabel">가격</strong>
-      <div class="infoDesc price"></div>
-    </li>
-    <li class="infoItem"><strong class="infoLabel">공연 날짜</strong>
-      <div class="infoDesc date"></div>
-    </li>
-    <li class="infoItem"><strong class="infoLabel">예매 가능</strong>
-      <div class="infoDesc isAvailable"></div>
-    </li>
-    <li class="infoItem"><strong class="infoLabel">예매 오픈 시각</strong>
-      <div class="infoDesc remainingTime1" id="">00:00:00</div>
-    </li>
-    <li class="infoItem"><strong class="infoLabel"></strong>
-      <div class="infoDesc remainingTime" id="timer"
-           style="color: red; font-style: italic; font-size: 50px; display: flex; align-content: center; ">
-        00:00:00
+<section class="py-5">
+  <div class="container px-4 px-lg-5 my-5">
+    <div class="row gx-4 gx-lg-5 align-items-start">
+      <div class="col-md-6"><img class="card-img-top mb-5 mb-md-0 image" src="https://dummyimage.com/600x700/dee2e6/6c757d.jpg" alt="..." /></div>
+      <div class="col-md-6">
+        <h5 class="reservation-header">공연상세정보</h5>
+        <ul class="info">
+          <li class="infoItem"><strong class="infoLabel">제목</strong>
+            <div class="infoDesc title"></div>
+          </li>
+          <li class="infoItem"><strong class="infoLabel">장소</strong>
+            <div class="infoDesc place"></div>
+          </li>
+          <li class="infoItem"><strong class="infoLabel">가격</strong>
+            <div class="infoDesc price"></div>
+          </li>
+          <li class="infoItem"><strong class="infoLabel">공연 날짜</strong>
+            <div class="infoDesc date"></div>
+          </li>
+          <li class="infoItem"><strong class="infoLabel">예매 가능</strong>
+            <div class="infoDesc isAvailable"></div>
+          </li>
+          <li class="infoItem"><strong class="infoLabel">예매 오픈 시각</strong>
+            <div class="infoDesc remainingTime1" id="">00:00:00</div>
+          </li>
+          <li class="infoItem"><strong class="infoLabel"></strong>
+            <div class="infoDesc remainingTime" id="timer"
+                 style="color: red; font-style: italic; font-size: 20px; display: flex; align-content: center; ">
+              00:00:00
+            </div>
+          </li>
+          <li class="infoItem">
+            <button id="bookingButton" onclick="onBookingButtonClick()">예매하기</button>
+          </li>
+          <!--    <button id="deleteButton" onclick="deleteEvent(eventId)">삭제</button>-->
+        </ul>
       </div>
-    </li>
-
-    <button id="bookingButton" onclick="onBookingButtonClick()">예매하기</button>
-<!--    <button id="deleteButton" onclick="deleteEvent(eventId)">삭제</button>-->
-
-  </ul>
-</div>
+    </div>
+  </div>
+</section>
 </body>
 <script>
   $(document).ready(function () {

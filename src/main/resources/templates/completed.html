@@ -4,49 +4,100 @@
 <body>
 <div th:replace="navbar :: navbar"></div>
 <p id="responseTime"></p>
-  <div class="image-container" style="margin-left: 150px; margin-top: 50px">
-    <img class="image"
-         src="" alt=""
-         width="100%" HEIGHT="70%">
+<section class="py-5">
+  <div class="container px-4 px-lg-5 my-5">
+    <div class="row gx-4 gx-lg-5 align-items-start">
+      <div class="col-md-6">
+        <div class="image-container">
+          <img class="image" src="" alt="" width="100%" height="70%" />
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card reservation-card" id="getresv">
+          <ul class="info">
+            <h5 class="reservation-header">예매완료</h5>
+            <li class="reservation-info-item">
+              <strong class="reservation-info-label">예매 번호 : </strong>
+              <div class="infoDesc id" id="resvId"></div>
+            </li>
+            <li class="reservation-info-item">
+              <strong class="reservation-info-label">공연 제목 : </strong>
+              <div class="infoDesc title"></div>
+            </li>
+            <li class="reservation-info-item">
+              <strong class="reservation-info-label">공연 장소 : </strong>
+              <div class="infoDesc place">
+                <p class="reservation-info-text"></p>
+              </div>
+            </li>
+            <li class="reservation-info-item">
+              <strong class="reservation-info-label">공연 날짜 : </strong>
+              <div class="infoDesc date">
+                <p class="reservation-info-text"></p>
+              </div>
+            </li>
+            <li class="reservation-info-item">
+              <strong class="reservation-info-label">가격 : </strong>
+              <div class="infoDesc totalPrice">
+                <p class="reservation-info-text"></p>
+              </div>
+            </li>
+            <li class="reservation-info-item">
+              <strong class="reservation-info-label">매수 : </strong>
+              <div class="infoDesc count">
+                <p class="reservation-info-text"></p>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
   </div>
-  <div class="card reservation-card" id="getresv">
-    <ul class="info">
-      <h5 class="reservation-header">예매완료</h5>
-      <li class="reservation-info-item">
-        <strong class="reservation-info-label">예매 번호 : </strong>
-        <div class="infoDesc id" id="resvId"></div>
-      </li>
-      <li class="reservation-info-item">
-        <strong class="reservation-info-label">공연 제목 : </strong>
-        <div class="infoDesc title"></div>
-      </li>
-      <li class="reservation-info-item">
-        <strong class="reservation-info-label">공연 장소 : </strong>
-        <div class="infoDesc place">
-          <p class="reservation-info-text"></p>
-        </div>
-      </li>
-      <li class="reservation-info-item">
-        <strong class="reservation-info-label">공연 날짜 : </strong>
-        <div class="infoDesc date">
-          <p class="reservation-info-text"></p>
-        </div>
-      </li>
-      <li class="reservation-info-item">
-        <strong class="reservation-info-label">가격 : </strong>
-        <div class="infoDesc totalPrice">
-          <p class="reservation-info-text"></p>
-        </div>
-      </li>
-      <li class="reservation-info-item">
-        <strong class="reservation-info-label">매수 : </strong>
-        <div class="infoDesc count">
-          <p class="reservation-info-text"></p>
-        </div>
-      </li>
-    </ul>
-  </div>
-</div>
+</section>
+
+<!--  <div class="image-container" style="margin-left: 150px; margin-top: 50px">-->
+<!--    <img class="image"-->
+<!--         src="" alt=""-->
+<!--         width="100%" HEIGHT="70%">-->
+<!--  </div>-->
+<!--  <div class="card reservation-card" id="getresv">-->
+<!--    <ul class="info">-->
+<!--      <h5 class="reservation-header">예매완료</h5>-->
+<!--      <li class="reservation-info-item">-->
+<!--        <strong class="reservation-info-label">예매 번호 : </strong>-->
+<!--        <div class="infoDesc id" id="resvId"></div>-->
+<!--      </li>-->
+<!--      <li class="reservation-info-item">-->
+<!--        <strong class="reservation-info-label">공연 제목 : </strong>-->
+<!--        <div class="infoDesc title"></div>-->
+<!--      </li>-->
+<!--      <li class="reservation-info-item">-->
+<!--        <strong class="reservation-info-label">공연 장소 : </strong>-->
+<!--        <div class="infoDesc place">-->
+<!--          <p class="reservation-info-text"></p>-->
+<!--        </div>-->
+<!--      </li>-->
+<!--      <li class="reservation-info-item">-->
+<!--        <strong class="reservation-info-label">공연 날짜 : </strong>-->
+<!--        <div class="infoDesc date">-->
+<!--          <p class="reservation-info-text"></p>-->
+<!--        </div>-->
+<!--      </li>-->
+<!--      <li class="reservation-info-item">-->
+<!--        <strong class="reservation-info-label">가격 : </strong>-->
+<!--        <div class="infoDesc totalPrice">-->
+<!--          <p class="reservation-info-text"></p>-->
+<!--        </div>-->
+<!--      </li>-->
+<!--      <li class="reservation-info-item">-->
+<!--        <strong class="reservation-info-label">매수 : </strong>-->
+<!--        <div class="infoDesc count">-->
+<!--          <p class="reservation-info-text"></p>-->
+<!--        </div>-->
+<!--      </li>-->
+<!--    </ul>-->
+<!--  </div>-->
+<!--</div>-->
 </body>
 <script>
   $(document).ready(function () {

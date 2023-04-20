@@ -1,12 +1,18 @@
 body {
   font-size: 1.4rem;
   font-weight: normal;
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Gowun Dodum', sans-serif;
   color: #000;
   height: 100%;
   background-color: #f6f6f6; /* 배경색 변경 */
+  margin-left: 100px;
+  margin-right: 100px;
 }
 
+.row {
+  margin-top: 30px;
+
+}
 
 .card-img-top {
   width: 100%;
@@ -55,11 +61,10 @@ footer {
 
 .info {
   margin-top: 0; /* 위쪽 마진을 없애기 위해 변경 */
-  /* margin-left: 100px; */
   width: 600px; /* 가로 크기 고정 */
   padding: 20px;
-  border-radius: 4px;
-  background-color: #fff;
+  border-radius: 20px;
+  background-color: #f7f5f5;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 그림자 추가 */
 }
 
@@ -140,9 +145,8 @@ footer {
 }
 
 .image{
-  margin-top: 50px;
-  width: 400px;
-  height: 400px;
+  width: 100%;
+  height: 500px;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -230,7 +234,7 @@ label {
   margin-top: 100px;
   margin-left: 100px;
   padding: 20px;
-  width: auto;
+  width: 650px;
   border: 1px solid #e9ecef;
   border-radius: 8px;
   background-color: #ffffff;
@@ -318,23 +322,7 @@ label {
 
 
 
-/***/
-/*{*/
-/*  -webkit-box-sizing: border-box;*/
-/*  box-sizing: border-box;*/
-/*}*/
 
-/*h5*/
-/*{*/
-/*  margin:0px;*/
-/*  font-size:1.4em;*/
-/*  font-weight:700;*/
-/*}*/
-
-/*p*/
-/*{*/
-/*  font-size:12px;*/
-/*}*/
 
 .center
 {
@@ -373,9 +361,9 @@ label {
 
 .property-image
 {
-  height:6em;
-  width:14em;
-  padding:1em 2em;
+  height:50%;
+  width: 100%; /* 이미지 너비를 카드 너비에 맞춥니다. */
+  object-fit: cover;
   position:Absolute;
   top:0px;
   -webkit-transition:all 0.4s cubic-bezier(0.645, 0.045, 0.355, 1);
@@ -385,6 +373,7 @@ label {
   background-size:cover;
   background-repeat:no-repeat;
 }
+
 
 /* Bottom Card Section */
 
@@ -456,6 +445,34 @@ font-size:1.2em;
 {
 opacity:1;
 }
+
+.property-description h5 {
+  font-size: 1.2em;
+  font-weight: bold;
+  font-family: 'Nanum Pen Script', sans-serif;
+  margin-top: 1em; /* 위 마진 추가 */
+  margin-bottom: 0.5em;
+  color: #643636;
+}
+
+.property-description h6 {
+  font-size: 1.3em;
+  font-weight: normal;
+  font-family: 'Dongle', sans-serif;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+.property-description p {
+  font-size: 1.2em;
+  font-weight: normal;
+  font-family: 'Dongle', sans-serif;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+
+
 
 
 
