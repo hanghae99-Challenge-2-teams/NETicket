@@ -51,6 +51,7 @@
 <div style="display: flex; margin-right: 20px" col-2>
   <div style="margin-left: 50px; margin-top: 50px; margin-right: 20px" class="col-2">
     <p>Category</p>
+    <p id="responseTime"></p>
     <div class="list-group" style="width: 100%; height: 100%">
       <a href="#" class="list-group-item list-group-item-action">공연</a>
       <a href="#" class="list-group-item list-group-item-action">영화</a>
@@ -118,6 +119,14 @@
       const signupLink = document.querySelector('.nav-link[href="/neticket/signup"]');
       signupLink.innerText = userNickname;
       signupLink.href = '/neticket/user';
+
+      // admin 유저만 response 시간 표시
+      if (userRole === 'ADMIN') {
+        let responseTime = localStorage.getItem('responseTime');
+        if (responseTime) {
+          $('#responseTime').text(`예매 응답시간 : ${responseTime} ms`);
+        }
+      }
 
       // 인증 토큰이 있는 경우, 로그아웃 버튼으로 변경
       const loginButton = document.querySelector('.nav-link[href="/neticket/login"]');

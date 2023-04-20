@@ -336,8 +336,11 @@ function saveReservation() {
       ticketInfoId: ticketInfoId,
       count: selectedValue
     }),
-    success: function (resvId) {
+    success: function(resvId, textStatus, jqXHR) {
       alert("예매가 완료되었습니다.");
+// 백엔드 헤더에서 측정할때 쓰는 코드
+      let responseTime = jqXHR.getResponseHeader('X-Response-Time');
+      localStorage.setItem('responseTime', responseTime);
       window.location.href = "/neticket/reservations/completed/" + resvId;
     },
     error: function (jqXHR, textStatus, errorThrown) {
