@@ -1,5 +1,4 @@
 // 회원가입 페이지
-
 $(document).ready(function () {
   // 회원가입 버튼 클릭 시
   $("#signup-btn").click(function () {
@@ -57,7 +56,16 @@ $(document).ready(function () {
 });
 
 // 로그인 페이지
-// let isAdmin = false;
+$(document).ready(function () {
+  // 로그인 입력 필드에 Enter 키를 눌렀을 때 login() 함수 호출
+  $("#login_email, #login_password").on('keypress', function (event) {
+    if (event.which === 13) { // 13은 Enter 키의 keyCode입니다.
+      event.preventDefault();
+      login();
+    }
+  });
+});
+
 
 function login() {
   let useremail = $('#login_email').val();
@@ -151,10 +159,6 @@ function createCard(id, image, title, date, place) {
 
   return card;
 }
-
-
-
-
 
 // showEvent 함수 내부
 function showEvent(pageNum) {
