@@ -150,6 +150,7 @@ footer {
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
+  border-radius: 20px;
 }
 
 .content-container {
@@ -245,6 +246,7 @@ label {
   margin-bottom: 16px;
   font-weight: bold;
   text-transform: uppercase;
+  margin-top: 50px;
 }
 
 .reservation-info-item {
@@ -377,6 +379,11 @@ label {
 
 /* Bottom Card Section */
 
+section.infoSection{
+  margin: 10px 0 0 0;
+  padding: 0px;
+}
+
 .property-description
 {
   background-color: #FAFAFC;
@@ -470,6 +477,12 @@ opacity:1;
   margin-top: 0;
   margin-bottom: 0;
 }
+
+
+
+
+
+
 
 
 
