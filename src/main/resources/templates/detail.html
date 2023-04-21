@@ -21,9 +21,8 @@
   <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
   <script type="text/javascript" th:src="@{/js/basic.js}"></script>
 
-  <title>메인 페이지</title>
+  <title>NETicket 상세페이지</title>
 
-</head>
 <body>
 <div class="row justify-content-between align-items-center py-2">
   <div class="col-4">
@@ -34,7 +33,7 @@
   <nav class="col-8">
     <ul class="nav justify-content-end" style="margin-right: 50px">
       <li class="nav-item">
-      <a class="nav-link" href="/neticket/user" style="color: black">마이페이지</a>
+        <a class="nav-link" href="/neticket/user" style="color: black">마이페이지</a>
       </li>
       <li class="nav-item">
       <a class="nav-link" href="/neticket/login" style="color: black">로그인</a>
@@ -60,38 +59,54 @@
     </div>
   </div>
 
-  <div id="event_box" class="row"
-       style="margin-left: 50px; margin-top: 50px; margin-right: 20px"></div>
+  <div class="image-container" style="margin-left: 150px; margin-top: 50px">
+    <img class="image"
+         src="" alt=""
+         width="100%" HEIGHT="70%">
+  </div>
 
+  <ul class="info" style="margin-top: 100px; margin-left: 100px">
+    <li class="infoItem"><strong class="infoLabel">제목</strong>
+      <div class="infoDesc title"></div>
+    </li>
+    <li class="infoItem"><strong class="infoLabel">장소</strong>
+      <div class="infoDesc place"></div>
+    </li>
+    <li class="infoItem"><strong class="infoLabel">가격</strong>
+      <div class="infoDesc price"></div>
+    </li>
+    <li class="infoItem"><strong class="infoLabel">공연 날짜</strong>
+      <div class="infoDesc date"></div>
+    </li>
+    <li class="infoItem"><strong class="infoLabel">예매 가능</strong>
+      <div class="infoDesc isAvailable"></div>
+    </li>
+    <li class="infoItem"><strong class="infoLabel">예매 오픈 시각</strong>
+      <div class="infoDesc remainingTime1" id="">00:00:00</div>
+    </li>
+    <li class="infoItem"><strong class="infoLabel"></strong>
+      <div class="infoDesc remainingTime" id="timer"
+           style="color: red; font-style: italic; font-size: 50px; display: flex; align-content: center; ">
+        00:00:00
+      </div>
+    </li>
+
+    <button id="bookingButton" onclick="onBookingButtonClick()">예매하기</button>
+<!--    <button id="deleteButton" onclick="deleteEvent(eventId)">삭제</button>-->
+
+  </ul>
 </div>
-<footer>
-  <nav aria-label="Page navigation example" class="justify-content-center">
-    <ul class="pagination">
-      <li class="page-item">
-        <a class="page-link" href="#" aria-label="Previous">
-          <span aria-hidden="true">&laquo;</span>
-        </a>
-      </li>
-      <li class="page-item"><a class="page-link" href="#">1</a></li>
-      <li class="page-item"><a class="page-link" href="#">2</a></li>
-      <li class="page-item"><a class="page-link" href="#">3</a></li>
-      <li class="page-item">
-        <a class="page-link" href="#" aria-label="Next">
-          <span aria-hidden="true">&raquo;</span>
-        </a>
-      </li>
-    </ul>
-  </nav>
-</footer>
 </body>
 <script>
   $(document).ready(function () {
-    showEvent(1);
-  });
-  $(document).on('click', '.col', function () {
-    let eventIdString = $(this).data('event-id');
-    let eventId = parseInt(eventIdString, 10);
-    window.location.href = "/neticket/events/" + eventId;
+    // 이벤트 ID를 URL에서 가져옵니다.
+    const eventId = window.location.pathname.split('/').pop();
+
+    // 이벤트 세부 정보를 가져옵니다.
+    getEventDetails(eventId);
+
+    // 1초마다 남은 시간을 갱신하는 타이머를 시작합니다.
+    setInterval(updateRemainingTime, 1000);
   });
 </script>
 </html>

@@ -1,5 +1,7 @@
 package com.example.neticket.security;
 
+import com.example.neticket.exception.CustomException;
+import com.example.neticket.exception.ExceptionType;
 import com.example.neticket.user.entity.User;
 import com.example.neticket.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -13,9 +15,9 @@ public class UserDetailsServiceImpl {
 
     private final UserRepository userRepository;
     
-    public UserDetails loadUsersByusername(String email) throws UsernameNotFoundException {
+    public UserDetails loadUsersByEmail(String email) {
         User user = userRepository.findByEmail(email).orElseThrow(
-                () -> new UsernameNotFoundException("유저를 찾을 수 없습니다.")
+                () -> new CustomException(ExceptionType.NOT_FOUND_USER_EXCEPTION)
         );
         return new UserDetailsImpl(user, user.getEmail());
 

@@ -1,4 +1,4 @@
-package com.example.neticket.event.entity;
+package com.example.neticket.reservation.entity;
 
 import java.time.LocalDateTime;
 import javax.persistence.EntityListeners;

@@ -21,9 +21,10 @@
   <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
   <script type="text/javascript" th:src="@{/js/basic.js}"></script>
 
-  <title>메인 페이지</title>
+  <title>예약완료 페이지</title>
 
 </head>
+
 <body>
 <div class="row justify-content-between align-items-center py-2">
   <div class="col-4">
@@ -34,7 +35,7 @@
   <nav class="col-8">
     <ul class="nav justify-content-end" style="margin-right: 50px">
       <li class="nav-item">
-      <a class="nav-link" href="/neticket/user" style="color: black">마이페이지</a>
+        <a class="nav-link" href="/neticket/user" style="color: black">마이페이지</a>
       </li>
       <li class="nav-item">
       <a class="nav-link" href="/neticket/login" style="color: black">로그인</a>
@@ -59,39 +60,14 @@
       <a href="#" class="list-group-item list-group-item-action">뮤지컬</a>
     </div>
   </div>
+  <div class="card" id="getresv">
 
-  <div id="event_box" class="row"
-       style="margin-left: 50px; margin-top: 50px; margin-right: 20px"></div>
-
+  </div>
 </div>
-<footer>
-  <nav aria-label="Page navigation example" class="justify-content-center">
-    <ul class="pagination">
-      <li class="page-item">
-        <a class="page-link" href="#" aria-label="Previous">
-          <span aria-hidden="true">&laquo;</span>
-        </a>
-      </li>
-      <li class="page-item"><a class="page-link" href="#">1</a></li>
-      <li class="page-item"><a class="page-link" href="#">2</a></li>
-      <li class="page-item"><a class="page-link" href="#">3</a></li>
-      <li class="page-item">
-        <a class="page-link" href="#" aria-label="Next">
-          <span aria-hidden="true">&raquo;</span>
-        </a>
-      </li>
-    </ul>
-  </nav>
-</footer>
 </body>
 <script>
   $(document).ready(function () {
-    showEvent(1);
-  });
-  $(document).on('click', '.col', function () {
-    let eventIdString = $(this).data('event-id');
-    let eventId = parseInt(eventIdString, 10);
-    window.location.href = "/neticket/events/" + eventId;
+    showReservationCompleted();
   });
 </script>
 </html>
