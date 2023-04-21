@@ -357,7 +357,6 @@ label {
   -webkit-box-shadow:  15px 15px 27px #e1e1e3, -15px -15px 27px #ffffff;
   box-shadow:  15px 15px 27px #e1e1e3, -15px -15px 27px #ffffff;
 }
-/* ^-- The margin bottom is necessary for the drop shadow otherwise it gets clipped in certain cases. */
 
 /* Top Half of card, image. */
 
@@ -454,10 +453,10 @@ opacity:1;
 .property-description h5 {
   font-size: 1.2em;
   font-weight: bold;
-  font-family: 'Nanum Pen Script', sans-serif;
+  font-family: 'Gowun Dodum', sans-serif;
   margin-top: 1em; /* 위 마진 추가 */
   margin-bottom: 0.5em;
-  color: #643636;
+  color: #b32b36;
 }
 
 .property-description h6 {
