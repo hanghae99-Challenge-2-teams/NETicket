@@ -1,69 +1,41 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport"
-        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
-        rel="stylesheet"
-        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
-        crossorigin="anonymous">
-  <link rel="preconnect" href="https://fonts.gstatic.com">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
-
-  <!-- Bootstrap JavaScript -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-          integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-          crossorigin="anonymous"></script>
-
-  <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
-  <script type="text/javascript" th:src="@{/js/basic.js}"></script>
-
-  <title>메인 페이지</title>
-
-</head>
+<head th:replace="header :: head"></head>
 <body>
-<div class="row justify-content-between align-items-center py-2">
-  <div class="col-4">
-    <h1 style="margin-top: 30px; margin-left: 70px"><a href="/neticket"
-                                                       style="text-decoration: none;color: black;">NETicket</a>
-    </h1>
-  </div>
-  <nav class="col-8">
-    <ul class="nav justify-content-end" style="margin-right: 50px">
-      <li class="nav-item">
-      <a class="nav-link" href="/neticket/user" style="color: black">마이페이지</a>
-      </li>
-      <li class="nav-item">
-      <a class="nav-link" href="/neticket/login" style="color: black">로그인</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/neticket/signup" style="color: black">회원가입</a>
-      </li>
-    </ul>
-  </nav>
-</div>
-<form action="#" method="get" class="search-container">
-  <input type="text" placeholder="검색">
-  <input type="submit" value="검색">
-</form>
-<div style="display: flex; margin-right: 20px" col-2>
-  <div style="margin-left: 50px; margin-top: 50px; margin-right: 20px" class="col-2">
-    <p>Category</p>
-    <div class="list-group" style="width: 100%; height: 100%">
-      <a href="#" class="list-group-item list-group-item-action">공연</a>
-      <a href="#" class="list-group-item list-group-item-action">영화</a>
-      <a href="#" class="list-group-item list-group-item-action">연극</a>
-      <a href="#" class="list-group-item list-group-item-action">뮤지컬</a>
+<div th:replace="navbar :: navbar"></div>
+
+<div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">
+  <div class="carousel-inner">
+    <div class="carousel-item active" data-bs-interval="1500">
+      <img
+          src="https://image.toast.com/aaaaab/ticketlink/TKL_8/TopBanner_%EB%B9%84%EC%8A%A4%ED%8B%B0.jpg"
+          class="d-block w-100" alt="...">
+    </div>
+    <div class="carousel-item" data-bs-interval="1500">
+      <img
+          src="https://image.toast.com/aaaaab/ticketlink/TKL_5/TopBanner_%EB%A0%88%EB%93%9C%EB%B6%81.jpg"
+          class="d-block w-100" alt="...">
+    </div>
+    <div class="carousel-item" data-bs-interval="1500">
+      <img src="https://image.toast.com/aaaaab/ticketlink/TKL_6/TopBanner_PC_%EC%9B%90%ED%94%BD.jpg"
+           class="d-block w-100" alt="...">
     </div>
   </div>
-
-  <div id="event_box" class="row"
-       style="margin-left: 50px; margin-top: 50px; margin-right: 20px"></div>
-
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval"
+          data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval"
+          data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
 </div>
+
+<div id="event_box" class="row"
+     style="margin-left: 50px; margin-top: 50px; margin-right: 20px"></div>
+
 <footer>
   <nav aria-label="Page navigation example" class="justify-content-center">
     <ul class="pagination">
@@ -87,6 +59,42 @@
 <script>
   $(document).ready(function () {
     showEvent(1);
+    const authToken = getCookie('Authorization');
+
+    if (authToken) {
+      // 인증 토큰이 있으면 사용자 권한 정보를 확인
+      const payload = JSON.parse(atob(authToken.split('.')[1]));
+      const userRole = payload.auth;
+      const userNickname = payload.sub;
+      console.log(userRole)
+
+      // 회원가입 링크의 텍스트를 사용자 닉네임으로 변경
+      const signupLink = document.querySelector('.nav-link[href="/neticket/signup"]');
+      signupLink.innerText = userNickname;
+      signupLink.href = '/neticket/user';
+
+      // 사용자 권한에 따라 공연 추가 버튼을 보이거나 숨김
+      if (userRole === 'ADMIN') {
+        document.querySelector('.nav-link[href="/neticket/admin/event"]').style.display = 'block';
+      } else {
+        document.querySelector('.nav-link[href="/neticket/admin/event"]').style.display = 'none';
+      }
+
+      // 인증 토큰이 있는 경우, 로그아웃 버튼으로 변경
+      const loginButton = document.querySelector('.nav-link[href="/neticket/login"]');
+      loginButton.innerText = '로그아웃';
+      loginButton.addEventListener('click', function (event) {
+        // 로그아웃 처리
+        event.preventDefault();
+        document.cookie = 'Authorization=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+        window.location.href = '/neticket/';
+      });
+    } else {
+      // 인증 토큰이 없는 경우, 로그인 버튼으로 변경
+      const loginButton = document.querySelector('.nav-link[href="/neticket/login"]');
+      loginButton.innerText = '로그인';
+    }
+
   });
   $(document).on('click', '.col', function () {
     let eventIdString = $(this).data('event-id');

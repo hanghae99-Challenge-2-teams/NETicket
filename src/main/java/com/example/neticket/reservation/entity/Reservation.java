@@ -33,14 +33,16 @@ public class Reservation {
   private User user;
 
 //  예매-공연회차 단방향 다대일 관계로 설정
-  @ManyToOne
-  @JoinColumn(name = "ticket_info_id", nullable = false)
-  private TicketInfo ticketInfo;
+//  @ManyToOne
+//  @JoinColumn(name = "ticket_info_id", nullable = false)
+//  private TicketInfo ticketInfo;
 
-  public Reservation(ReservationRequestDto dto, User user, TicketInfo ticketInfo) {
+  private Long ticketInfoId;
+
+  public Reservation(ReservationRequestDto dto, User user) {
     this.count = dto.getCount();
     this.user = user;
-    this.ticketInfo = ticketInfo;
+    this.ticketInfoId = dto.getTicketInfoId();
   }
 
 }

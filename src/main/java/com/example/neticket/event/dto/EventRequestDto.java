@@ -1,9 +1,12 @@
 package com.example.neticket.event.dto;
 
 import java.time.LocalDateTime;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class EventRequestDto {
 
   private String title;
@@ -13,4 +16,13 @@ public class EventRequestDto {
   private LocalDateTime openDate;
   private int totalSeat;
 
+  public EventRequestDto(String title, String place, int price, LocalDateTime date,
+      LocalDateTime openDate, int totalSeat) {
+    this.title = title;
+    this.place = place;
+    this.price = price;
+    this.date = date;
+    this.openDate = openDate;
+    this.totalSeat = totalSeat;
+  }
 }
