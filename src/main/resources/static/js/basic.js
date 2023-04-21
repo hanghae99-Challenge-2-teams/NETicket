@@ -1,5 +1,4 @@
 // 회원가입 페이지
-
 $(document).ready(function () {
   // 회원가입 버튼 클릭 시
   $("#signup-btn").click(function () {
@@ -57,7 +56,15 @@ $(document).ready(function () {
 });
 
 // 로그인 페이지
-// let isAdmin = false;
+$(document).ready(function () {
+  // 로그인 입력 필드에 Enter 키를 눌렀을 때 login() 함수 호출
+  $("#login_email, #login_password").on('keypress', function (event) {
+    if (event.which === 13) { // 13은 Enter 키의 keyCode입니다.
+      event.preventDefault();
+      login();
+    }
+  });
+});
 
 function login() {
   let useremail = $('#login_email').val();
@@ -115,7 +122,43 @@ function getCookie(name) {
 }
 
 // 메인페이지
-// 행사정보 조회
+function createCard(id, image, title, date, place) {
+  let card = document.createElement('div');
+  card.classList.add('property-card');
+
+  let imageContainer = document.createElement('img');
+  imageContainer.classList.add('property-image');
+
+  imageContainer.style.padding = '0'; // 이미지 컨테이너에 패딩 값 추가
+
+  imageContainer.src = `https://neticketbucket.s3.ap-northeast-2.amazonaws.com/uploaded-image/${image}`;
+
+  imageContainer.onerror = function () {
+    imageContainer.src = 'path/to/default/image.jpg'; // 대체 이미지 경로로 수정
+  };
+
+  let descriptionContainer = document.createElement('div');
+  descriptionContainer.classList.add('property-description');
+  descriptionContainer.innerHTML = `<h5>${title}</h5><h6>${date}</h6><p>${place}</p>`;
+
+  let socialIconsContainer = document.createElement('div');
+  socialIconsContainer.classList.add('property-social-icons');
+  socialIconsContainer.innerHTML = `<a href="#" class="property-social-icon"><i class="fa fa-facebook"></i></a>
+                                    <a href="#" class="property-social-icon"><i class="fa fa-twitter"></i></a>
+                                    <a href="#" class="property-social-icon"><i class="fa fa-google-plus"></i></a>`;
+
+  card.appendChild(imageContainer);
+  card.appendChild(descriptionContainer);
+  card.appendChild(socialIconsContainer);
+
+  card.addEventListener('click', function () {
+    // 카드 클릭 이벤트 처리
+  });
+
+  return card;
+}
+
+// showEvent 함수 내부
 function showEvent(pageNum) {
   $.ajax({
     type: "GET",
@@ -125,30 +168,36 @@ function showEvent(pageNum) {
     success: function (response) {
       showPaging(response);
 
-      $('#event_box').empty();
-      for (let i = 0; i < response.content.length; i++) {
-        let eventDto = response.content[i];
-        let id = eventDto.id;
-        let image = eventDto.image;
-        let title = eventDto.title;
-        let date = eventDto.date;
-        let place = eventDto.place;
+      let eventBox = document.querySelector('#event_box');
+      eventBox.innerHTML = '';
+      let numCardsPerRow = 5;
+      for (let i = 0; i < response.content.length; i += numCardsPerRow) {
+        let row = document.createElement('div');
+        row.classList.add('row');
+        eventBox.appendChild(row);
 
-        let tmpevent = `<div class="col" data-event-id="${id}">
-                          <div class="card h-100">
-                            <img src="https://neticketbucket.s3.ap-northeast-2.amazonaws.com/uploaded-image/${image}"
-                                 class="card-img-top" alt="...">
-                            <div class="card-body">
-                              <h5 class="card-title">${title}</h5>
-                              <h6 class="card-date">${date}</h6>
-                              <p class="card-text">${place}</p>
-                            </div>
-                          </div>
-                        </div>`
-        $('#event_box').append(tmpevent)
+        for (let j = 0; j < numCardsPerRow; j++) {
+          if (i + j >= response.content.length) {
+            break;
+          }
+
+          let eventDto = response.content[i + j];
+          let id = eventDto.id;
+          let image = eventDto.image;
+          let title = eventDto.title;
+          let date = eventDto.date;
+          let place = eventDto.place;
+
+          let card = createCard(id, image, title, date, place);
+          let cardColumn = document.createElement('div');
+          cardColumn.classList.add('col');
+          cardColumn.dataset.eventId = id;
+          cardColumn.appendChild(card);
+          row.appendChild(cardColumn);
+        }
       }
     },
-  })
+  });
 }
 
 // 페이징 처리
@@ -432,6 +481,7 @@ function addevent() {
     });
   });
 }
+
 function loadCacheList() {
   let token = getAuthTokenFromCookie();
   $.ajax({
@@ -441,34 +491,32 @@ function loadCacheList() {
     headers: {
       'Authorization': token // Authorization 헤더에 토큰 값 추가
     },
-    success: function(response) {
+    success: function (response) {
       let keys = response;
 
       // 받아온 캐시 키 목록을 보여줍니다.
       let $select = $('#inputGroupSelect04');
       $select.empty();
       $select.append('<option selected>Left Seats 캐시 목록</option>');
-      $.each(keys, function(i, key) {
+      $.each(keys, function (i, key) {
         // "ls" 문자열을 제외하고 숫자만 추출합니다.
         let number = parseInt(key.substring(2));
 
         // 셀렉트 옵션을 생성하여 추가합니다.
         $select.append('<option value="' + number + '">' + key + '</option>');
       });
-      $('#deleteButton').click(function() {
+      $('#deleteButton').click(function () {
         // 선택된 옵션의 값을 가져옵니다.
         let cacheEventNum = $('#inputGroupSelect04 option:selected').val();
         deleteLeftSeatsCache(cacheEventNum);
       });
     },
-    error: function(xhr, status, error) {
+    error: function (xhr, status, error) {
       console.error(error);
       alert("오류가 발생했습니다. 다시 시도해주세요.");
     }
   });
-
 }
-
 
 function cacheEventAdd() {
   let token = getAuthTokenFromCookie();
@@ -485,7 +533,7 @@ function cacheEventAdd() {
       location.reload();
       alert("캐시가 활성화 되었습니다.");
     },
-    error: function(xhr, status, error) {
+    error: function (xhr, status, error) {
       console.error(error);
       alert("캐시 생성에 실패했습니다.");
     }
@@ -506,7 +554,7 @@ function deleteLeftSeatsCache(cacheEventNum) {
       location.reload();
       alert("캐시가 성공적으로 삭제되었습니다.");
     },
-    error: function(xhr, status, error) {
+    error: function (xhr, status, error) {
       console.error(error);
       alert("캐시 삭제를 실패했습니다.");
     }
@@ -527,14 +575,12 @@ function refreshLeftSeatsCache() {
     success: function (response) {
       alert("남은 좌석 수가 성공적으로 갱신되었습니다.");
     },
-    error: function(xhr, status, error) {
+    error: function (xhr, status, error) {
       console.error(error);
       alert("남은 좌석 수 갱신에 실패했습니다.");
     }
   });
 }
-
-
 
 // 마이페이지
 function showMyPage() {
