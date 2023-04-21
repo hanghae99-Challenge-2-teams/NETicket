@@ -1,102 +1,103 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport"
-        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
-        rel="stylesheet"
-        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
-        crossorigin="anonymous">
-  <link rel="preconnect" href="https://fonts.gstatic.com">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
-
-  <!-- Bootstrap JavaScript -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
-          integrity="sha384-rbsA6LEXE8q+niqg3SDx9aJxZY5OrbW5hcbbqvl/H62Q4DGhrIOL8RqidWwgJZC6"
-          crossorigin="anonymous"></script>
-
-
-  <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
-  <script type="text/javascript" th:src="@{/js/basic.js}"></script>
-  <title>NETicket 공연추가 페이지</title>
-</head>
+<head th:replace="header :: head"></head>
 <body>
-<div class="container">
-  <div class="row justify-content-between align-items-center py-2">
-    <div class="col-4">
-      <h1 style="margin-top: 30px; margin-left: 70px">
-        <a href="/neticket" style="text-decoration: none; color: black;">NETicket</a>
-      </h1>
-    </div>
-    <nav class="col-8">
-      <ul class="nav justify-content-end" style="margin-right: 50px">
-        <a class="nav-link" href="/neticket/login" style="color: black">로그인</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/neticket/signup" style="color: black">회원가입</a>
-        </li>
-      </ul>
-    </nav>
-  </div>
-  <form action="#" method="get" class="search-container">
-    <input type="text" placeholder="검색">
-    <input type="submit" value="검색">
-  </form>
-  <div class="row">
-    <div class="col-2">
-      <div style="margin-left: 50px; margin-top: 50px; margin-right: 20px">
-        <p>Category</p>
-        <div class="list-group" style="width: 100%; height: 100%">
-          <a href="#" class="list-group-item list-group-item-action">공연</a>
-          <a href="#" class="list-group-item list-group-item-action">영화</a>
-          <a href="#" class="list-group-item list-group-item-action">연극</a>
-          <a href="#" class="list-group-item list-group-item-action">뮤지컬</a>
-        </div>
+<div th:replace="navbar :: navbar"></div>
+<div class="row">
+  <div class="event-form-container">
+    <form id="eventForm" method="post" enctype="multipart/form-data">
+      <div class="input-group">
+        <select class="form-select" id="inputGroupSelect04"
+                aria-label="Example select with button addon">
+          <option selected>Left Seats 캐시 목록</option>
+          <option value="1">One</option>
+          <option value="2">Two</option>
+          <option value="3">Three</option>
+        </select>
+        <button type="button" class="btn btn-danger" id="deleteButton">삭제</button>
       </div>
-    </div>
-    <div class="col-10">
-      <form id="eventForm" method="post" enctype="multipart/form-data">
-        <div class="form-group">
-          <label for="title">제목</label>
-          <input type="text" class="form-control" id="title" name="title" placeholder="제목을 입력하세요">
-        </div>
-        <div class="form-group">
-          <label for="place">장소</label>
-          <input type="text" class="form-control" id="place" name="place" placeholder="장소를 입력하세요">
-        </div>
-        <div class="form-group">
-          <label for="price">가격</label>
-          <input type="number" class="form-control" id="price" name="price" placeholder="가격을 입력하세요">
-        </div>
-        <div class="form-group">
-          <label for="date">날짜</label>
-          <input type="date" class="form-control" id="date" name="date">
-        </div>
-        <div class="form-group">
-          <label for="openDate">오픈 날짜</label>
-          <input type="date" class="form-control" id="openDate" name="openDate">
-        </div>
-        <div class="form-group">
-          <label for="totalSeat">총 좌석수</label>
-          <input type="number" class="form-control" id="totalSeat" name="totalSeat"
-                 placeholder="총 좌석수를 입력하세요">
-        </div>
-        <div class="form-group">
-          <label for="image">이미지</label>
-          <input type="file" class="form-control-file" id="image" name="image">
-        </div>
-        <button type="submit" class="btn btn-primary" id="saveButton">저장</button>
-      </form>
-    </div>
+      <div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="캐시를 생성할 공연 번호를 입력하세요."
+               aria-label="Recipient's username" id="cacheSave" aria-describedby="button-addon2">
+        <button class="btn btn-outline-secondary" onclick="cacheEventAdd()" type="button"
+                id="button-addon2">생성
+        </button>
+      </div>
+      <div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="남은 좌석 수를 갱신할 공연 번호를 입력하세요."
+               aria-label="Recipient's username" id="cacheRefresh" aria-describedby="button-addon3">
+        <button class="btn btn-outline-secondary" onclick="refreshLeftSeatsCache()" type="button"
+                id="button-addon3">갱신
+        </button>
+      </div>
+      <div class="form-group">
+        <label for="title">제목</label>
+        <input type="text" class="form-control" id="title" name="title" placeholder="제목을 입력하세요">
+      </div>
+      <div class="form-group">
+        <label for="place">장소</label>
+        <input type="text" class="form-control" id="place" name="place" placeholder="장소를 입력하세요">
+      </div>
+      <div class="form-group">
+        <label for="price">가격</label>
+        <input type="number" class="form-control" id="price" name="price" placeholder="가격을 입력하세요">
+      </div>
+      <div class="form-group">
+        <label for="date">날짜</label>
+        <input type="date" class="form-control" id="date" name="date">
+      </div>
+      <div class="form-group">
+        <label for="openDate">오픈 날짜</label>
+        <input type="date" class="form-control" id="openDate" name="openDate">
+      </div>
+      <div class="form-group">
+        <label for="totalSeat">총 좌석수</label>
+        <input type="number" class="form-control" id="totalSeat" name="totalSeat"
+               placeholder="총 좌석수를 입력하세요">
+      </div>
+      <div class="form-group">
+        <label for="image">이미지</label>
+        <input type="file" class="form-control-file" id="image" name="image">
+      </div>
+      <button type="submit" class="btn" id="saveButton">저장</button>
+    </form>
+    </form>
   </div>
+</div>
 </div>
 </body>
 <script>
-$(document).ready(function () {
-  addevent();
-});
+  $(document).ready(function () {
+    addevent();
+    loadCacheList();
+    const authToken = getCookie('Authorization');
+
+    if (authToken) {
+      // 인증 토큰이 있으면 사용자 권한 정보를 확인
+      const payload = JSON.parse(atob(authToken.split('.')[1]));
+      const userRole = payload.auth;
+      const userNickname = payload.sub;
+      console.log(userRole)
+
+      // 회원가입 링크의 텍스트를 사용자 닉네임으로 변경
+      const signupLink = document.querySelector('.nav-link[href="/neticket/signup"]');
+      signupLink.innerText = userNickname;
+      signupLink.href = '/neticket/user';
+
+      // 인증 토큰이 있는 경우, 로그아웃 버튼으로 변경
+      const loginButton = document.querySelector('.nav-link[href="/neticket/login"]');
+      loginButton.innerText = '로그아웃';
+      loginButton.addEventListener('click', function (event) {
+        // 로그아웃 처리
+        event.preventDefault();
+        document.cookie = 'Authorization=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+        window.location.href = '/neticket/';
+      });
+    } else {
+      // 인증 토큰이 없는 경우, 로그인 버튼으로 변경
+      const loginButton = document.querySelector('.nav-link[href="/neticket/login"]');
+      loginButton.innerText = '로그인';
+    }
+  });
 </script>
 </html>

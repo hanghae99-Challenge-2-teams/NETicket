@@ -1,10 +1,25 @@
 body {
   font-size: 1.4rem;
   font-weight: normal;
-  font-family: -apple-system, system-ui, BlinkMacSystemFont, "맑은 고딕", "Malgun Gothic", "돋움", Dotum, Helvetica, "Apple SD Gothic Neo", sans-serif;
+  font-family: 'Gowun Dodum', sans-serif;
   color: #000;
   height: 100%;
+  background-color: #f5f5f5ad; /* 배경색 변경 */
+  margin-left: 100px;
+  margin-right: 100px;
 }
+
+.row {
+  margin-top: 30px;
+
+}
+
+.card-img-top {
+  width: 100%;
+  height: 250px; /* 원하는 높이를 설정하세요 */
+  object-fit: cover;
+}
+
 
 .text-container h2 {
   margin: 0 0 20px 0;
@@ -16,7 +31,6 @@ body {
 
 .search-container {
   display: flex;
-  justify-content: center;
 }
 
 .search-container input[type="text"] {
@@ -25,7 +39,7 @@ body {
   margin-right: 10px;
   font-size: 16px;
   margin-bottom: 50px;
-  width: 400px;
+  width: 500px;
 }
 
 .search-container input[type="submit"] {
@@ -33,7 +47,7 @@ body {
   border: none;
   border-radius: 5px;
   margin-bottom: 50px;
-  background-color: #007bff;
+  background-color: #e15561;
   color: white;
   font-size: 16px;
   cursor: pointer;
@@ -43,6 +57,22 @@ footer {
   display: flex;
   justify-content: center;
   margin-top: 100px;
+}
+
+.info {
+  margin-top: 0; /* 위쪽 마진을 없애기 위해 변경 */
+  width: 600px; /* 가로 크기 고정 */
+  padding: 20px;
+  border-radius: 20px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 그림자 추가 */
+}
+
+
+.infoSection {
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #e9ecef;
 }
 
 .infoItem {
@@ -71,6 +101,7 @@ footer {
   font-size: 14px;
 }
 
+
 .productWrapper .summary .info {
   display: inline-block;
   width: 50.5rem;
@@ -92,16 +123,13 @@ footer {
 }
 
 #bookingButton {
-  background-color: blue;
+  background-color: #dc3545;
   color: white;
   font-weight: bold;
   padding: 10px 20px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-}
-
-#bookingButton {
   font-size: 15px;
   width: 100%;
 }
@@ -116,3 +144,333 @@ footer {
   margin-right: 40px;
 }
 
+.image{
+  width: 100%;
+  height: 500px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  border-radius: 20px;
+}
+
+.content-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 50px;
+  margin-left: 50px;
+  margin-right: 50px;
+}
+
+.category-container {
+  flex: 0 0 20%;
+  max-width: 20%;
+  margin-right: 30px;
+}
+
+.card-body {
+  flex: 1 1 auto;
+  padding: 1rem 1rem;
+  font-family: 'Nanum Gothic', sans-serif;
+}
+
+.card-title {
+  margin-bottom: .5rem;
+  font-weight: bold;
+  font-family: 'Nanum Gothic';
+}
+
+.card-container {
+  display: flex;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-gap: 20px;
+}
+
+.card-wrapper {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 20px;
+}
+
+#eventForm {
+  background-color: white;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+  margin-bottom: 10px;
+}
+
+.form-control-file {
+  margin-top: 10px;
+}
+
+#saveButton {
+  float: right;
+  width: 70px;
+  background-color: #e15561;
+  color: white;
+}
+
+.event-form-container {
+  display: flex;
+  justify-content: center;
+  background-color: white;
+  margin-top: 20px;
+  margin-bottom: 40px;
+  background-color: rgba(255, 192, 203, 0.3); /* 핑크빛 배경 */
+  border-radius: 15px; /* 둥글게 처리 */
+  padding: 15px; /* 내부 여백 추가 */
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); /* 그림자 효과 */
+
+}
+
+.btn {
+  border-radius: 50px; /* 둥글게 처리 */
+}
+
+#eventForm {
+  width: 90%;
+  max-width: 800px;
+}
+
+label {
+  font-size: 1.1rem; /* 원하는 글씨 크기로 변경 */
+}
+
+.reservation-card {
+  margin-top: 100px;
+  margin-left: 100px;
+  padding: 20px;
+  width: 650px;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.reservation-header {
+  margin-bottom: 16px;
+  font-weight: bold;
+  text-transform: uppercase;
+  margin-top: 50px;
+}
+
+.reservation-info-item {
+  list-style: none;
+  font-size: 16px;
+  margin-bottom: 12px;
+}
+
+.reservation-info-label {
+  display: inline-block;
+  width: 120px;
+  font-weight: bold;
+}
+
+.reservation-info-text {
+  display: inline;
+}
+
+/* pagination 스타일 커스텀 */
+.pagination {
+  display: flex;
+  justify-content: center;
+}
+
+.pagination .page-item {
+  margin: 0 5px;
+}
+
+.pagination .page-link {
+  color: #e15561;
+  background-color: #fff;
+  border: 1px solid #dc3545;
+}
+
+.pagination .page-link:hover {
+  color: #fff;
+  background-color: #e15561;
+  border: 1px solid #dc3545;
+}
+
+.pagination .page-link:focus {
+  box-shadow: 0 0 0 0.2rem rgba(255, 43, 43, 0.5);
+}
+
+.page-item.active .page-link {
+  z-index: 3;
+  color: #fff;
+  background-color: #dc3545;
+  border-color: #e15561;
+}
+
+.list-group {
+  display: flex;
+  flex-direction: column;
+  padding-left: 0;
+  margin-bottom: 0;
+  border-radius: 1rem;
+}
+
+/*카드슬라이드*/
+
+#carouselExampleInterval {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.carousel-item img {
+  max-height: 400px;
+  object-fit: cover;
+}
+
+.center
+{
+  height:100vh;
+  width:100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* End Non-Essential  */
+
+.property-card
+{
+  height:18em;
+  width:14em;
+  display:-webkit-box;
+  display:-ms-flexbox;
+  display:flex;
+  -webkit-box-orient:vertical;
+  -webkit-box-direction:normal;
+  -ms-flex-direction:column;
+  flex-direction:column;
+  position:relative;
+  -webkit-transition:all 0.4s cubic-bezier(0.645, 0.045, 0.355, 1);
+  -o-transition:all 0.4s cubic-bezier(0.645, 0.045, 0.355, 1);
+  transition:all 0.4s cubic-bezier(0.645, 0.045, 0.355, 1);
+  border-radius:16px;
+  overflow:hidden;
+  -webkit-box-shadow:  15px 15px 27px #e1e1e3, -15px -15px 27px #ffffff;
+  box-shadow:  15px 15px 27px #e1e1e3, -15px -15px 27px #ffffff;
+}
+
+/* Top Half of card, image. */
+
+.property-image
+{
+  height:50%;
+  width: 100%; /* 이미지 너비를 카드 너비에 맞춥니다. */
+  object-fit: cover;
+  position:Absolute;
+  top:0px;
+  -webkit-transition:all 0.4s cubic-bezier(0.645, 0.045, 0.355, 1);
+  -o-transition:all 0.4s cubic-bezier(0.645, 0.045, 0.355, 1);
+  transition:all 0.4s cubic-bezier(0.645, 0.045, 0.355, 1);
+  background-image:url('https://cdn.photographylife.com/wp-content/uploads/2017/01/What-is-landscape-photography.jpg');
+  background-size:cover;
+  background-repeat:no-repeat;
+}
+
+/* Bottom Card Section */
+
+section.infoSection{
+  margin: 10px 0 0 0;
+  padding: 0px;
+}
+
+.property-description
+{
+  background-color: #FAFAFC;
+  height:12em;
+  width:14em;
+  position:absolute;
+  bottom:0em;
+  -webkit-transition:all 0.4s cubic-bezier(0.645, 0.045, 0.355, 1);
+  -o-transition:all 0.4s cubic-bezier(0.645, 0.045, 0.355, 1);
+  transition:all 0.4s cubic-bezier(0.645, 0.045, 0.355, 1);
+  padding: 0.5em 1em;
+  text-align:center;
+}
+
+/* Social Icons */
+
+.property-social-icons
+{
+  width:1em;
+  height:1em;
+  background-color:black;
+  position:absolute;
+  bottom:1em;
+  left:1em;
+  -webkit-transition:all 0.4s cubic-bezier(0.645, 0.045, 0.355, 1);
+  -o-transition:all 0.4s cubic-bezier(0.645, 0.045, 0.355, 1);
+  transition:all 0.4s cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+
+/* Property Cards Hover States */
+
+.property-card:hover .property-description
+{
+  height:0em;
+  padding:0px 1em;
+}
+.property-card:hover .property-image
+{
+  height:18em;
+}
+
+.property-card:hover .property-social-icons
+{
+  background-color:white;
+}
+
+.property-card:hover .property-social-icons:hover
+{
+  background-color:blue;
+  cursor:pointer;
+}
+
+.property-image-title
+{
+text-align:center;
+position:Relative;
+top:30%;
+opacity:0;
+transition:all 0.4s cubic-bezier(0.645, 0.045, 0.355, 1) 0.2s;
+color:black;
+font-size:1.2em;
+}
+
+.property-card:hover .property-image-title
+{
+opacity:1;
+}
+
+.property-description h5 {
+  font-size: 1.2em;
+  font-weight: bold;
+  font-family: 'Gowun Dodum', sans-serif;
+  margin-top: 1em; /* 위 마진 추가 */
+  margin-bottom: 0.5em;
+  color: #b32b36;
+}
+
+.property-description h6 {
+  font-size: 1.3em;
+  font-weight: normal;
+  font-family: 'Dongle', sans-serif;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+.property-description p {
+  font-size: 1.2em;
+  font-weight: normal;
+  font-family: 'Dongle', sans-serif;
+  margin-top: 0;
+  margin-bottom: 0;
+}
