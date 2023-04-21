@@ -66,7 +66,6 @@ $(document).ready(function () {
   });
 });
 
-
 function login() {
   let useremail = $('#login_email').val();
   let password = $('#login_password').val();
@@ -134,10 +133,9 @@ function createCard(id, image, title, date, place) {
 
   imageContainer.src = `https://neticketbucket.s3.ap-northeast-2.amazonaws.com/uploaded-image/${image}`;
 
-  imageContainer.onerror = function() {
+  imageContainer.onerror = function () {
     imageContainer.src = 'path/to/default/image.jpg'; // 대체 이미지 경로로 수정
   };
-
 
   let descriptionContainer = document.createElement('div');
   descriptionContainer.classList.add('property-description');
@@ -153,7 +151,7 @@ function createCard(id, image, title, date, place) {
   card.appendChild(descriptionContainer);
   card.appendChild(socialIconsContainer);
 
-  card.addEventListener('click', function() {
+  card.addEventListener('click', function () {
     // 카드 클릭 이벤트 처리
   });
 
@@ -179,7 +177,9 @@ function showEvent(pageNum) {
         eventBox.appendChild(row);
 
         for (let j = 0; j < numCardsPerRow; j++) {
-          if (i + j >= response.content.length) break;
+          if (i + j >= response.content.length) {
+            break;
+          }
 
           let eventDto = response.content[i + j];
           let id = eventDto.id;
@@ -478,6 +478,7 @@ function addevent() {
     });
   });
 }
+
 function loadCacheList() {
   let token = getAuthTokenFromCookie();
   $.ajax({
@@ -487,40 +488,39 @@ function loadCacheList() {
     headers: {
       'Authorization': token // Authorization 헤더에 토큰 값 추가
     },
-    success: function(response) {
+    success: function (response) {
       let keys = response;
 
       // 받아온 캐시 키 목록을 보여줍니다.
       let $select = $('#inputGroupSelect04');
       $select.empty();
       $select.append('<option selected>Left Seats 캐시 목록</option>');
-      $.each(keys, function(i, key) {
+      $.each(keys, function (i, key) {
         // "ls" 문자열을 제외하고 숫자만 추출합니다.
         let number = parseInt(key.substring(2));
 
         // 셀렉트 옵션을 생성하여 추가합니다.
         $select.append('<option value="' + number + '">' + key + '</option>');
       });
-      $('#deleteButton').click(function() {
+      $('#deleteButton').click(function () {
         // 선택된 옵션의 값을 가져옵니다.
         let cacheEventNum = $('#inputGroupSelect04 option:selected').val();
         deleteLeftSeatsCache(cacheEventNum);
       });
 
-      $('#refreshButton').click(function() {
+      $('#refreshButton').click(function () {
         // 선택된 옵션의 값을 가져옵니다.
         let cacheEventNum = $('#inputGroupSelect04 option:selected').val();
         refreshLeftSeatsCache(cacheEventNum);
       });
     },
-    error: function(xhr, status, error) {
+    error: function (xhr, status, error) {
       console.error(error);
       alert("오류가 발생했습니다. 다시 시도해주세요.");
     }
   });
 
 }
-
 
 function cacheEventAdd() {
   let token = getAuthTokenFromCookie();
@@ -537,7 +537,7 @@ function cacheEventAdd() {
       location.reload();
       alert("캐시가 활성화 되었습니다.");
     },
-    error: function(xhr, status, error) {
+    error: function (xhr, status, error) {
       console.error(error);
       alert("캐시 생성에 실패했습니다.");
     }
@@ -558,7 +558,7 @@ function deleteLeftSeatsCache(cacheEventNum) {
       location.reload();
       alert("캐시가 성공적으로 삭제되었습니다.");
     },
-    error: function(xhr, status, error) {
+    error: function (xhr, status, error) {
       console.error(error);
       alert("캐시 삭제를 실패했습니다.");
     }
@@ -578,14 +578,12 @@ function refreshLeftSeatsCache(cacheEventNum) {
     success: function (response) {
       alert("캐시가 성공적으로 갱신되었습니다.");
     },
-    error: function(xhr, status, error) {
+    error: function (xhr, status, error) {
       console.error(error);
       alert("캐시 갱신에 실패했습니다.");
     }
   });
 }
-
-
 
 // 마이페이지
 function showMyPage() {

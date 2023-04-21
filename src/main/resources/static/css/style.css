@@ -326,14 +326,6 @@ label {
   object-fit: cover;
 }
 
-
-
-
-
-
-
-
-
 .center
 {
   height:100vh;
@@ -383,7 +375,6 @@ label {
   background-size:cover;
   background-repeat:no-repeat;
 }
-
 
 /* Bottom Card Section */
 
@@ -444,7 +435,6 @@ section.infoSection{
   cursor:pointer;
 }
 
-
 .property-image-title
 {
 text-align:center;
@@ -485,17 +475,3 @@ opacity:1;
   margin-top: 0;
   margin-bottom: 0;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

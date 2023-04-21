@@ -3,62 +3,62 @@
 <head th:replace="header :: head"></head>
 <body>
 <div th:replace="navbar :: navbar"></div>
-  <div class="row">
-    <div class="event-form-container">
-      <form id="eventForm" method="post" enctype="multipart/form-data">
-        <div class="input-group">
-          <select class="form-select" id="inputGroupSelect04"
-                  aria-label="Example select with button addon">
-            <option selected>Left Seats 캐시 목록</option>
-            <option value="1">One</option>
-            <option value="2">Two</option>
-            <option value="3">Three</option>
-          </select>
-          <button type="button" class="btn btn-danger" id="deleteButton">삭제</button>
-          <button type="button" class="btn btn-info" id="refreshButton">갱신</button>
-        </div>
-        <div class="input-group mb-3">
-          <input type="text" class="form-control" placeholder="캐시를 생성할 공연 번호를 입력하세요."
-                 aria-label="Recipient's username" id="cacheSave" aria-describedby="button-addon2">
-          <button class="btn btn-outline-secondary" onclick="cacheEventAdd()" type="button"
-                  id="button-addon2">생성
-          </button>
-        </div>
+<div class="row">
+  <div class="event-form-container">
+    <form id="eventForm" method="post" enctype="multipart/form-data">
+      <div class="input-group">
+        <select class="form-select" id="inputGroupSelect04"
+                aria-label="Example select with button addon">
+          <option selected>Left Seats 캐시 목록</option>
+          <option value="1">One</option>
+          <option value="2">Two</option>
+          <option value="3">Three</option>
+        </select>
+        <button type="button" class="btn btn-danger" id="deleteButton">삭제</button>
+        <button type="button" class="btn btn-info" id="refreshButton">갱신</button>
+      </div>
+      <div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="캐시를 생성할 공연 번호를 입력하세요."
+               aria-label="Recipient's username" id="cacheSave" aria-describedby="button-addon2">
+        <button class="btn btn-outline-secondary" onclick="cacheEventAdd()" type="button"
+                id="button-addon2">생성
+        </button>
+      </div>
 
-        <div class="form-group">
-          <label for="title">제목</label>
-          <input type="text" class="form-control" id="title" name="title" placeholder="제목을 입력하세요">
-        </div>
-        <div class="form-group">
-          <label for="place">장소</label>
-          <input type="text" class="form-control" id="place" name="place" placeholder="장소를 입력하세요">
-        </div>
-        <div class="form-group">
-          <label for="price">가격</label>
-          <input type="number" class="form-control" id="price" name="price" placeholder="가격을 입력하세요">
-        </div>
-        <div class="form-group">
-          <label for="date">날짜</label>
-          <input type="date" class="form-control" id="date" name="date">
-        </div>
-        <div class="form-group">
-          <label for="openDate">오픈 날짜</label>
-          <input type="date" class="form-control" id="openDate" name="openDate">
-        </div>
-        <div class="form-group">
-          <label for="totalSeat">총 좌석수</label>
-          <input type="number" class="form-control" id="totalSeat" name="totalSeat"
-                 placeholder="총 좌석수를 입력하세요">
-        </div>
-        <div class="form-group">
-          <label for="image">이미지</label>
-          <input type="file" class="form-control-file" id="image" name="image">
-        </div>
-        <button type="submit" class="btn" id="saveButton">저장</button>
-      </form>
-      </form>
-    </div>
+      <div class="form-group">
+        <label for="title">제목</label>
+        <input type="text" class="form-control" id="title" name="title" placeholder="제목을 입력하세요">
+      </div>
+      <div class="form-group">
+        <label for="place">장소</label>
+        <input type="text" class="form-control" id="place" name="place" placeholder="장소를 입력하세요">
+      </div>
+      <div class="form-group">
+        <label for="price">가격</label>
+        <input type="number" class="form-control" id="price" name="price" placeholder="가격을 입력하세요">
+      </div>
+      <div class="form-group">
+        <label for="date">날짜</label>
+        <input type="date" class="form-control" id="date" name="date">
+      </div>
+      <div class="form-group">
+        <label for="openDate">오픈 날짜</label>
+        <input type="date" class="form-control" id="openDate" name="openDate">
+      </div>
+      <div class="form-group">
+        <label for="totalSeat">총 좌석수</label>
+        <input type="number" class="form-control" id="totalSeat" name="totalSeat"
+               placeholder="총 좌석수를 입력하세요">
+      </div>
+      <div class="form-group">
+        <label for="image">이미지</label>
+        <input type="file" class="form-control-file" id="image" name="image">
+      </div>
+      <button type="submit" class="btn" id="saveButton">저장</button>
+    </form>
+    </form>
   </div>
+</div>
 </div>
 </body>
 <script>
