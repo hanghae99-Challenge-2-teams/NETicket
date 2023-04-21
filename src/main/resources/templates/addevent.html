@@ -24,7 +24,13 @@
                 id="button-addon2">생성
         </button>
       </div>
-
+      <div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="남은 좌석 수를 갱신할 공연 번호를 입력하세요."
+               aria-label="Recipient's username" id="cacheRefresh" aria-describedby="button-addon3">
+        <button class="btn btn-outline-secondary" onclick="refreshLeftSeatsCache()" type="button"
+                id="button-addon3">갱신
+        </button>
+      </div>
       <div class="form-group">
         <label for="title">제목</label>
         <input type="text" class="form-control" id="title" name="title" placeholder="제목을 입력하세요">

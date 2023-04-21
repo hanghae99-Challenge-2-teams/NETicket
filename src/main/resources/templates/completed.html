@@ -70,6 +70,14 @@
       signupLink.innerText = userNickname;
       signupLink.href = '/neticket/user';
 
+      // admin 유저만 response 시간 표시
+      if (userRole === 'ADMIN') {
+        let responseTime = localStorage.getItem('responseTime');
+        if (responseTime) {
+          $('#responseTime').text(`예매 응답시간 : ${responseTime} ms`);
+        }
+      }
+
       // 인증 토큰이 있는 경우, 로그아웃 버튼으로 변경
       const loginButton = document.querySelector('.nav-link[href="/neticket/login"]');
       loginButton.innerText = '로그아웃';

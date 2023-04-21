@@ -61,28 +61,5 @@ public class ReservationController {
     return ResponseEntity.ok(new MessageResponseDto(HttpStatus.OK, "예매 기록이 성공적으로 삭제되었습니다."));
   }
 
-  //  ADMIN. DB에서 남은 좌석수만 가져와서 Redis에 (key-value)형태로 저장
-  @PostMapping("/cache/left-seats/{ticketInfoId}")
-  public MessageResponseDto saveLeftSeatsInRedis(@PathVariable Long ticketInfoId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-    return reservationService.saveLeftSeatsInRedis(ticketInfoId, userDetails.getUser());
-  }
-
-  //  ADMIN. 해당하는 공연의 남은 좌석수 Redis에서 삭제(삭제되기전 모든 캐시 DB에 반영)
-  @DeleteMapping("/cache/left-seats/{ticketInfoId}")
-  public MessageResponseDto deleteLeftSeatsFromRedis(@PathVariable Long ticketInfoId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-    return reservationService.deleteLeftSeatsFromRedis(ticketInfoId, userDetails.getUser());
-  }
-
-  //  ADMIN. Redis에 등록된 모든 leftSeats 키값 리스트 반환
-  @GetMapping("/cache/left-seats")
-  public List<String> findAllLeftSeatsKeysInRedis(@AuthenticationPrincipal UserDetailsImpl userDetails) {
-    return reservationService.findAllLeftSeatsKeysInRedis(userDetails.getUser());
-  }
-
-//  ADMIN. 해당 ticketInfoId에 해당하는 남은 좌석 수를 정확히 세서 DB와 Redis에 refresh.
-  @PatchMapping("/cache/left-seats/{ticketInfoId}")
-  public MessageResponseDto refreshLeftSeats(@PathVariable Long ticketInfoId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-    return reservationService.refreshLeftSeats(ticketInfoId, userDetails.getUser());
-  }
 
 }

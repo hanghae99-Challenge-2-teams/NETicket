@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class RedisRepository {
+
   private final RedisTemplate<String, Integer> redisTemplate;
   private final TicketInfoRepository ticketInfoRepository;
   private final ReservationRepository reservationRepository;
@@ -34,7 +35,7 @@ public class RedisRepository {
   //  키를 ls1 ls2 이런 패턴으로 "ls+ticketInfoId"로 저장. ls는 소문자. 키가 이미 존재하면 예외처리
   public void saveTicketInfoToRedis(TicketInfo ticketInfo) {
     String key = "ls" + ticketInfo.getId();
-    if (redisTemplate.hasKey(key)) {
+    if (hasLeftSeatsInRedis(ticketInfo.getId())) {
       throw new CustomException(ExceptionType.EXISTED_CACHE_EXCEPTION);
     }
     redisTemplate.opsForValue().set(key, ticketInfo.getLeftSeats());
@@ -44,7 +45,7 @@ public class RedisRepository {
   @Scheduled(cron = "0 * * * * *")
   public void saveTicketInfoFromRedis(){
     Set<String> keys = redisTemplate.keys("ls*");
-    if (keys.isEmpty() || keys == null) return;
+    if (keys == null || keys.isEmpty()) return;
     for (String key : keys) {
       Integer leftSeatsInRedis = redisTemplate.opsForValue().get(key);
       Long ticketInfoId = Long.parseLong(key.substring(2));
@@ -59,7 +60,11 @@ public class RedisRepository {
 //  key로 redis에 캐시가 있는지 조회하고 Boolean 반환
   public Boolean hasLeftSeatsInRedis(Long ticketInfoId){
     String key = "ls" + ticketInfoId;
-    return redisTemplate.hasKey(key);
+    try{
+      return redisTemplate.hasKey(key);
+    } catch (Exception e) {
+      return false;
+    }
   }
 
 //  값 변경. count만큼 남은좌석수 차감
@@ -78,7 +83,7 @@ public class RedisRepository {
 //  키 삭제. 삭제전 leftSeats 반영. 캐시가 없으면 예외처리
   public void deleteLeftSeatsInRedis(Long ticketInfoId){
     String key = "ls" + ticketInfoId;
-    if (!redisTemplate.hasKey(key)) {
+    if (!hasLeftSeatsInRedis(ticketInfoId)) {
       throw new CustomException(ExceptionType.NOT_FOUND_CACHE_EXCEPTION);
     }
     saveTicketInfoFromRedis();
@@ -103,7 +108,10 @@ public class RedisRepository {
     int accurateLeftSeats = ticketInfo.getTotalSeats() - accurateReservedSeats;
     String key = "ls" + ticketInfoId;
     ticketInfo.setLeftSeats(accurateLeftSeats);
-//    덮어 쓰기
-    redisTemplate.opsForValue().set(key, accurateLeftSeats);
+    ticketInfoRepository.save(ticketInfo);
+//    기존에 캐시가 있으면 덮어 쓰고 없으면 그냥 무시
+    if (hasLeftSeatsInRedis(ticketInfoId)){
+      redisTemplate.opsForValue().set(key, accurateLeftSeats);
+    }
   }
 }
