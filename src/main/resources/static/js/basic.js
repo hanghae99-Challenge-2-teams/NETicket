@@ -510,19 +510,12 @@ function loadCacheList() {
         let cacheEventNum = $('#inputGroupSelect04 option:selected').val();
         deleteLeftSeatsCache(cacheEventNum);
       });
-
-      $('#refreshButton').click(function () {
-        // 선택된 옵션의 값을 가져옵니다.
-        let cacheEventNum = $('#inputGroupSelect04 option:selected').val();
-        refreshLeftSeatsCache(cacheEventNum);
-      });
     },
     error: function (xhr, status, error) {
       console.error(error);
       alert("오류가 발생했습니다. 다시 시도해주세요.");
     }
   });
-
 }
 
 function cacheEventAdd() {
