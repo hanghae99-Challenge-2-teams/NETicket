@@ -4,6 +4,8 @@ import com.example.neticket.event.entity.TicketInfo;
 import com.example.neticket.event.repository.TicketInfoRepository;
 import com.example.neticket.exception.CustomException;
 import com.example.neticket.exception.ExceptionType;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
@@ -36,9 +38,12 @@ public class RedisRepository {
   public void saveTicketInfoToRedis(TicketInfo ticketInfo) {
     String key = "ls" + ticketInfo.getId();
     if (hasLeftSeatsInRedis(ticketInfo.getId())) {
-      throw new CustomException(ExceptionType.EXISTED_CACHE_EXCEPTION);
+//      throw new CustomException(ExceptionType.EXISTED_CACHE_EXCEPTION);
+      return;
     }
-    redisTemplate.opsForValue().set(key, ticketInfo.getLeftSeats());
+    LocalDateTime today = LocalDateTime.now();
+    LocalDateTime eventDate = ticketInfo.getEvent().getDate();
+    redisTemplate.opsForValue().set(key, ticketInfo.getLeftSeats(), Duration.between(today,eventDate));
   }
 
 //  매분 캐시 변경분을 db에 저장
