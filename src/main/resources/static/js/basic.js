@@ -432,6 +432,30 @@ function showReservationCompleted() {
 
 // 관리자 공연 추가 페이지
 
+function resetTicketInfo() {
+  let token = getAuthTokenFromCookie();
+  $.ajax({
+    url: "/api/neticket/cache",
+    type: "PATCH",
+    dataType: "json",
+    headers: {
+      'Authorization': token // Authorization 헤더에 토큰 값 추가
+    },
+    success: function(response) {
+      location.reload();
+      alert("공연정보가 현재 시간에 맞게 리셋되었습니다.");
+    },
+    error: function(xhr, status, error) {
+      // 요청이 실패한 경우 실행할 코드
+      console.log("Error: " + xhr.responseText);
+      alert("리셋에 실패하였습니다.");
+    }
+  });
+
+
+}
+
+
 function addevent() {
   $("#eventForm").on("submit", function (event) {
     event.preventDefault();
