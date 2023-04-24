@@ -122,7 +122,7 @@ function getCookie(name) {
 }
 
 // 메인페이지
-function createCard(id, image, title, date, place) {
+function createCard(id, image, title, date, place, available) {
   let card = document.createElement('div');
   card.classList.add('property-card');
 
@@ -139,7 +139,14 @@ function createCard(id, image, title, date, place) {
 
   let descriptionContainer = document.createElement('div');
   descriptionContainer.classList.add('property-description');
-  descriptionContainer.innerHTML = `<h5>${title}</h5><h6>${date}</h6><p>${place}</p>`;
+  // descriptionContainer.innerHTML = `<h5>${title}</h5><h6>${date}</h6><p>${place}</p><p>${available}</p>`;
+  if (available === null) {
+    descriptionContainer.innerHTML = `<h5>${title}</h5><h6>${date}</h6><p>${place}</p>`;
+  } else if (available) {
+    descriptionContainer.innerHTML = `<h5>${title}</h5><h6>${date}</h6><p>${place}</p><p style="color:green">예매 가능</p>`;
+  } else {
+    descriptionContainer.innerHTML = `<h5>${title}</h5><h6>${date}</h6><p>${place}</p><p style="color:red">예매 불가능</p>`;
+  }
 
   let socialIconsContainer = document.createElement('div');
   socialIconsContainer.classList.add('property-social-icons');
@@ -187,8 +194,9 @@ function showEvent(pageNum) {
           let title = eventDto.title;
           let date = eventDto.date;
           let place = eventDto.place;
+          let available = null;
 
-          let card = createCard(id, image, title, date, place);
+          let card = createCard(id, image, title, date, place, available);
           let cardColumn = document.createElement('div');
           cardColumn.classList.add('col');
           cardColumn.dataset.eventId = id;
@@ -745,8 +753,9 @@ function showSearchResult() {
           let title = eventDto.title;
           let date = eventDto.date;
           let place = eventDto.place;
+          let available = eventDto.available;
 
-          let card = createCard(id, image, title, date, place);
+          let card = createCard(id, image, title, date, place, available);
           let cardColumn = document.createElement('div');
           cardColumn.classList.add('col');
           cardColumn.dataset.eventId = id;

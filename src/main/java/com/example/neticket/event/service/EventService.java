@@ -144,10 +144,8 @@ public class EventService {
 //  정렬 방식 오늘이랑 가장 가깝되 예매가능한걸 위로 불가능을 아래로
   @Transactional(readOnly = true)
   public Page<EventResponseDto> searchEvents(String keyword, int page) {
-//    sort 지금 없으니까 추가해야
-    Sort sort = Sort.by(Sort.Direction.DESC, "id");
-    Pageable pageable = PageRequest.of(page, 4, sort);
-    return eventRepository.findAllByTitleOrPlaceContaining(keyword, pageable)
+    Pageable pageable = PageRequest.of(page, 4);
+    return eventRepository.findAllByTitleOrPlaceContainingAndAvailableTickets(keyword, pageable)
         .map(EventResponseDto::new);
 
   }
