@@ -702,3 +702,60 @@ function showMyPage() {
     }
   });
 }
+
+// 검색 페이지
+function showSearchResult() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const keyword = urlParams.get('keyword');
+  let pageNum = urlParams.get('page');
+  if (pageNum === null) {
+    pageNum = 1;
+  }
+
+
+
+  $.ajax({
+    type: "GET",
+    url: "/api/neticket/events/search?keyword=" + keyword + "&page=" + pageNum,
+    dataType: "json",
+    headers: {'Content-Type': 'application/json'},
+    success: function (response) {
+      showPaging(response);
+      console.log(response)
+      if (response.content.length === 0) {
+        alert("키워드에 맞는 공연 정보가 없습니다.");
+      }
+
+      let eventBox = document.querySelector('#event_box');
+      eventBox.innerHTML = '';
+      let numCardsPerRow = 5;
+      for (let i = 0; i < response.content.length; i += numCardsPerRow) {
+        let row = document.createElement('div');
+        row.classList.add('row');
+        eventBox.appendChild(row);
+
+        for (let j = 0; j < numCardsPerRow; j++) {
+          if (i + j >= response.content.length) {
+            break;
+          }
+
+          let eventDto = response.content[i + j];
+          let id = eventDto.id;
+          let image = eventDto.image;
+          let title = eventDto.title;
+          let date = eventDto.date;
+          let place = eventDto.place;
+
+          let card = createCard(id, image, title, date, place);
+          let cardColumn = document.createElement('div');
+          cardColumn.classList.add('col');
+          cardColumn.dataset.eventId = id;
+          cardColumn.appendChild(card);
+          row.appendChild(cardColumn);
+        }
+      }
+    },error: function (response) {
+      alert(response.responseJSON.msg);
+    }
+  });
+}
