@@ -1,7 +1,11 @@
 package com.example.neticket.user.controller;
 
 import com.example.neticket.event.dto.MessageResponseDto;
+import com.example.neticket.event.service.TicketInfoService;
+import com.example.neticket.exception.CustomException;
+import com.example.neticket.exception.ExceptionType;
 import com.example.neticket.security.UserDetailsImpl;
+import com.example.neticket.user.entity.UserRoleEnum;
 import com.example.neticket.user.service.AdminService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AdminController {
 
   private final AdminService adminService;
+  private final TicketInfoService ticketInfoService;
 
   // 1. ADMIN. DB에서 남은 좌석수만 가져와서 Redis에 (key-value)형태로 저장
   @PostMapping("/cache/left-seats/{ticketInfoId}")
@@ -43,6 +48,15 @@ public class AdminController {
   @PatchMapping("/cache/left-seats/{ticketInfoId}")
   public MessageResponseDto refreshLeftSeats(@PathVariable Long ticketInfoId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
     return adminService.refreshLeftSeats(ticketInfoId, userDetails.getUser());
+  }
+
+//  5. ADMIN. ticketInfo의 현재 저장된 캐시를 다 날리고 isAvailable을 오늘 날짜에 맞게 다 맞춰준다.
+  @PatchMapping("/cache")
+  public MessageResponseDto resetTicketInfo(@AuthenticationPrincipal UserDetailsImpl userDetails){
+    if (!userDetails.getUser().getRole().equals(UserRoleEnum.ADMIN)) {
+      throw new CustomException(ExceptionType.USER_UNAUTHORIZED_EXCEPTION);
+    }
+    return ticketInfoService.resetTicketInfo();
   }
 
 }
