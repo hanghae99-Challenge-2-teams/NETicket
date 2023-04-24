@@ -4,9 +4,12 @@ import com.example.neticket.event.entity.TicketInfo;
 import com.example.neticket.event.repository.TicketInfoRepository;
 import com.example.neticket.exception.CustomException;
 import com.example.neticket.exception.ExceptionType;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.data.redis.core.script.RedisScript;
@@ -36,9 +39,12 @@ public class RedisRepository {
   public void saveTicketInfoToRedis(TicketInfo ticketInfo) {
     String key = "ls" + ticketInfo.getId();
     if (hasLeftSeatsInRedis(ticketInfo.getId())) {
-      throw new CustomException(ExceptionType.EXISTED_CACHE_EXCEPTION);
+//      throw new CustomException(ExceptionType.EXISTED_CACHE_EXCEPTION);
+      return;
     }
-    redisTemplate.opsForValue().set(key, ticketInfo.getLeftSeats());
+    LocalDateTime today = LocalDateTime.now();
+    LocalDateTime eventDate = ticketInfo.getEvent().getDate();
+    redisTemplate.opsForValue().set(key, ticketInfo.getLeftSeats(), Duration.between(today,eventDate));
   }
 
 //  매분 캐시 변경분을 db에 저장
@@ -80,15 +86,23 @@ public class RedisRepository {
     redisTemplate.opsForValue().increment(key, count);
   }
 
-//  키 삭제. 삭제전 leftSeats 반영. 캐시가 없으면 예외처리
-  public void deleteLeftSeatsInRedis(Long ticketInfoId){
-    String key = "ls" + ticketInfoId;
-    if (!hasLeftSeatsInRedis(ticketInfoId)) {
-      throw new CustomException(ExceptionType.NOT_FOUND_CACHE_EXCEPTION);
+//  키 삭제. 삭제전 leftSeats 반영. 캐시가 없으면 예외처리. 수동 삭제
+  public void deleteLeftSeatsInRedis(TicketInfo ticketInfo){
+    String key = "ls" + ticketInfo.getId();
+    if (hasLeftSeatsInRedis(ticketInfo.getId())) {
+      redisTemplate.delete(key);
+      refreshLeftSeats(ticketInfo);
     }
-    saveTicketInfoFromRedis();
-    redisTemplate.delete(key);
   }
+
+//  redis 캐시 flush
+  public void flushAll(){
+    redisTemplate.execute((RedisConnection connection) -> {
+      connection.flushAll();
+      return "OK";
+    });
+  }
+
 
 //  현재 Redis에 등록된 key 목록 반환
   public Set<String> findAllLeftSeatsKeysInRedis() {
@@ -97,20 +111,16 @@ public class RedisRepository {
 
 // Redis와 DB에 들어있는 LeftSeat의 정합성을 맞추기 위해 Reservation에서 ticketInfoId로 조회한 모든 count를 더해
 //  accurateReservedSeats를 구하고 totalSeats에서 뺀 다음 accurateReservedSeats을 구해서 DB와 Redis에 맞춰줌.
-  public void refreshLeftSeats(Long ticketInfoId) {
-    TicketInfo ticketInfo = ticketInfoRepository.findById(ticketInfoId).orElseThrow(
-        () -> new CustomException(ExceptionType.NOT_FOUND_TICKET_INFO_EXCEPTION)
-    );
-    Integer accurateReservedSeats = reservationRepository.sumCountByTicketInfoId(ticketInfoId);
+  public void refreshLeftSeats(TicketInfo ticketInfo) {
+    Integer accurateReservedSeats = reservationRepository.sumCountByTicketInfoId(ticketInfo.getId());
     if (accurateReservedSeats == null) {
       throw new CustomException(ExceptionType.NOT_FOUND_RESERVATION_EXCEPTION);
     }
     int accurateLeftSeats = ticketInfo.getTotalSeats() - accurateReservedSeats;
-    String key = "ls" + ticketInfoId;
     ticketInfo.setLeftSeats(accurateLeftSeats);
-    ticketInfoRepository.save(ticketInfo);
 //    기존에 캐시가 있으면 덮어 쓰고 없으면 그냥 무시
-    if (hasLeftSeatsInRedis(ticketInfoId)){
+    if (hasLeftSeatsInRedis(ticketInfo.getId())){
+      String key = "ls" + ticketInfo.getId();
       redisTemplate.opsForValue().set(key, accurateLeftSeats);
     }
   }
