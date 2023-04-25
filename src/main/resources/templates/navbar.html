@@ -25,8 +25,9 @@
           <a class="nav-link" href="/neticket/signup" style="color: black">회원가입</a>
         </li>
       </ul>
-      <form action="#" method="get" class="search-container">
-        <input type="text" placeholder="검색">
+      <form action="/neticket/search" method="get" class="search-container">
+        <input type="text" name="keyword" placeholder="검색">
+        <input type="hidden" name="page" value="1">
         <input type="submit" value="검색">
       </form>
     </nav>

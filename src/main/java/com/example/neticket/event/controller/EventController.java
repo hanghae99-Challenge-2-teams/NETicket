@@ -38,6 +38,7 @@ public class EventController {
   //  메인 페이지 조회
   @GetMapping
   public ResponseEntity<Page<EventResponseDto>> getEvents(@RequestParam(value = "page") int page) {
+    validateSearch("pass", page);
     Page<EventResponseDto> events = eventService.getEvents(page - 1);
     return ResponseEntity.ok().body(events);
 
@@ -71,29 +72,24 @@ public class EventController {
 //  }
 
   /**
-   * 검색기능 keyword로 공연 제목과 공연 장소를 검색 저가순은 sordBy에 price, isAsc에 true를 담아 보내주면 된다. 고가순은 sortBy에 price,
-   * isAsc에 false를 담아 보내주면 된다. 나머지 정렬 방식은 추후 논의 후 결정 (정확도순이나 카테고리 기능 날짜검색 등)
+   * 검색기능 keyword로 공연 제목과 공연 장소를 검색
    *
    * @param keyword : 검색어
    * @param page    : 현재 페이지. Pageable에서는 0페이지가 첫페이지라 -1
-   * @param sortBy  : 정렬 기준
-   * @param isAsc   : 오름차순이면 true, 내림차순이면 false
    * @return : 검색결과를 Page<EventResponseDto>로 반환
    */
   // 쿼리스트링 값 예외처리 추후에 해야함
   @GetMapping("/search")
   public ResponseEntity<Page<EventResponseDto>> searchEvents(
       @RequestParam(value = "keyword") String keyword,
-      @RequestParam int page, @RequestParam String sortBy, @RequestParam boolean isAsc) {
-    if (keyword.isBlank()) {
-      throw new CustomException(ExceptionType.ZERO_WORD_EXCEPTION);
-    }
-    Page<EventResponseDto> searchEvents = eventService.searchEvents(keyword, page - 1, sortBy,
-        isAsc);
+      @RequestParam(value = "page") int page) {
+    validateSearch(keyword, page);
+    Page<EventResponseDto> searchEvents = eventService.searchEvents(keyword, page - 1);
     return ResponseEntity.ok().body(searchEvents);
 
   }
 
+//  이미지 유효성 검사
   private void validateImage(MultipartFile image) {
     if (image.isEmpty()) {
       throw new CustomException(ExceptionType.NO_IMAGE_EXCEPTION);
@@ -106,8 +102,14 @@ public class EventController {
     }
   }
 
-  private void validateSearch(String keyword, int page, String sortBy, boolean isAsc) {
-//    쿼리스트링으로 받을꺼면 추후 작성해야. dto로 받을꺼면 @Valid로 가능
+//  검색 유효성 검사
+  private void validateSearch(String keyword, int page) {
+    if (keyword.isBlank()) {
+      throw new CustomException(ExceptionType.ZERO_WORD_EXCEPTION);
+    }
+    if (page <= 0) {
+      throw new CustomException(ExceptionType.INVALID_PAGE_EXCEPTION);
+    }
   }
 
 }

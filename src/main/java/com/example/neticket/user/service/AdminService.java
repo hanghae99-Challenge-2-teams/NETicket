@@ -28,9 +28,7 @@ public class AdminService {
   @Transactional
   public MessageResponseDto saveLeftSeatsInRedis(Long ticketInfoId, User user) {
     checkAdmin(user);
-    TicketInfo ticketInfo = ticketInfoRepository.findById(ticketInfoId).orElseThrow(
-        () -> new CustomException(ExceptionType.NOT_FOUND_TICKET_INFO_EXCEPTION)
-    );
+    TicketInfo ticketInfo = checkTicketInfoById(ticketInfoId);
     redisRepository.saveTicketInfoToRedis(ticketInfo);
     return new MessageResponseDto(HttpStatus.CREATED, "redis에 성공적으로 저장되었습니다.");
   }
@@ -42,11 +40,19 @@ public class AdminService {
     }
   }
 
+  //  1-2. ticketInfoId로 TicketInfo 확인
+  private TicketInfo checkTicketInfoById(Long ticketInfoId) {
+    return ticketInfoRepository.findById(ticketInfoId).orElseThrow(
+        () -> new CustomException(ExceptionType.NOT_FOUND_TICKET_INFO_EXCEPTION)
+    );
+  }
+
   //  2. ADMIN. 해당하는 공연의 남은 좌석수 Redis에서 삭제(삭제되기전 모든 캐시 DB에 반영)
   @Transactional
   public MessageResponseDto deleteLeftSeatsFromRedis(Long ticketInfoId, User user) {
     checkAdmin(user);
-    redisRepository.deleteLeftSeatsInRedis(ticketInfoId);
+    TicketInfo ticketInfo = checkTicketInfoById(ticketInfoId);
+    redisRepository.deleteLeftSeatsInRedis(ticketInfo);
     return new MessageResponseDto(HttpStatus.OK, "redis에서 캐시가 성공적으로 삭제되었습니다.");
   }
 
@@ -61,7 +67,8 @@ public class AdminService {
   @Transactional
   public MessageResponseDto refreshLeftSeats(Long ticketInfoId, User user) {
     checkAdmin(user);
-    redisRepository.refreshLeftSeats(ticketInfoId);
+    TicketInfo ticketInfo = checkTicketInfoById(ticketInfoId);
+    redisRepository.refreshLeftSeats(ticketInfo);
     return new MessageResponseDto(HttpStatus.OK, "redis와 DB의 남은 좌석수를 올바르게 맞췄습니다.");
   }
 

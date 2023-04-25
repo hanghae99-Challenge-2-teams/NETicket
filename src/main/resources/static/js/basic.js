@@ -122,7 +122,7 @@ function getCookie(name) {
 }
 
 // 메인페이지
-function createCard(id, image, title, date, place) {
+function createCard(id, image, title, date, place, available) {
   let card = document.createElement('div');
   card.classList.add('property-card');
 
@@ -136,10 +136,18 @@ function createCard(id, image, title, date, place) {
   imageContainer.onerror = function () {
     imageContainer.src = 'path/to/default/image.jpg'; // 대체 이미지 경로로 수정
   };
+  let newDate = dateFormat(date);
 
   let descriptionContainer = document.createElement('div');
   descriptionContainer.classList.add('property-description');
-  descriptionContainer.innerHTML = `<h5>${title}</h5><h6>${date}</h6><p>${place}</p>`;
+  // descriptionContainer.innerHTML = `<h5>${title}</h5><h6>${date}</h6><p>${place}</p><p>${available}</p>`;
+  if (available === null) {
+    descriptionContainer.innerHTML = `<h5>${title}</h5><h6>${newDate}</h6><p>${place}</p>`;
+  } else if (available) {
+    descriptionContainer.innerHTML = `<h5>${title}</h5><h6>${newDate}</h6><p>${place}</p><p style="color:green">예매 가능</p>`;
+  } else {
+    descriptionContainer.innerHTML = `<h5>${title}</h5><h6>${newDate}</h6><p>${place}</p><p style="color:red">예매 불가능</p>`;
+  }
 
   let socialIconsContainer = document.createElement('div');
   socialIconsContainer.classList.add('property-social-icons');
@@ -187,8 +195,9 @@ function showEvent(pageNum) {
           let title = eventDto.title;
           let date = eventDto.date;
           let place = eventDto.place;
+          let available = null;
 
-          let card = createCard(id, image, title, date, place);
+          let card = createCard(id, image, title, date, place, available);
           let cardColumn = document.createElement('div');
           cardColumn.classList.add('col');
           cardColumn.dataset.eventId = id;
@@ -251,16 +260,18 @@ function getEventDetails(eventId) {
     url: "/api/neticket/events/" + eventId,
     dataType: "json",
     success: function (event) {
+      let newEventDate = dateFormat(event.date);
+      let newOpenDate = dateFormat(event.ticketInfoDto.openDate);
       const imageUrl = 'https://neticketbucket.s3.ap-northeast-2.amazonaws.com/uploaded-image/'
           + event.image;
       $('.image').attr('src', imageUrl);
       $('.title').text(event.title);
       $('.place').text(event.place);
       $('.price').text(addCommas(event.price) + '원');
-      $('.date').text(event.date);
+      $('.date').text(newEventDate);
       isAvailable = event.ticketInfoDto.available;
       $('.isAvailable').text(isAvailable ? '예매 가능' : '예매 불가능');
-      $('.remainingTime1').text(event.ticketInfoDto.openDate);
+      $('.remainingTime1').text(newOpenDate);
       // 이벤트의 티켓 정보를 저장합니다.
       $('#bookingButton').data('ticketInfo', event.ticketInfoDto);
       // 남은 시간을 표시합니다.
@@ -339,13 +350,14 @@ function getEventInfo() {
     url: "/api/neticket/ticket-info/" + ticketInfoId,
     dataType: "json",
     success: function (event) {
+      let newDate = dateFormat(event.date);
       const imageUrl = 'https://neticketbucket.s3.ap-northeast-2.amazonaws.com/uploaded-image/'
           + event.image;
       $('.image').attr('src', imageUrl);
       $('.title').text(event.title);
       $('.place').text(event.place);
       $('.price').text(addCommas(event.price) + '원');
-      $('.date').text(event.date);
+      $('.date').text(newDate);
     },
     error: function (jqXHR, textStatus, errorThrown) {
       alert("요청이 실패하였습니다.");
@@ -417,13 +429,14 @@ function showReservationCompleted() {
       'Authorization': token // Authorization 헤더에 토큰 값 추가
     },
     success: function (response) {
+      let newDate = dateFormat(response.date);
       const imageUrl = 'https://neticketbucket.s3.ap-northeast-2.amazonaws.com/uploaded-image/'
           + response.image;
       $('.image').attr('src', imageUrl);
       $('.id').text(response.id)
       $('.title').text(response.title)
       $('.place').text(response.place);
-      $('.date').text(response.date);
+      $('.date').text(newDate);
       $('.totalPrice').text(response.totalPrice);
       $('.count').text(response.count);
     },
@@ -431,6 +444,30 @@ function showReservationCompleted() {
 }
 
 // 관리자 공연 추가 페이지
+
+function resetTicketInfo() {
+  let token = getAuthTokenFromCookie();
+  $.ajax({
+    url: "/api/neticket/cache",
+    type: "PATCH",
+    dataType: "json",
+    headers: {
+      'Authorization': token // Authorization 헤더에 토큰 값 추가
+    },
+    success: function(response) {
+      location.reload();
+      alert("공연정보가 현재 시간에 맞게 리셋되었습니다.");
+    },
+    error: function(xhr, status, error) {
+      // 요청이 실패한 경우 실행할 코드
+      console.log("Error: " + xhr.responseText);
+      alert("리셋에 실패하였습니다.");
+    }
+  });
+
+
+}
+
 
 function addevent() {
   $("#eventForm").on("submit", function (event) {
@@ -608,6 +645,7 @@ function showMyPage() {
         let date = responseArray[i].date;
         let totalPrice = responseArray[i].totalPrice;
         let count = responseArray[i].count;
+        let newDate = dateFormat(date);
 
         let temp = `
                     <ul class="info">
@@ -621,7 +659,7 @@ function showMyPage() {
                         <div class="infoDesc"><p class="infoText">${place}</p></div>
                       </li>
                       <li class="infoItem infoDate"><strong class="infoLabel">공연 날짜 : </strong>
-                        <div class="infoDesc"><p class="infoText">${date}</p></div>
+                        <div class="infoDesc"><p class="infoText">${newDate}</p></div>
                       </li>
                       <li class="infoItem infoPrice"><strong class="infoLabel">총 가격 : </strong>
                         <div class="infoDesc"><p class="infoText">${totalPrice}원</p></div>
@@ -677,4 +715,116 @@ function showMyPage() {
       }
     }
   });
+}
+
+// 검색 페이지
+function showSearchResult(pageNum) {
+  const urlParams = new URLSearchParams(window.location.search);
+  const keyword = urlParams.get('keyword');
+  if (pageNum === null) {
+    pageNum = 1;
+  }
+
+
+
+  $.ajax({
+    type: "GET",
+    url: "/api/neticket/events/search?keyword=" + keyword + "&page=" + pageNum,
+    dataType: "json",
+    headers: {'Content-Type': 'application/json'},
+    success: function (response, textStatus, jqXHR) {
+      showSearchPaging(response);
+      let responseTime = jqXHR.getResponseHeader('X-Search-Response-Time')
+      $('h3').html(`응답속도: ${responseTime}ms`);
+      if (response.content.length === 0) {
+        alert("키워드에 맞는 공연 정보가 없습니다.");
+      }
+
+      let eventBox = document.querySelector('#event_box');
+      eventBox.innerHTML = '';
+      let numCardsPerRow = 5;
+      for (let i = 0; i < response.content.length; i += numCardsPerRow) {
+        let row = document.createElement('div');
+        row.classList.add('row');
+        eventBox.appendChild(row);
+
+        for (let j = 0; j < numCardsPerRow; j++) {
+          if (i + j >= response.content.length) {
+            break;
+          }
+
+          let eventDto = response.content[i + j];
+          let id = eventDto.id;
+          let image = eventDto.image;
+          let title = eventDto.title;
+          let date = eventDto.date;
+          let place = eventDto.place;
+          let available = eventDto.available;
+
+          let card = createCard(id, image, title, date, place, available);
+          let cardColumn = document.createElement('div');
+          cardColumn.classList.add('col');
+          cardColumn.dataset.eventId = id;
+          cardColumn.appendChild(card);
+          row.appendChild(cardColumn);
+        }
+      }
+    },error: function (response) {
+      alert(response.responseJSON.msg);
+    }
+  });
+}
+
+function showSearchPaging(response) {
+  let totalPages = response.totalPages;
+  let currentPage = response.number + 1;
+  let pagination = $('.pagination');
+
+  pagination.empty();
+
+//let startPage = Math.floor((currentPage - 1) / 10) * 10 + 1;
+  let startPage = Math.floor((currentPage - 1) / 2) * 2 + 1; // 페이지 2개로 실험
+  // let endPage = startPage + 9;
+  let endPage = startPage + 1;
+  if (endPage > totalPages) {
+    endPage = totalPages;
+  }
+
+  if (startPage > 1) {
+    pagination.append(`<li class="page-item">
+                          <a class="page-link" onclick="showSearchResult(${startPage
+    - 1})" href="#" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                          </a>
+                        </li>`);
+  }
+
+  for (let i = startPage; i <= endPage; i++) {
+    let pageItem = `<li class="page-item ${(i === currentPage) ? 'active' : ''}">
+                      <a class="page-link" onclick="showSearchResult(${i})" href="#">${i}</a>
+                    </li>`;
+    pagination.append(pageItem);
+  }
+
+  if (endPage < totalPages) {
+    pagination.append(`<li class="page-item">
+                          <a class="page-link" onclick="showSearchResult(${endPage + 1})" href="#" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                          </a>
+                        </li>`);
+  }
+}
+
+function dateFormat(date) {
+  const datetime = new Date(date);
+
+  const year = datetime.getFullYear();
+  const month = ('0' + (datetime.getMonth() + 1)).slice(-2);
+  const day = ('0' + datetime.getDate()).slice(-2);
+  const hours = ('0' + datetime.getHours()).slice(-2);
+  const minutes = ('0' + datetime.getMinutes()).slice(-2);
+
+  const formattedDatetimeStr = year + '-' + month + '-' + day + ' ' + hours + '시 ' + minutes + '분';
+  return formattedDatetimeStr;
+
 }

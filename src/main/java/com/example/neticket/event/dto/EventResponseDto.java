@@ -12,6 +12,7 @@ public class EventResponseDto {
   private LocalDateTime date;
   private String place;
   private String image;
+  private boolean isAvailable;
 
   public EventResponseDto(Event event) {
     this.id = event.getId();
@@ -19,5 +20,6 @@ public class EventResponseDto {
     this.place = event.getPlace();
     this.image = event.getImage();
     this.date = event.getDate();
+    this.isAvailable = event.getTicketInfo().isAvailable();
   }
 }

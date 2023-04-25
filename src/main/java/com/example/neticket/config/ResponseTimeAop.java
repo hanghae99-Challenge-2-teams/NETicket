@@ -13,6 +13,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 @Component
 public class ResponseTimeAop {
 
+//  예매하기 응답속도 측정 / admin만
   @Around("execution(public * com.example.neticket.reservation.controller.ReservationController.makeReservations(..)) && args(.., userDetails)")
   public Object checkResponseTime(ProceedingJoinPoint joinPoint, UserDetailsImpl userDetails) throws Throwable{
 
@@ -39,4 +40,23 @@ public class ResponseTimeAop {
 
   }
 
+//  검색 응답속도 측정 / 유저역할 상관x
+  @Around("execution(public * com.example..neticket.event.controller.EventController.searchEvents(..))")
+  public Object checkSearchResponseTime(ProceedingJoinPoint joinPoint) throws Throwable {
+    long startTime = System.currentTimeMillis();
+
+    try {
+      return joinPoint.proceed();
+    } finally {
+      long responseTime = System.currentTimeMillis() - startTime;
+      ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+      if (requestAttributes != null) {
+        HttpServletResponse response = requestAttributes.getResponse();
+        if (response != null) {
+          response.setHeader("X-Search-Response-Time", String.valueOf(responseTime));
+        }
+      }
+
+    }
+  }
 }

@@ -45,14 +45,19 @@ public class PageController {
     return new ModelAndView("completed");
   }
 
+  // 관리자 공연 추가 페이지 이동
   @GetMapping("/admin/event")
   public ModelAndView addEvent() {
     return new ModelAndView("addevent");
   }
 
+  //  사용자 마이페이지
   @GetMapping("/user")
   public ModelAndView myPage() {
       return new ModelAndView("mypage");
   }
+
+  @GetMapping("/search")
+  public ModelAndView search() { return  new ModelAndView("search");}
 
 }
