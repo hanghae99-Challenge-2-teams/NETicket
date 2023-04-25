@@ -10,8 +10,6 @@ name: Java CI with Gradle
 on:
   push:
     branches: [ "main" ]
-  pull_request:
-#    branches: [ "main" ]
 
 env:
   AWS_REGION: ap-northeast-2
