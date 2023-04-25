@@ -217,10 +217,8 @@ function showPaging(response) {
 
   pagination.empty();
 
-//let startPage = Math.floor((currentPage - 1) / 10) * 10 + 1;
-  let startPage = Math.floor((currentPage - 1) / 2) * 2 + 1; // 페이지 2개로 실험
-  // let endPage = startPage + 9;
-  let endPage = startPage + 1;
+  let startPage = Math.floor((currentPage - 1) / 5) * 5 + 1;
+  let endPage = startPage + 4;
   if (endPage > totalPages) {
     endPage = totalPages;
   }
@@ -782,10 +780,8 @@ function showSearchPaging(response) {
 
   pagination.empty();
 
-//let startPage = Math.floor((currentPage - 1) / 10) * 10 + 1;
-  let startPage = Math.floor((currentPage - 1) / 2) * 2 + 1; // 페이지 2개로 실험
-  // let endPage = startPage + 9;
-  let endPage = startPage + 1;
+  let startPage = Math.floor((currentPage - 1) / 5) * 5 + 1;
+  let endPage = startPage + 4;
   if (endPage > totalPages) {
     endPage = totalPages;
   }
