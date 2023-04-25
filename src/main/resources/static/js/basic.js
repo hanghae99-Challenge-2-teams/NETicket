@@ -732,8 +732,10 @@ function showSearchResult(pageNum) {
     url: "/api/neticket/events/search?keyword=" + keyword + "&page=" + pageNum,
     dataType: "json",
     headers: {'Content-Type': 'application/json'},
-    success: function (response) {
+    success: function (response, textStatus, jqXHR) {
       showSearchPaging(response);
+      let responseTime = jqXHR.getResponseHeader('X-Search-Response-Time')
+      $('h3').html(`응답속도: ${responseTime}ms`);
       if (response.content.length === 0) {
         alert("키워드에 맞는 공연 정보가 없습니다.");
       }
