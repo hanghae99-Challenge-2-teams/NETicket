@@ -1,8 +1,7 @@
-FROM openjdk:17
-ENV TZ=Asia/Seoul
-
 # 도커 허브에서 이미지를 가져와서 이미지를 작업한다
 # FROM (이미지 이름:버전)
+FROM openjdk:17
+ENV TZ=Asia/Seoul
 
 # 컨테이너 실행 전 작동할 명령
 # RUN (명령)
@@ -24,4 +23,3 @@ ENV SPRING_PROFILES_ACTIVE=prod
 # 컨테이너 시작 시 내릴 명령 (CMD와 ENTRYPOINT 차이 확인)
 # ENTRYPOINT [(명령),(매개변수),(매개변수),(...)]
 ENTRYPOINT ["java", "-jar", "./app.jar"]
-
