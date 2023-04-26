@@ -48,9 +48,9 @@ dependencies {
 //    implementation 'org.redisson:redisson-spring-boot-starter:3.17.7'
 }
 
-tasks.named('test') {
-    useJUnitPlatform()
-}
+//tasks.named('test') {
+//    useJUnitPlatform()
+//}
 
 jar {
     enabled = false
@@ -59,3 +59,4 @@ jar {
 bootJar {
     archiveFileName = 'app.jar'
 }
+
