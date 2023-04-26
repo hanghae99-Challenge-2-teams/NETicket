@@ -34,7 +34,6 @@ public class TicketInfoService {
   @Scheduled(cron = "0 0 0 * * ?")
   public void closeTicket() {
     List<TicketInfo> ticketInfos = ticketInfoRepository.findTicketInfoByEventDate();
-    System.out.println(ticketInfos);
     for (TicketInfo ticketInfo : ticketInfos) {
       ticketInfo.setAvailable(false);
       deleteDtoCache(ticketInfo);
@@ -61,7 +60,6 @@ public class TicketInfoService {
   @Scheduled(cron = "0 0 18 * * ?")
   public void openTicket() {
     List<TicketInfo> ticketInfos = ticketInfoRepository.findTicketInfoByOpenDate();
-    System.out.println(ticketInfos);
     for (TicketInfo ticketInfo : ticketInfos) {
       deleteDtoCache(ticketInfo);
       ticketInfo.setAvailable(true);
