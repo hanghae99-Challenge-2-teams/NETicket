@@ -89,25 +89,4 @@ public class RedisConfig {
     return redisTemplate;
   }
 
-  @Bean
-  public CacheManager cacheManager(RedisConnectionFactory redisConnectionFactory) {
-    ObjectMapper objectMapper = new ObjectMapper();
-    objectMapper.registerModule(new JavaTimeModule());
-    objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-
-    Jackson2JsonRedisSerializer<DetailEventResponseDto> serializer = new Jackson2JsonRedisSerializer<>(
-        DetailEventResponseDto.class);
-    serializer.setObjectMapper(objectMapper);
-
-    RedisCacheConfiguration cacheConfig = RedisCacheConfiguration.defaultCacheConfig()
-        .entryTtl(Duration.ofHours(1))
-        .disableCachingNullValues()
-        .serializeValuesWith(
-            RedisSerializationContext.SerializationPair.fromSerializer(serializer));
-
-    return RedisCacheManager.builder(redisConnectionFactory)
-        .cacheDefaults(cacheConfig)
-        .build();
-  }
-
 }
