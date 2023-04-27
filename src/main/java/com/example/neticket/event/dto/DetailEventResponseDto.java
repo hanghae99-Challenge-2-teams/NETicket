@@ -18,7 +18,7 @@ public class DetailEventResponseDto {
   private int price;
   private TicketInfoResponseDto ticketInfoDto;
 
-  // DetailEventResponseDto 역직렬화 할때 사용함
+  // DetailEventResponseDto 역직렬화 할때 사용
   @Builder
   public DetailEventResponseDto() {
   }
@@ -32,4 +32,5 @@ public class DetailEventResponseDto {
     this.price = event.getPrice();
     this.ticketInfoDto = new TicketInfoResponseDto(event.getTicketInfo());
   }
+
 }

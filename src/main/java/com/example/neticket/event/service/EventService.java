@@ -16,11 +16,9 @@ import java.io.IOException;
 import java.time.Duration;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -32,7 +30,6 @@ import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class EventService {
@@ -45,7 +42,7 @@ public class EventService {
 
   // S3 이미지 업로드 메서드
   private String S3ImageUpload(MultipartFile image) {
-    String key = UUID.randomUUID() + "_" + image.getOriginalFilename(); // 또는 다른 고유한 키 생성 방법
+    String key = UUID.randomUUID() + "_" + image.getOriginalFilename();
 
     PutObjectRequest request = PutObjectRequest.builder()
         .bucket(bucketName)
@@ -60,6 +57,7 @@ public class EventService {
       throw new CustomException(ExceptionType.IO_EXCEPTION);
     }
     return key;
+
   }
 
   // S3 이미지 삭제 메서드
@@ -70,26 +68,16 @@ public class EventService {
 
   }
 
-  // 메인페이지 조회
+  // 1.메인페이지 조회
   @Transactional(readOnly = true)
   public Page<EventResponseDto> getEvents(int page) {
-    // ticketInfo의 isAvailable이 true인 Event를 ticketInfo의 date가 가장 빠른 순서대로 정렬하여 Page<EventResponseDto>로 반환
     Pageable pageable = PageRequest.of(page, 4);
     return eventRepository.findAllByAvailableOrderByticketInfoDate(pageable)
         .map(EventResponseDto::new);
 
   }
 
-  // 상세 페이지 조회 @Cacheable 적용 (추후 삭제 예정)
-//  @Cacheable(value = "DetailEventResponseDto", key = "#eventId", cacheManager = "cacheManager")
-//  @Transactional(readOnly = true)
-//  public DetailEventResponseDto getDetailEvent(Long eventId) {
-//    return eventRepository.findById(eventId)
-//        .map(DetailEventResponseDto::new)
-//        .orElseThrow(() -> new CustomException(ExceptionType.NOT_FOUND_EVENT_EXCEPTION));
-//  }
-
-  // 상세 페이지 조회
+  // 2.상세 페이지 조회
   @Transactional(readOnly = true)
   public DetailEventResponseDto getDetailEvent(Long eventId) {
     String cacheKey = "DetailEventResponseDto::" + eventId;
@@ -104,17 +92,18 @@ public class EventService {
     } catch (Exception e) {
       detailEventResponseDto = getEventInfo(eventId);
     }
-
     return detailEventResponseDto;
+
   }
 
   // 공연상세정보 조회 메서드
   private DetailEventResponseDto getEventInfo(Long eventId) {
     return eventRepository.findById(eventId).map(DetailEventResponseDto::new)
         .orElseThrow(() -> new CustomException(ExceptionType.NOT_FOUND_EVENT_EXCEPTION));
+
   }
 
-  // 공연 추가하기
+  // 3.공연 추가하기
   @Transactional
   public MessageResponseDto addEvent(EventRequestDto eventRequestDto, User user,
       MultipartFile image) {
@@ -124,24 +113,10 @@ public class EventService {
     ticketInfoRepository.save(new TicketInfo(eventRequestDto, event));
 
     return new MessageResponseDto(HttpStatus.CREATED, "공연 추가 완료했습니다.");
+
   }
 
-  //  공연삭제 추후 논의과정 거쳐 마저 구현
-//  @Transactional
-//  public MessageResponseDto deleteEvent(Long eventId, User user) {
-//    checkAdmin(user);
-//    Event event = eventRepository.findById(eventId).orElseThrow(
-//        () -> new CustomException(ExceptionType.NOT_FOUND_EVENT_EXCEPTION)
-//    );
-//
-//    S3ImageDelete(event.getImage());
-//    ticketInfoRepository.delete(event.getTicketInfo());
-//    eventRepository.delete(event);
-//    return new MessageResponseDto(HttpStatus.OK,"공연정보와 예매정보가 정상적으로 삭제되었습니다.");
-//  }
-
-  // 검색기능
-//  정렬 방식 오늘이랑 가장 가깝되 예매가능한걸 위로 불가능을 아래로
+  // 4.검색기능
   @Transactional(readOnly = true)
   public Page<EventResponseDto> searchEvents(String keyword, int page) {
     Pageable pageable = PageRequest.of(page, 4);

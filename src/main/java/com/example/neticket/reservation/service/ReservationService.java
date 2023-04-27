@@ -32,16 +32,7 @@ public class ReservationService {
   private final RedisRepository redisRepository;
   private final RedisTemplate<String, DetailEventResponseDto> redisTemplate;
 
-
-
-  // 예매중 페이지에서 공연정보 조회 @Cacheable (추후 삭제 예정)
-//  @Cacheable(value = "DetailEventResponseDto", key = "#ticketInfoId", cacheManager = "cacheManager")
-//  @Transactional(readOnly = true)
-//  public DetailEventResponseDto verifyReservation(Long ticketInfoId) {
-//    return new DetailEventResponseDto(checkTicketInfoById(ticketInfoId).getEvent());
-//  }
-
-  // 1. 예매중 페이지에서 공연정보 조회
+  // 1.예매중 페이지에서 공연정보 조회
   @Transactional(readOnly = true)
   public DetailEventResponseDto verifyReservation(Long eventId) {
     String cacheKey = "DetailEventResponseDto::" + eventId;
@@ -58,32 +49,26 @@ public class ReservationService {
     }
 
     return detailEventResponseDto;
+
   }
 
-  private DetailEventResponseDto getEventInfo(Long eventId) {
-    return eventRepository.findById(eventId).map(DetailEventResponseDto::new)
-        .orElseThrow(() -> new CustomException(ExceptionType.NOT_FOUND_EVENT_EXCEPTION));
-  }
-
-  // 2. 예매하기
+  // 2.예매하기
   @Transactional(isolation = Isolation.READ_COMMITTED)
   public Long makeReservation(ReservationRequestDto dto, User user) {
-    //    먼저 redis 캐시를 조회
     boolean hasLeftSeats = redisRepository.hasLeftSeatsInRedis(dto.getTicketInfoId());
     if (hasLeftSeats) {
-      //    캐시가 있으면 redis에서 남은 좌석 수 차감
       decrementLeftSeatInRedis(dto);
     } else {
-      //    캐시가 없으면 DB를 통해 남은 좌석 수 차감
       decrementLeftSeatInDB(dto);
     }
 
     Reservation reservation = new Reservation(dto, user);
     reservationRepository.saveAndFlush(reservation);
     return reservation.getId();
+
   }
 
-  //  2-1. redis로 좌석 수 변경
+  // 2-1.redis로 좌석 수 변경
   private void decrementLeftSeatInRedis(ReservationRequestDto dto) {
     Boolean success = redisRepository.decrementLeftSeatInRedis(dto.getTicketInfoId(),
         dto.getCount());
@@ -92,7 +77,7 @@ public class ReservationService {
     }
   }
 
-  // 2-2. 캐시 없으면 DB로 좌석수 변경
+  // 2-2.캐시 없으면 DB로 좌석수 변경
   private void decrementLeftSeatInDB(ReservationRequestDto dto) {
     TicketInfo ticketInfo = ticketInfoRepository.findByIdWithLock(dto.getTicketInfoId())
         .orElseThrow(
@@ -108,24 +93,23 @@ public class ReservationService {
     ticketInfoRepository.save(ticketInfo);
   }
 
-
-  // 3. 예매완료
+  // 3.예매완료
   @Transactional(readOnly = true)
-  public ReservationResponseDto reservationComplete(Long resvId, User user) {
-    Reservation reservation = checkReservationById(resvId);
+  public ReservationResponseDto reservationComplete(Long reservationId, User user) {
+    Reservation reservation = checkReservationById(reservationId);
     checkReservationUser(reservation, user);
     TicketInfo ticketInfo = checkTicketInfoById(reservation.getTicketInfoId());
     return new ReservationResponseDto(reservation, ticketInfo);
+
   }
 
-  // 4. 예매취소 여기에도 캐시 처리 함
+  // 4.예매취소
   @Transactional
-  public void deleteReservation(Long resvId, User user) {
-    Reservation reservation = checkReservationById(resvId);
+  public void deleteReservation(Long reservationId, User user) {
+    Reservation reservation = checkReservationById(reservationId);
     checkReservationUser(reservation, user);
     TicketInfo ticketInfo = checkTicketInfoById(reservation.getTicketInfoId());
 
-//    공연날이 오늘이거나 오늘보다 이전이면 예매 취소 불가능
     LocalDate eventDay = LocalDate.from(ticketInfo.getEvent().getDate());
     if (LocalDate.now().isAfter(eventDay) || LocalDate.now().equals(eventDay)) {
       throw new CustomException(ExceptionType.CANCEL_DEADLINE_PASSED_EXCEPTION);
@@ -133,13 +117,18 @@ public class ReservationService {
 
     boolean hasLeftSeats = redisRepository.hasLeftSeatsInRedis(ticketInfo.getId());
     if (hasLeftSeats) {
-      //    캐시가 있으면 redis에서 남은 좌석 수에 추가
       redisRepository.incrementLeftSeatInRedis(ticketInfo.getId(), reservation.getCount());
     } else {
-      //    캐시가 없으면 DB를 통해 남은 좌석 수에 추가
       ticketInfo.plusSeats(reservation.getCount());
     }
     reservationRepository.delete(reservation);
+
+  }
+
+  // 1-1. eventId 로 공연 조회
+  private DetailEventResponseDto getEventInfo(Long eventId) {
+    return eventRepository.findById(eventId).map(DetailEventResponseDto::new)
+        .orElseThrow(() -> new CustomException(ExceptionType.NOT_FOUND_EVENT_EXCEPTION));
   }
 
   //  3-1. 예매 기록의 사용자와 현재 토큰상의 사용자 일치 여부 판별 메서드
@@ -162,7 +151,6 @@ public class ReservationService {
         () -> new CustomException(ExceptionType.NOT_FOUND_TICKET_INFO_EXCEPTION)
     );
   }
-
 
 }
 
