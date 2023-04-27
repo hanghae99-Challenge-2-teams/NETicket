@@ -8,14 +8,13 @@ import com.example.neticket.event.service.EventService;
 import com.example.neticket.exception.CustomException;
 import com.example.neticket.exception.ExceptionType;
 import com.example.neticket.security.UserDetailsImpl;
-import java.io.IOException;
 import java.util.List;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,7 +34,7 @@ public class EventController {
   private static final List<String> ALLOWED_IMAGE_CONTENT_TYPES = List.of("image/jpeg", "image/jpg",
       "image/png", "image/gif");
 
-  //  메인 페이지 조회
+  //  1.메인 페이지 조회
   @GetMapping
   public ResponseEntity<Page<EventResponseDto>> getEvents(@RequestParam(value = "page") int page) {
     validateSearch("pass", page);
@@ -44,7 +43,7 @@ public class EventController {
 
   }
 
-  //  상세 페이지 조회
+  //  2.상세 페이지 조회
   @GetMapping("/{eventId}")
   public ResponseEntity<DetailEventResponseDto> getDetailEvent(@PathVariable Long eventId) {
     DetailEventResponseDto detailEvent = eventService.getDetailEvent(eventId);
@@ -52,33 +51,24 @@ public class EventController {
 
   }
 
-  // 공연 추가하기
+  // 3.공연 추가하기
   @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
   public MessageResponseDto addEvent(
-      @RequestParam("image")MultipartFile image,
-      @RequestPart("dto")EventRequestDto eventRequestDto,
+      @RequestParam("image") MultipartFile image,
+      @RequestPart("dto") @Valid EventRequestDto eventRequestDto,
       @AuthenticationPrincipal UserDetailsImpl userDetails) {
     validateImage(image);
     return eventService.addEvent(eventRequestDto, userDetails.getUser(), image);
+
   }
 
-//  //  공연 삭제 Reservation 기록이 있으면 삭제가 안되기때문에 추후 논의 반드시 필요!!!!!!!!!!!
-//  @DeleteMapping("/{eventId}")
-//  public ResponseEntity<MessageResponseDto> deleteEvent(@PathVariable Long eventId,
-//      @AuthenticationPrincipal UserDetailsImpl userDetails) {
-//    MessageResponseDto deleteMessage = eventService.deleteEvent(eventId, userDetails.getUser());
-//    return ResponseEntity.ok().body(deleteMessage);
-//
-//  }
-
   /**
-   * 검색기능 keyword로 공연 제목과 공연 장소를 검색
+   * 4.검색기능 keyword로 공연 제목과 공연 장소를 검색
    *
    * @param keyword : 검색어
    * @param page    : 현재 페이지. Pageable에서는 0페이지가 첫페이지라 -1
    * @return : 검색결과를 Page<EventResponseDto>로 반환
    */
-  // 쿼리스트링 값 예외처리 추후에 해야함
   @GetMapping("/search")
   public ResponseEntity<Page<EventResponseDto>> searchEvents(
       @RequestParam(value = "keyword") String keyword,
@@ -89,7 +79,7 @@ public class EventController {
 
   }
 
-//  이미지 유효성 검사
+  // 이미지 유효성 검사
   private void validateImage(MultipartFile image) {
     if (image.isEmpty()) {
       throw new CustomException(ExceptionType.NO_IMAGE_EXCEPTION);
@@ -100,9 +90,10 @@ public class EventController {
     if (!ALLOWED_IMAGE_CONTENT_TYPES.contains(image.getContentType())) {
       throw new CustomException(ExceptionType.IMAGE_FORMAT_EXCEPTION);
     }
+
   }
 
-//  검색 유효성 검사
+  // 검색 유효성 검사
   private void validateSearch(String keyword, int page) {
     if (keyword.isBlank()) {
       throw new CustomException(ExceptionType.ZERO_WORD_EXCEPTION);
@@ -110,6 +101,7 @@ public class EventController {
     if (page <= 0) {
       throw new CustomException(ExceptionType.INVALID_PAGE_EXCEPTION);
     }
+
   }
 
 }

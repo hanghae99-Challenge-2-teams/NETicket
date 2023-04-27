@@ -9,11 +9,13 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class TicketInfoService {
@@ -38,18 +40,19 @@ public class TicketInfoService {
       ticketInfo.setAvailable(false);
       deleteDtoCache(ticketInfo);
       redisRepository.deleteLeftSeatsInRedis(ticketInfo);
+      log.info("{}번 공연이 예매불가능으로 수정되었습니다.", ticketInfo.getEvent().getId());
     }
     ticketInfoRepository.saveAll(ticketInfos);
+
   }
 
-//  dto 캐시를 삭제하는 private 메서드
-  private void deleteDtoCache(TicketInfo ticketInfo){
+  // dto 캐시를 삭제하는 private 메서드
+  private void deleteDtoCache(TicketInfo ticketInfo) {
     String cacheKey = "DetailEventResponseDto::" + ticketInfo.getEvent().getId();
     Boolean eventCache = redisTemplate.hasKey(cacheKey);
     if (eventCache != null && eventCache) {
       redisTemplate.delete(cacheKey);
     }
-
   }
 
   /**
@@ -64,12 +67,13 @@ public class TicketInfoService {
       deleteDtoCache(ticketInfo);
       ticketInfo.setAvailable(true);
       redisRepository.saveTicketInfoToRedis(ticketInfo);
+      log.info("{}번 공연이 예매가능으로 수정되었습니다.", ticketInfo.getEvent().getId());
     }
     ticketInfoRepository.saveAll(ticketInfos);
   }
 
 
-//  admin 유저가 새로 서버 시작할때 ticketInfo 업데이트
+  // admin 유저가 새로 서버 시작할때 ticketInfo 업데이트
   public MessageResponseDto resetTicketInfo() {
     List<TicketInfo> ticketInfos = ticketInfoRepository.findAll();
     redisRepository.flushAll();
@@ -77,14 +81,12 @@ public class TicketInfoService {
     for (TicketInfo ticketInfo : ticketInfos) {
       LocalDateTime openDate = ticketInfo.getOpenDate();
       LocalDate eventDate = ticketInfo.getEvent().getDate().toLocalDate();
-//      티켓 오픈 시간이 오늘보다 뒤 일때 false
-      if (today.isBefore(openDate)){
-        ticketInfo.setAvailable(false);
-//        티켓 오픈시간이 오늘~공연당일 일때 true
-      } else if ((today.isAfter(openDate) || today.isEqual(openDate)) && LocalDate.now().isBefore(eventDate)){
+      // 티켓 오픈 시간인 공연만 isAvalilable을 true로 수정
+      if ((today.isAfter(openDate) || today.isEqual(openDate)) && LocalDate.now()
+          .isBefore(eventDate)) {
         ticketInfo.setAvailable(true);
         redisRepository.saveTicketInfoToRedis(ticketInfo);
-//        오늘이 공연 당일이거나 이미 지난 공연일 때
+        // 지나간 공연이거나 미오픈 공연만 isAvalilable을 false로 수정
       } else {
         ticketInfo.setAvailable(false);
       }
@@ -92,8 +94,5 @@ public class TicketInfoService {
     ticketInfoRepository.saveAll(ticketInfos);
     return new MessageResponseDto(HttpStatus.OK, "공연 상태를 성공적으로 조정했습니다.");
   }
-
-
-
 
 }

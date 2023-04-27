@@ -14,7 +14,7 @@ public class TicketInfoResponseDto {
   private LocalDateTime openDate;
   private boolean isAvailable;
 
-  // DetailEventResponseDto 역직렬화 할때 사용함
+  // DetailEventResponseDto 역직렬화 시 사용
   @Builder
   public TicketInfoResponseDto() {
   }
@@ -24,4 +24,5 @@ public class TicketInfoResponseDto {
     this.openDate = ticketInfo.getOpenDate();
     this.isAvailable = ticketInfo.isAvailable();
   }
+
 }

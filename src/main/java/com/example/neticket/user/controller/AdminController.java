@@ -28,35 +28,44 @@ public class AdminController {
 
   // 1. ADMIN. DB에서 남은 좌석수만 가져와서 Redis에 (key-value)형태로 저장
   @PostMapping("/cache/left-seats/{ticketInfoId}")
-  public MessageResponseDto saveLeftSeatsInRedis(@PathVariable Long ticketInfoId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+  public MessageResponseDto saveLeftSeatsInRedis(@PathVariable Long ticketInfoId,
+      @AuthenticationPrincipal UserDetailsImpl userDetails) {
     return adminService.saveLeftSeatsInRedis(ticketInfoId, userDetails.getUser());
+
   }
 
-  // 2. ADMIN. 해당하는 공연의 남은 좌석수 Redis에서 삭제(삭제되기전 모든 캐시 DB에 반영)
+  // 2. ADMIN. 해당하는 공연의 남은 좌석수 Redis에서 삭제
   @DeleteMapping("/cache/left-seats/{ticketInfoId}")
-  public MessageResponseDto deleteLeftSeatsFromRedis(@PathVariable Long ticketInfoId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+  public MessageResponseDto deleteLeftSeatsFromRedis(@PathVariable Long ticketInfoId,
+      @AuthenticationPrincipal UserDetailsImpl userDetails) {
     return adminService.deleteLeftSeatsFromRedis(ticketInfoId, userDetails.getUser());
+
   }
 
-  // 3. ADMIN. Redis에 등록된 모든 leftSeats 키값 리스트 반환
+  // 3. ADMIN. Redis에 등록된 모든 leftSeats 키값 리스트 반환.
   @GetMapping("/cache/left-seats")
-  public List<String> findAllLeftSeatsKeysInRedis(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+  public List<String> findAllLeftSeatsKeysInRedis(
+      @AuthenticationPrincipal UserDetailsImpl userDetails) {
     return adminService.findAllLeftSeatsKeysInRedis(userDetails.getUser());
+
   }
 
   // 4. ADMIN. 해당 ticketInfoId에 해당하는 남은 좌석 수를 정확히 세서 DB와 Redis에 refresh.
   @PatchMapping("/cache/left-seats/{ticketInfoId}")
-  public MessageResponseDto refreshLeftSeats(@PathVariable Long ticketInfoId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+  public MessageResponseDto refreshLeftSeats(@PathVariable Long ticketInfoId,
+      @AuthenticationPrincipal UserDetailsImpl userDetails) {
     return adminService.refreshLeftSeats(ticketInfoId, userDetails.getUser());
+
   }
 
-//  5. ADMIN. ticketInfo의 현재 저장된 캐시를 다 날리고 isAvailable을 오늘 날짜에 맞게 다 맞춰준다.
+  // 5. ADMIN. ticketInfo의 현재 저장된 캐시를 다 날리고 isAvailable을 오늘 날짜에 맞게 수정.
   @PatchMapping("/cache")
-  public MessageResponseDto resetTicketInfo(@AuthenticationPrincipal UserDetailsImpl userDetails){
+  public MessageResponseDto resetTicketInfo(@AuthenticationPrincipal UserDetailsImpl userDetails) {
     if (!userDetails.getUser().getRole().equals(UserRoleEnum.ADMIN)) {
       throw new CustomException(ExceptionType.USER_UNAUTHORIZED_EXCEPTION);
     }
     return ticketInfoService.resetTicketInfo();
+
   }
 
 }
