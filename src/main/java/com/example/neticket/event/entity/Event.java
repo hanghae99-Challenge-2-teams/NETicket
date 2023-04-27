@@ -1,7 +1,6 @@
 package com.example.neticket.event.entity;
 
 import com.example.neticket.event.dto.EventRequestDto;
-import com.example.neticket.user.entity.User;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,6 +15,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class Event {
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
@@ -35,7 +35,7 @@ public class Event {
   @Column(nullable = false)
   private LocalDateTime date;
 
-//  공연정보와 티켓예매정보를 1대1 매칭
+  // 공연정보와 티켓예매정보를 1대1 관계설정
   @OneToOne(mappedBy = "event")
   private TicketInfo ticketInfo;
 

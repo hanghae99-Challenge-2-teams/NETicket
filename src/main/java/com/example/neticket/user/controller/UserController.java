@@ -30,14 +30,14 @@ public class UserController {
 
   private final UserService userService;
 
-  // 회원가입
+  // 1.회원가입
   @PostMapping("/signup")
   public ResponseEntity<MessageResponseDto> signup(@RequestBody @Valid SignupRequestDto dto) {
     MessageResponseDto signup = userService.signup(dto);
     return ResponseEntity.status(HttpStatus.CREATED).body(signup);
   }
 
-  // 로그인
+  // 2.로그인
   @PostMapping("/login")
   public ResponseEntity<LoginResponseDto> login(@RequestBody @Valid LoginRequestDto dto,
       HttpServletResponse response) {
@@ -45,22 +45,13 @@ public class UserController {
     return ResponseEntity.ok().body(login);
   }
 
-//  마이페이지
+  // 3.마이페이지
   @GetMapping("/user")
-  public ResponseEntity<List<ReservationResponseDto>> getUserInfo(@AuthenticationPrincipal UserDetailsImpl userDetails) {
-    List<ReservationResponseDto> userReservationList = userService.getUserInfo(userDetails.getUser());
+  public ResponseEntity<List<ReservationResponseDto>> getUserInfo(
+      @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    List<ReservationResponseDto> userReservationList = userService.getUserInfo(
+        userDetails.getUser());
     return ResponseEntity.ok().body(userReservationList);
   }
-
-  // 사용자 역할 가져오기
-  @GetMapping("/user/role")
-  public ResponseEntity<UserRoleEnum> getUserRole(@AuthenticationPrincipal UserDetailsImpl userDetails) {
-    if (userDetails != null) {
-      return ResponseEntity.ok(userDetails.getUser().getRole());
-    }
-//    return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
-    throw new CustomException(ExceptionType.USER_UNAUTHORIZED_EXCEPTION);
-  }
-
 
 }

@@ -18,6 +18,7 @@ public class ReservationRequestDto {
   @Max(4)
   private int count;
 
+  // unitTest 생성자
   public ReservationRequestDto(Long ticketInfoId, int count) {
     this.ticketInfoId = ticketInfoId;
     this.count = count;
