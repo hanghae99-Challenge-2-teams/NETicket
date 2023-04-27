@@ -25,11 +25,9 @@ public class TicketInfoService {
   private final RedisTemplate<String, DetailEventResponseDto> redisTemplate;
 
   /**
-   * 매일 자정에 돌아가는 스케쥴러
-   * 오늘이 공연일인 모든 공연을 예매 불가능으로 돌린다
+   * 매일 자정에 돌아가는 스케쥴러 오늘이 공연일인 모든 공연을 예매 불가능으로 돌린다.
    * repository에서 오늘이 공연 당일인 공연의 ticketInfo를 다 불러온다.
-   * 해당 공연의 dto 캐시를 삭제한다
-   * 해당 공연의 leftSeats 캐시도 삭제하고 DB에 정합성을 맞춘다.
+   * 해당 공연의 dto 캐시를 삭제한다. 해당 공연의 leftSeats 캐시도 삭제하고 DB에 정합성을 맞춘다.
    * ticketInfo에 변화가 생긴 것을 repository에 반영한다.
    */
 
