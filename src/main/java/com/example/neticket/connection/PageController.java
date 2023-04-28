@@ -51,12 +51,13 @@ public class PageController {
     return new ModelAndView("addevent");
   }
 
-  //  사용자 마이페이지
+  // 사용자 마이페이지
   @GetMapping("/user")
   public ModelAndView myPage() {
       return new ModelAndView("mypage");
   }
 
+  // 검색 페이지 이동
   @GetMapping("/search")
   public ModelAndView search() { return  new ModelAndView("search");}
 

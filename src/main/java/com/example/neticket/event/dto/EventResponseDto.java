@@ -22,4 +22,5 @@ public class EventResponseDto {
     this.date = event.getDate();
     this.isAvailable = event.getTicketInfo().isAvailable();
   }
+
 }

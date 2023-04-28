@@ -33,7 +33,8 @@ public class TicketInfo {
   @Column(nullable = false)
   private LocalDateTime openDate;
 
-  //  공연회차-티켓예매정보  양방향 일대일 관계로 설정
+  // 공연회차-티켓예매정보  양방향 1대1 관계 설정
+  // ticketInfo가 연관관계의 주인
   @OneToOne
   @JoinColumn(name = "event_id", nullable = false)
   private Event event;
@@ -43,6 +44,7 @@ public class TicketInfo {
     this.totalSeats = eventRequestDto.getTotalSeat();
     this.leftSeats = eventRequestDto.getTotalSeat();
     this.event = event;
+    event.setTicketInfo(this);
   }
 
   public void setAvailable(boolean available) {
@@ -60,4 +62,5 @@ public class TicketInfo {
   public void setLeftSeats(int leftSeats) {
     this.leftSeats = leftSeats;
   }
+
 }
