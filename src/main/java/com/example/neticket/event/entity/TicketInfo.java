@@ -44,6 +44,7 @@ public class TicketInfo {
     this.totalSeats = eventRequestDto.getTotalSeat();
     this.leftSeats = eventRequestDto.getTotalSeat();
     this.event = event;
+    event.setTicketInfo(this);
   }
 
   public void setAvailable(boolean available) {
