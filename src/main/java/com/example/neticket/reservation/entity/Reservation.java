@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor
-public class Reservation extends Timestamped{
+public class Reservation{
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
