@@ -388,13 +388,14 @@ section.infoSection {
 .property-social-icons {
   width: 1em;
   height: 1em;
-  background-color: black;
+  background-color: #ffd35b;
   position: absolute;
   bottom: 1em;
   left: 1em;
   -webkit-transition: all 0.4s cubic-bezier(0.645, 0.045, 0.355, 1);
   -o-transition: all 0.4s cubic-bezier(0.645, 0.045, 0.355, 1);
   transition: all 0.4s cubic-bezier(0.645, 0.045, 0.355, 1);
+  border-radius: 10px;
 }
 
 /* Property Cards Hover States */
@@ -422,8 +423,9 @@ section.infoSection {
   top: 30%;
   opacity: 0;
   transition: all 0.4s cubic-bezier(0.645, 0.045, 0.355, 1) 0.2s;
-  color: black;
+  color: #ffd35b;
   font-size: 1.2em;
+  border-radius: 20px;
 }
 
 .property-card:hover .property-image-title {
