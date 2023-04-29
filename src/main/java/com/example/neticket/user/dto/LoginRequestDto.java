@@ -15,4 +15,8 @@ public class LoginRequestDto {
   @Pattern(regexp = "^(?=.*[a-z])(?=.*\\d)(?=.*[!@#$%^&*()_+])[a-zA-Z\\d!@#$%^&*()_+]{8,20}$", message = "8~20글자, 영문자 1개, 숫자 1개, 특수문자 1개 꼭 입력해야합니다.")
   private String password;
 
+  public LoginRequestDto(String email, String password) {
+    this.email = email;
+    this.password = password;
+  }
 }
