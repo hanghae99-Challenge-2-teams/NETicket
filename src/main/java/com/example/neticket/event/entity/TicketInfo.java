@@ -1,6 +1,8 @@
 package com.example.neticket.event.entity;
 
 import com.example.neticket.event.dto.EventRequestDto;
+import com.example.neticket.exception.CustomException;
+import com.example.neticket.exception.ExceptionType;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -51,8 +53,8 @@ public class TicketInfo {
     isAvailable = available;
   }
 
-  public int minusSeats(int count) {
-    return this.leftSeats -= count;
+  public void minusSeats(int count) {
+    this.leftSeats -= count;
   }
 
   public void plusSeats(int count) {

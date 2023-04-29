@@ -62,9 +62,7 @@ public class ReservationService {
       decrementLeftSeatInDB(dto);
     }
 
-    Reservation reservation = new Reservation(dto, user);
-    reservationRepository.saveAndFlush(reservation);
-    return reservation.getId();
+    return reservationRepository.saveAndFlush(new Reservation(dto, user)).getId();
 
   }
 
@@ -86,7 +84,7 @@ public class ReservationService {
     if (!ticketInfo.isAvailable()) {
       throw new CustomException(ExceptionType.RESERVATION_UNAVAILABLE_EXCEPTION);
     }
-    if (ticketInfo.getLeftSeats() - dto.getCount() < 0) {
+    if (ticketInfo.getLeftSeats() - dto.getCount() < 0){
       throw new CustomException(ExceptionType.OUT_OF_TICKET_EXCEPTION);
     }
     ticketInfo.minusSeats(dto.getCount());
