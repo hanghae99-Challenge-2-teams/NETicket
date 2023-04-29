@@ -53,10 +53,10 @@ body {
   cursor: pointer;
 }
 
-footer {
+.page {
   display: flex;
   justify-content: center;
-  margin-top: 100px;
+  margin-top: 70px;
 }
 
 .info {
@@ -98,7 +98,7 @@ footer {
 }
 
 .nav-link {
-  font-size: 14px;
+  font-size: 17px;
 }
 
 
@@ -132,11 +132,6 @@ footer {
   cursor: pointer;
   font-size: 15px;
   width: 100%;
-}
-
-.footerContainer p {
-  margin: 0;
-  color: #999;
 }
 
 .main .image-container {
@@ -393,13 +388,14 @@ section.infoSection {
 .property-social-icons {
   width: 1em;
   height: 1em;
-  background-color: black;
+  background-color: #ffd35b;
   position: absolute;
   bottom: 1em;
   left: 1em;
   -webkit-transition: all 0.4s cubic-bezier(0.645, 0.045, 0.355, 1);
   -o-transition: all 0.4s cubic-bezier(0.645, 0.045, 0.355, 1);
   transition: all 0.4s cubic-bezier(0.645, 0.045, 0.355, 1);
+  border-radius: 10px;
 }
 
 /* Property Cards Hover States */
@@ -417,7 +413,7 @@ section.infoSection {
 }
 
 .property-card:hover .property-social-icons:hover {
-  background-color: blue;
+  background-color: #ec4a4a;
   cursor: pointer;
 }
 
@@ -427,8 +423,9 @@ section.infoSection {
   top: 30%;
   opacity: 0;
   transition: all 0.4s cubic-bezier(0.645, 0.045, 0.355, 1) 0.2s;
-  color: black;
+  color: #ffd35b;
   font-size: 1.2em;
+  border-radius: 20px;
 }
 
 .property-card:hover .property-image-title {
@@ -436,7 +433,7 @@ section.infoSection {
 }
 
 .property-description h5 {
-  font-size: 1.2em;
+  font-size: 1em;
   font-weight: bold;
   font-family: 'Gowun Dodum', sans-serif;
   margin-top: 1em; /* 위 마진 추가 */
@@ -448,8 +445,6 @@ section.infoSection {
   font-size: 1.3em;
   font-weight: normal;
   font-family: 'Dongle', sans-serif;
-  margin-top: 0.5em;
-  margin-bottom: 0.5em;
 }
 
 .property-description p {
@@ -460,6 +455,13 @@ section.infoSection {
   margin-bottom: 0;
 }
 
+.h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
+  margin-top: 0;
+  margin-bottom: 0;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
 h3 {
   font-size: 24px;
   color: #ff5959;
@@ -467,4 +469,73 @@ h3 {
   margin-top: 20px;
   margin-left: 70px;
 }
+
+.common_footer {
+  background-color: #f5f5f5ad;
+  color: #6f6f6f;
+  font-size: 17px;
+  padding: 30px 0;
+}
+
+.footer_menu {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.footer_menu_list {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer_menu_item {
+  margin-right: 15px;
+}
+
+.footer_menu_link {
+  color: #6f6f6f;
+  text-decoration: none;
+}
+
+.footer_inner {
+  text-align: center;
+}
+
+.footer_corp_title {
+  display: block;
+  font-size: 23px;
+  color: #6f6f6f;
+  margin-bottom: 10px;
+}
+
+.footer_address {
+  line-height: 1.5;
+}
+
+.footer_address_item {
+  display: inline;
+  margin-right: 10px;
+}
+
+.btn_hyperlink {
+  color: #6f6f6f;
+  text-decoration: underline;
+}
+
+.footer_copyright {
+  display: block;
+  margin-top: 10px;
+}
+
+.footer_etc {
+  margin-top: 10px;
+}
+
+
+
+
+
 
