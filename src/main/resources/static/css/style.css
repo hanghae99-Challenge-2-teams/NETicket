@@ -98,7 +98,7 @@ body {
 }
 
 .nav-link {
-  font-size: 14px;
+  font-size: 17px;
 }
 
 
@@ -433,7 +433,7 @@ section.infoSection {
 }
 
 .property-description h5 {
-  font-size: 1.2em;
+  font-size: 1em;
   font-weight: bold;
   font-family: 'Gowun Dodum', sans-serif;
   margin-top: 1em; /* 위 마진 추가 */
@@ -445,8 +445,6 @@ section.infoSection {
   font-size: 1.3em;
   font-weight: normal;
   font-family: 'Dongle', sans-serif;
-  margin-top: 0.5em;
-  margin-bottom: 0.5em;
 }
 
 .property-description p {
@@ -455,6 +453,13 @@ section.infoSection {
   font-family: 'Dongle', sans-serif;
   margin-top: 0;
   margin-bottom: 0;
+}
+
+.h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
+  margin-top: 0;
+  margin-bottom: 0;
+  font-weight: 500;
+  line-height: 1.2;
 }
 
 h3 {
