@@ -36,7 +36,7 @@
 <div id="event_box" class="row"
      style="margin-left: 50px; margin-top: 50px; margin-right: 20px"></div>
 
-<footer>
+<div class="page">
   <nav aria-label="Page navigation example" class="justify-content-center">
     <ul class="pagination">
       <li class="page-item">
@@ -54,7 +54,9 @@
       </li>
     </ul>
   </nav>
-</footer>
+</div>
+
+<div th:replace="footer :: footer"></div>
 </body>
 <script>
   $(document).ready(function () {
