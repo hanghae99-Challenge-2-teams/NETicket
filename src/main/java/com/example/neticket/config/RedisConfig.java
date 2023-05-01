@@ -4,12 +4,15 @@ import com.example.neticket.event.dto.DetailEventResponseDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.github.benmanes.caffeine.cache.Caffeine;
 import java.time.Duration;
+import java.util.concurrent.TimeUnit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.cache.caffeine.CaffeineCacheManager;
 import org.springframework.cache.concurrent.ConcurrentMapCacheManager;
 import org.springframework.cache.support.CompositeCacheManager;
 import org.springframework.context.annotation.Bean;
@@ -36,7 +39,11 @@ public class RedisConfig extends CachingConfigurerSupport {
 
   @Bean
   public CacheManager localCacheManager() {
-    return new ConcurrentMapCacheManager("localCache");
+    CaffeineCacheManager cacheManager = new CaffeineCacheManager("localCache");
+    cacheManager.setCaffeine(Caffeine.newBuilder()
+        .expireAfterWrite(1, TimeUnit.HOURS)
+        .maximumSize(20));
+    return cacheManager;
   }
 
   @Bean
@@ -50,8 +57,7 @@ public class RedisConfig extends CachingConfigurerSupport {
   @Bean
   @Override
   public CacheManager cacheManager() {
-    CompositeCacheManager cacheManager = new CompositeCacheManager(localCacheManager(), redisCacheManager());
-    return cacheManager;
+    return new CompositeCacheManager(localCacheManager(), redisCacheManager());
   }
 
   @Bean
