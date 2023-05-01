@@ -5,10 +5,17 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import java.time.Duration;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.CachingConfigurerSupport;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.cache.concurrent.ConcurrentMapCacheManager;
+import org.springframework.cache.support.CompositeCacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
+import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceClientConfiguration;
@@ -19,13 +26,33 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 @Configuration
 @EnableCaching
-public class RedisConfig {
+public class RedisConfig extends CachingConfigurerSupport {
 
   @Value("${spring.redis.host}")
   private String host;
 
   @Value("${spring.redis.port}")
   private int port;
+
+  @Bean
+  public CacheManager localCacheManager() {
+    return new ConcurrentMapCacheManager("localCache");
+  }
+
+  @Bean
+  public CacheManager redisCacheManager() {
+    RedisCacheManager.RedisCacheManagerBuilder builder = RedisCacheManager.RedisCacheManagerBuilder
+        .fromConnectionFactory(redisConnectionFactory());
+    return builder.build();
+  }
+
+  @Primary
+  @Bean
+  @Override
+  public CacheManager cacheManager() {
+    CompositeCacheManager cacheManager = new CompositeCacheManager(localCacheManager(), redisCacheManager());
+    return cacheManager;
+  }
 
   @Bean
   public RedisConnectionFactory redisConnectionFactory() {
