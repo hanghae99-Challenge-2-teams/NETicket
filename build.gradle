@@ -27,25 +27,24 @@ dependencies {
     implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
-    runtimeOnly 'com.h2database:h2'
     runtimeOnly 'com.mysql:mysql-connector-j'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
 
+    // AWS S3
     implementation 'software.amazon.awssdk:s3:2.20.32'
 
+    // JSON
     implementation group: 'org.json', name: 'json', version: '20220924'
 
-    //JWT
+    // JWT
     compileOnly group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.2'
     runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.2'
     runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.2'
 
-//    implementation group: 'org.springframework.session', name: 'spring-session-data-redis', version: '2.3.2.RELEASE'
-    // redis redisson springboot 2.7.x
+    // Redis
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
-//    implementation 'org.redisson:redisson-spring-boot-starter:3.17.7'
 }
 
 //tasks.named('test') {

@@ -11,16 +11,16 @@ import org.springframework.data.repository.query.Param;
 
 public interface TicketInfoRepository extends JpaRepository<TicketInfo, Long> {
 
-//  DB로 예매하기 시 ticketInfo를 조회할때 비관적 락 적용
+  // DB로 예매하기 시 ticketInfo를 조회할때 비관적 락 적용
   @Lock(LockModeType.PESSIMISTIC_WRITE)
   @Query("SELECT t FROM TicketInfo t WHERE t.id = :id")
   Optional<TicketInfo> findByIdWithLock(@Param("id") Long id);
 
-// 공연일이 오늘인 ticketInfo를 가져옴
+  // 공연일이 오늘인 ticketInfo를 가져옴
   @Query("SELECT t FROM TicketInfo t JOIN Event e ON t.event.id = e.id WHERE DATE(e.date) = CURRENT_DATE")
   List<TicketInfo> findTicketInfoByEventDate();
 
-//  티켓오픈일이 오늘인 ticketInfo를 가져옴
+  // 티켓오픈일이 오늘인 ticketInfo를 가져옴
   @Query("SELECT t FROM TicketInfo t WHERE DATE(t.openDate) = CURRENT_DATE")
   List<TicketInfo> findTicketInfoByOpenDate();
 }
