@@ -62,7 +62,7 @@ public class ReservationService {
       decrementLeftSeatInDB(dto);
     }
 
-    return reservationRepository.saveAndFlush(new Reservation(dto, user)).getId();
+    return reservationRepository.save(new Reservation(dto, user)).getId();
 
   }
 
