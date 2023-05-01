@@ -5,6 +5,7 @@ import com.example.neticket.event.dto.MessageResponseDto;
 import com.example.neticket.event.entity.TicketInfo;
 import com.example.neticket.event.repository.TicketInfoRepository;
 import com.example.neticket.reservation.repository.RedisRepository;
+import com.example.neticket.reservation.repository.ReservationRepository;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -14,6 +15,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
@@ -22,6 +24,7 @@ public class TicketInfoService {
 
   private final TicketInfoRepository ticketInfoRepository;
   private final RedisRepository redisRepository;
+  private final ReservationRepository reservationRepository;
   private final RedisTemplate<String, DetailEventResponseDto> redisTemplate;
 
   /**
@@ -72,9 +75,12 @@ public class TicketInfoService {
 
 
   // admin 유저가 새로 서버 시작할때 ticketInfo 업데이트
+  @Transactional
   public MessageResponseDto resetTicketInfo() {
-    List<TicketInfo> ticketInfos = ticketInfoRepository.findAll();
     redisRepository.flushAll();
+    reservationRepository.deleteAll();
+    ticketInfoRepository.updateLeftSeatsToTotalSeats();
+    List<TicketInfo> ticketInfos = ticketInfoRepository.findAll();
     LocalDateTime today = LocalDateTime.now();
     for (TicketInfo ticketInfo : ticketInfos) {
       LocalDateTime openDate = ticketInfo.getOpenDate();

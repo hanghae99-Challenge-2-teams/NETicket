@@ -15,7 +15,6 @@ public class ReservationResponseDto {
   private LocalDateTime date;
   private int totalPrice;
   private int count;
-  private LocalDateTime createdAt;
 
   public ReservationResponseDto(Reservation reservation, TicketInfo ticketInfo) {
     this.id = reservation.getId();
@@ -25,7 +24,6 @@ public class ReservationResponseDto {
     this.date = ticketInfo.getEvent().getDate();
     this.count = reservation.getCount();
     this.totalPrice = ticketInfo.getEvent().getPrice() * this.count;
-    this.createdAt = reservation.getCreatedAt();
   }
 
 }

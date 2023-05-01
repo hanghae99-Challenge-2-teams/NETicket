@@ -3,7 +3,7 @@
 <head th:replace="header :: head"></head>
 <style>
 
-  @import url('https://fonts.googleapis.com/css?family=Montserrat:400,800');
+  @import url('https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap');
 
   * {
     box-sizing: border-box;
@@ -15,14 +15,14 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Gowun Dodum', sans-serif;
     height: 100vh;
-    margin: -20px 0 50px;
+    margin: 0;
   }
 
   h1 {
     font-weight: bold;
-    margin: 0;
+    margin-top: 10px;
   }
 
   h2 {
@@ -30,7 +30,7 @@
   }
 
   p {
-    font-size: 14px;
+    font-size: 17px;
     font-weight: 100;
     line-height: 20px;
     letter-spacing: 0.5px;
@@ -53,8 +53,7 @@
     border: 1px solid #f14646;
     background-color: #ec4a4a;
     color: #FFFFFF;
-    font-size: 12px;
-    font-weight: bold;
+    font-size: 17px;
     padding: 12px 45px;
     letter-spacing: 1px;
     text-transform: uppercase;
@@ -86,11 +85,21 @@
   }
 
   input {
-    background-color: #eee;
-    border: none;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
     padding: 12px 15px;
     margin: 8px 0;
     width: 100%;
+    border-radius: 5px;
+    font-size: 14px;
+    transition: 0.2s;
+    box-shadow: 0 0 5px rgba(189, 69, 69, 0.1) inset;
+  }
+
+  input:focus {
+    outline: none;
+    border-color: #ed9e9e;
+    box-shadow: 0 0 10px rgba(183, 81, 81, 0.1), 0 0 5px rgb(255, 89, 89) inset;
   }
 
   .container {
@@ -242,15 +251,16 @@
 </style>
 </head>
 <body>
-<a href="/neticket">
-  <img src="/images/logo2.png" alt="NETicket"
-       style="width: 150px; object-fit: contain; margin-bottom: 30px; marmargin-left: 70px;">
-</a>
-<div class="container" id="container">
+<div class="logo-container">
+  <a href="/neticket">
+    <img src="/images/logo2.png" alt="NETicket"
+         style="width: 150px; object-fit: contain; margin-bottom: 70px">
+  </a>
+</div>
+<div class="container right-panel-active" id="container">
   <div class="form-container sign-up-container">
     <form action="#">
-      <h1>Create Account</h1>
-      <span>or use your email for registration</span>
+      <h1>회원가입</h1>
       <input type="email" id="email" class="form-control" placeholder="이메일 주소를 입력해주세요.">
       <div class="input-group">
         <input type="password" id="password" class="form-control" placeholder="비밀번호를 입력해주세요.">
@@ -260,35 +270,34 @@
                placeholder="비밀번호를 한번 더 입력해주세요.">
       </div>
       <input type="text" id="nickname" class="form-control" placeholder="닉네임을 입력해주세요.">
-      <button type="button" id="signup-btn">Sign Up</button>
+      <button type="button" id="signup-btn">회원가입</button>
     </form>
   </div>
   <div class="form-container sign-in-container">
     <form action="#">
-      <h1>Sign in</h1>
-      <span>or use your account</span>
+      <h1>로그인</h1>
       <input type="email" class="form-control" id="login_email" aria-describedby="emailHelp"
              placeholder="이메일">
       <input type="password" class="form-control" id="login_password" placeholder="비밀번호">
-      <button type="button" onclick="login()">Sign In</button>
+      <button type="button" onclick="login()">로그인</button>
     </form>
   </div>
   <div class="overlay-container">
     <div class="overlay">
       <div class="overlay-panel overlay-left">
-        <h1>Welcome Back!</h1>
-        <p>To keep connected with us please login with your personal info</p>
-        <button class="ghost" id="signIn">Sign In</button>
+        <h1>Welcome to Neticket!</h1>
+        <p>계정이 있다면,<br>
+        로그인 버튼을 클릭해 로그인!</p>
+        <button class="ghost" id="signIn">로그인</button>
       </div>
       <div class="overlay-panel overlay-right">
-        <h1>Hello, Friend!</h1>
-        <p>Enter your personal details and start journey with us</p>
-        <button class="ghost" id="signUp">Sign Up</button>
+        <h1>Welcome to NETicket!</h1>
+        <p>처음오셨다면, 계정을 먼저 생성하세요!</p>
+        <button class="ghost" id="signUp">회원가입</button>
       </div>
     </div>
   </div>
 </div>
-
 
 </body>
 

@@ -47,4 +47,7 @@ public class Event {
     this.date = eventRequestDto.getDate();
   }
 
+  public void setTicketInfo(TicketInfo ticketInfo) {
+    this.ticketInfo = ticketInfo;
+  }
 }
