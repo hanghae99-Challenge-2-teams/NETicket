@@ -47,7 +47,6 @@ public class ReservationService {
     } catch (Exception e) {
       detailEventResponseDto = getEventInfo(eventId);
     }
-
     return detailEventResponseDto;
 
   }
@@ -55,38 +54,28 @@ public class ReservationService {
   // 2.예매하기
   @Transactional(isolation = Isolation.READ_COMMITTED)
   public Long makeReservation(ReservationRequestDto dto, User user) {
-    boolean hasLeftSeats = redisRepository.hasLeftSeatsInRedis(dto.getTicketInfoId());
-    if (hasLeftSeats) {
-      decrementLeftSeatInRedis(dto);
-    } else {
+    try {
+      Boolean success = redisRepository.decrementLeftSeatInRedis(dto.getTicketInfoId(),
+          dto.getCount());
+      if (!success) {
+        throw new CustomException(ExceptionType.OUT_OF_TICKET_EXCEPTION);
+      }
+    } catch (Exception e) {
+      if (e instanceof CustomException) {
+        throw e;
+      }
       decrementLeftSeatInDB(dto);
     }
-
     return reservationRepository.save(new Reservation(dto, user)).getId();
 
   }
 
-  // 2-1.redis로 좌석 수 변경
-  private void decrementLeftSeatInRedis(ReservationRequestDto dto) {
-    Boolean success = redisRepository.decrementLeftSeatInRedis(dto.getTicketInfoId(),
-        dto.getCount());
-    if (!success) {
-      throw new CustomException(ExceptionType.OUT_OF_TICKET_EXCEPTION);
-    }
-  }
-
-  // 2-2.캐시 없으면 DB로 좌석수 변경
+  // 2-1.캐시 없으면 DB로 좌석수 변경
   private void decrementLeftSeatInDB(ReservationRequestDto dto) {
     TicketInfo ticketInfo = ticketInfoRepository.findByIdWithLock(dto.getTicketInfoId())
         .orElseThrow(
             () -> new CustomException(ExceptionType.NOT_FOUND_TICKET_INFO_EXCEPTION)
         );
-    if (!ticketInfo.isAvailable()) {
-      throw new CustomException(ExceptionType.RESERVATION_UNAVAILABLE_EXCEPTION);
-    }
-    if (ticketInfo.getLeftSeats() - dto.getCount() < 0){
-      throw new CustomException(ExceptionType.OUT_OF_TICKET_EXCEPTION);
-    }
     ticketInfo.minusSeats(dto.getCount());
     ticketInfoRepository.save(ticketInfo);
   }
@@ -109,7 +98,7 @@ public class ReservationService {
     TicketInfo ticketInfo = checkTicketInfoById(reservation.getTicketInfoId());
 
     LocalDate eventDay = LocalDate.from(ticketInfo.getEvent().getDate());
-    if (LocalDate.now().isAfter(eventDay) || LocalDate.now().equals(eventDay)) {
+    if (!LocalDate.now().isBefore(eventDay)) {
       throw new CustomException(ExceptionType.CANCEL_DEADLINE_PASSED_EXCEPTION);
     }
 
