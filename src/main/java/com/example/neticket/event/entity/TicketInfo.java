@@ -53,6 +53,13 @@ public class TicketInfo {
     isAvailable = available;
   }
 
+  public void minusSeats(int count) {
+    if (this.leftSeats - count < 0) {
+      throw new CustomException(ExceptionType.OUT_OF_TICKET_EXCEPTION);
+    }
+    this.leftSeats -= count;
+  }
+
   public void plusSeats(int count) {
     this.leftSeats += count;
   }

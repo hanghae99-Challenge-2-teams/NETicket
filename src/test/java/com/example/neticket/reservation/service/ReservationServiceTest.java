@@ -133,20 +133,21 @@ class ReservationServiceTest {
 
       when(reservationRepository.save(any(Reservation.class))).thenAnswer(
           invocation -> testReservation);
+      when(ticketInfoRepository.findByIdWithLock(any())).thenReturn(Optional.of(testTicketInfo));
       when(testReservation.getId()).thenReturn(testReservationId);
       when(testTicketInfo.getLeftSeats()).thenAnswer(invocation -> leftSeats.get());
-      when(ticketInfoRepository.decrementLeftSeats(eq(testTicketInfoId), anyInt())).thenAnswer(invocation -> {
-        int invokedCount = invocation.getArgument(1, Integer.class);
+      doAnswer(invocation -> {
+        int invokedCount = invocation.getArgument(0, Integer.class);
         leftSeats.addAndGet(-invokedCount);
-        return count;
-      });
+        return null;
+      }).when(testTicketInfo).minusSeats(anyInt());
 //    when
       Long result = reservationService.makeReservation(mockDto, testUser);
 //    then
       assertEquals(testReservationId, result);
       assertEquals(initialValue-count, testTicketInfo.getLeftSeats());
       verify(reservationRepository, times(1)).save(any(Reservation.class));
-      verify(ticketInfoRepository, times(1)).decrementLeftSeats(testTicketInfoId, count);
+      verify(ticketInfoRepository, times(1)).findByIdWithLock(testTicketInfoId);
       verify(redisRepository, times(1)).decrementLeftSeatInRedis(any(Long.class),any(int.class));
 
     }
@@ -172,7 +173,6 @@ class ReservationServiceTest {
       assertEquals(initialValue-count, testTicketInfo.getLeftSeats());
       verify(redisRepository, times(1)).decrementLeftSeatInRedis(any(Long.class),any(int.class));
       verify(reservationRepository, times(1)).save(any(Reservation.class));
-      verify(ticketInfoRepository, never()).decrementLeftSeats(testTicketInfoId,count);
     }
 
   }

@@ -72,16 +72,12 @@ public class ReservationService {
 
   // 2-1.캐시 없으면 DB로 좌석수 변경
   private void decrementLeftSeatInDB(ReservationRequestDto dto) {
-    int updatedRows = ticketInfoRepository.decrementLeftSeats(dto.getTicketInfoId(),
-        dto.getCount());
-    if (updatedRows == 0) {
-      Boolean isAvailable = ticketInfoRepository.findIsAvailableById(dto.getTicketInfoId())
-          .orElseThrow(() -> new CustomException(ExceptionType.NOT_FOUND_TICKET_INFO_EXCEPTION)
-          );
-      throw new CustomException(isAvailable ? ExceptionType.OUT_OF_TICKET_EXCEPTION
-          : ExceptionType.RESERVATION_UNAVAILABLE_EXCEPTION);
-    }
-
+    TicketInfo ticketInfo = ticketInfoRepository.findByIdWithLock(dto.getTicketInfoId())
+        .orElseThrow(
+            () -> new CustomException(ExceptionType.NOT_FOUND_TICKET_INFO_EXCEPTION)
+        );
+    ticketInfo.minusSeats(dto.getCount());
+    ticketInfoRepository.save(ticketInfo);
   }
 
   // 3.예매완료

@@ -13,13 +13,15 @@ import org.springframework.data.repository.query.Param;
 public interface TicketInfoRepository extends JpaRepository<TicketInfo, Long> {
 
   // DB에 원자적 연산으로 예매가 가능한 티켓의 남은 좌석수를 차감. 남은 좌석수가 count보다 많을때만 차감. 바뀌는 row 수를 반환.
-  @Modifying
-  @Query("UPDATE TicketInfo t SET t.leftSeats = t.leftSeats - :count WHERE t.id = :id AND t.isAvailable = true AND t.leftSeats >= :count")
-  int decrementLeftSeats(@Param("id") Long id, @Param("count") int count);
+//  @Modifying
+//  @Query("UPDATE TicketInfo t SET t.leftSeats = t.leftSeats - :count WHERE t.id = :id AND t.isAvailable = true AND t.leftSeats >= :count")
+//  int decrementLeftSeats(@Param("id") Long id, @Param("count") int count);
 
-  // id로 ticketInfo의 isAvailable 값만 조회
-  @Query("SELECT t.isAvailable FROM TicketInfo t WHERE t.id = :id")
-  Optional<Boolean> findIsAvailableById(@Param("id") Long id);
+  // DB로 예매하기 시 ticketInfo를 조회할때 비관적 락 적용
+  @Lock(LockModeType.PESSIMISTIC_WRITE)
+  @Query("SELECT t FROM TicketInfo t WHERE t.id = :id AND t.isAvailable = true")
+  Optional<TicketInfo> findByIdWithLock(@Param("id") Long id);
+
 
   // 공연일이 오늘인 ticketInfo를 가져옴
   @Query("SELECT t FROM TicketInfo t JOIN Event e ON t.event.id = e.id WHERE DATE(e.date) = CURRENT_DATE")
