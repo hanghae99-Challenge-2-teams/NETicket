@@ -53,10 +53,6 @@ public class TicketInfo {
     isAvailable = available;
   }
 
-  public void minusSeats(int count) {
-    this.leftSeats -= count;
-  }
-
   public void plusSeats(int count) {
     this.leftSeats += count;
   }
