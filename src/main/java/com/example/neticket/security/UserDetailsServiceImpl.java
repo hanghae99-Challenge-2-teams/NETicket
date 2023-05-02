@@ -26,8 +26,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     User user = userRepository.findByEmail(email).orElseThrow(
         () -> new CustomException(ExceptionType.NOT_FOUND_USER_EXCEPTION)
     );
-//    로그 추후 삭제
-//    log.info("UserDetails DB로 조회중");
     return new UserDetailsImpl(user, user.getEmail());
 
   }
