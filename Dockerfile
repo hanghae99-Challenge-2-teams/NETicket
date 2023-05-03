@@ -1,6 +1,6 @@
 # 도커 허브에서 이미지를 가져와서 이미지를 작업한다
 # FROM (이미지 이름:버전)
-FROM --platform=linux/arm64 openjdk:17
+FROM openjdk:17
 ENV TZ=Asia/Seoul
 
 # 컨테이너 실행 전 작동할 명령
