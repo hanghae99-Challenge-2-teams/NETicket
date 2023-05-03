@@ -55,7 +55,7 @@ jobs:
       - name: Build Docker Image For Spring
         run: |
           docker login -u ${{ env.DOCKER_USERNAME }} -p ${{ env.DOCKER_PASSWORD }}
-          docker buildx build --platform linux/arm64 -t ${{ env.DOCKER_USERNAME }}/neticket-image .
+          docker build --platform linux/arm64 -t ${{ env.DOCKER_USERNAME }}/neticket-image .
           docker push ${{ env.DOCKER_USERNAME }}/neticket-image
 
       # 디렉토리 생성
