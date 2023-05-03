@@ -21,7 +21,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
   //  토큰에 있는 email로 유저 정보 조회
   @Override
-//  @Cacheable(cacheNames = "localCache", key = "#email")
+  @Cacheable(cacheNames = "localCache", key = "#email")
   public UserDetails loadUserByUsername(String email) {
     User user = userRepository.findByEmail(email).orElseThrow(
         () -> new CustomException(ExceptionType.NOT_FOUND_USER_EXCEPTION)
