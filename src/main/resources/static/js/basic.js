@@ -654,16 +654,16 @@ function showMyPage() {
                         <div class="infoDesc">${title}</div>
                       </li>
                       <li class="infoItem"><strong class="infoLabel">공연 장소 : </strong>
-                        <div class="infoDesc"><p class="infoText">${place}</p></div>
+                        <div class="infoDesc">${place}</div>
                       </li>
                       <li class="infoItem infoDate"><strong class="infoLabel">공연 날짜 : </strong>
-                        <div class="infoDesc"><p class="infoText">${newDate}</p></div>
+                        <div class="infoDesc">${newDate}</div>
                       </li>
                       <li class="infoItem infoPrice"><strong class="infoLabel">총 가격 : </strong>
-                        <div class="infoDesc"><p class="infoText">${totalPrice}원</p></div>
+                        <div class="infoDesc">${totalPrice}원</div>
                       </li>
                       <li class="infoItem"><strong class="infoLabel">매수 : </strong>
-                        <div class="infoDesc"><p class="infoText">${count}매</p></div>
+                        <div class="infoDesc">${count}매</div>
                       </li>
                        <li class="infoItem">
                         <button type="button" class="btn btn-danger cancelResvBtn" data-resv-id="${id}">예매 취소</button>
