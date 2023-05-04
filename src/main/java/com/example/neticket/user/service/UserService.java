@@ -68,7 +68,7 @@ public class UserService {
     }
 
     response.addHeader(JwtUtil.AUTHORIZATION_HEADER,
-        jwtUtil.createToken(user.getEmail(), user.getRole()));
+        jwtUtil.createToken(user.getEmail(), user.getNickname(), user.getRole()));
 
     return new LoginResponseDto(user);
   }

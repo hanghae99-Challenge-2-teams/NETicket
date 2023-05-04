@@ -63,9 +63,9 @@
 
     if (authToken) {
       // 인증 토큰이 있으면 사용자 권한 정보를 확인
-      const payload = JSON.parse(atob(authToken.split('.')[1]));
+      const payload = JSON.parse(decodeURIComponent(escape(atob(authToken.split('.')[1]))));
       const userRole = payload.auth;
-      const userNickname = payload.sub;
+      const userNickname = payload.nickname;
       console.log(userRole)
 
       // 회원가입 링크의 텍스트를 사용자 닉네임으로 변경
