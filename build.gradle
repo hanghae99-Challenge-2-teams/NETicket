@@ -61,12 +61,11 @@ dependencies {
     implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
     implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
 
-
 }
 
-//tasks.named('test') {
-//    useJUnitPlatform()
-//}
+tasks.named('test') {
+    useJUnitPlatform()
+}
 
 jar {
     enabled = false
@@ -83,12 +82,15 @@ querydsl {
     jpa = true
     querydslSourcesDir = querydslDir
 }
+
 sourceSets {
     main.java.srcDir querydslDir
 }
+
 compileQuerydsl {
     options.annotationProcessorPath = configurations.querydsl
 }
+
 configurations {
     compileOnly {
         extendsFrom annotationProcessor
