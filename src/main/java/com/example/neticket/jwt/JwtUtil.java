@@ -53,12 +53,13 @@ public class JwtUtil {
     return null;
   }
 
-  public String createToken(String email, UserRoleEnum role) {
+  public String createToken(String email, String nickname, UserRoleEnum role) {
     Date date = new Date();
 
     return BEARER_PREFIX +
         Jwts.builder()
             .setSubject(email)
+            .claim("nickname", nickname)
             .claim(AUTHORIZATION_KEY, role)
             .setExpiration(new Date(date.getTime() + TOKEN_TIME))
             .setIssuedAt(date)

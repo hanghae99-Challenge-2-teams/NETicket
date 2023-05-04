@@ -7,12 +7,8 @@
 <section class="py-5">
   <div class="container px-4 px-lg-5 my-5">
     <div class="row gx-4 gx-lg-5 align-items-start">
-      <div class="col-md-6">
-        <div class="image-container">
-          <img class="card-img-top mb-5 mb-md-0 image"
-               src="https://dummyimage.com/600x700/dee2e6/6c757d.jpg" alt="..." width="100%"
-               height="70%"/>
-        </div>
+      <div class="col-md-6"><img class="card-img-top mb-5 mb-md-0 image"
+                                 src="https://dummyimage.com/600x700/dee2e6/6c757d.jpg" alt="..."/>
       </div>
       <div class="col-md-6">
         <h5 class="infoDesc id" style="overflow: hidden"></h5>
@@ -63,9 +59,9 @@
 
     if (authToken) {
       // 인증 토큰이 있으면 사용자 권한 정보를 확인
-      const payload = JSON.parse(atob(authToken.split('.')[1]));
+      const payload = JSON.parse(decodeURIComponent(escape(atob(authToken.split('.')[1]))));
       const userRole = payload.auth;
-      const userNickname = payload.sub;
+      const userNickname = payload.nickname;
       console.log(userRole)
 
       // 회원가입 링크의 텍스트를 사용자 닉네임으로 변경
