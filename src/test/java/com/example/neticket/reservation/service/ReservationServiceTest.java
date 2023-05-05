@@ -1,6 +1,5 @@
 package com.example.neticket.reservation.service;
 
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
@@ -42,7 +41,6 @@ import org.springframework.http.HttpStatus;
 @ExtendWith(MockitoExtension.class)
 class ReservationServiceTest {
 
-  //  Test 주체
   @InjectMocks
   ReservationService reservationService;
 
@@ -71,6 +69,7 @@ class ReservationServiceTest {
   @Nested
   @DisplayName("예매중 확인하기 로직 테스트")
   class testVerifyReservation {
+
     Long testEventId = 123456L;
     Long testTicketInfoId = 123456L;
     String testTitle = "테스트공연 <123>";
@@ -79,15 +78,17 @@ class ReservationServiceTest {
     @Test
     @DisplayName("DB로 공연 조회 테스트")
     void test1() {
-//    given
+      // given
       when(testEvent.getId()).thenReturn(testEventId);
       when(testEvent.getTitle()).thenReturn(testTitle);
       when(testEvent.getTicketInfo()).thenReturn(testTicketInfo);
       when(testTicketInfo.getId()).thenReturn(testTicketInfoId);
       when(eventRepository.findById(testEventId)).thenReturn(Optional.of(testEvent));
-//    when
+
+      // when
       DetailEventResponseDto result = reservationService.verifyReservation(testEventId);
-//    then
+
+      // then
       assertEquals(testEventId, result.getEventId());
       assertEquals(testTitle, result.getTitle());
       assertEquals(testTicketInfoId, result.getTicketInfoDto().getTicketInfoId());
@@ -96,15 +97,17 @@ class ReservationServiceTest {
 
     @Test
     @DisplayName("Redis로 공연 조회 테스트")
-    void test2(){
-//    given
+    void test2() {
+      // given
       DetailEventResponseDto mockDto = mock(DetailEventResponseDto.class);
       when(redisTemplate.opsForValue()).thenReturn(valueOperations);
       when(valueOperations.get(cacheKey)).thenReturn(mockDto);
       when(mockDto.getEventId()).thenReturn(testEventId);
-//    when
+
+      // when
       DetailEventResponseDto result = reservationService.verifyReservation(testEventId);
-//    then
+
+      // then
       assertEquals(testEventId, result.getEventId());
       verify(eventRepository, never()).findById(testEventId);
     }
@@ -114,6 +117,7 @@ class ReservationServiceTest {
   @Nested
   @DisplayName("예매하기 로직 테스트")
   class testMakeReservations {
+
     Long testTicketInfoId = 123456L;
     Long testReservationId = 999999L;
     ReservationRequestDto mockDto = mock(ReservationRequestDto.class);
@@ -125,7 +129,7 @@ class ReservationServiceTest {
     @Test
     @DisplayName("DB로 예매하기 테스트")
     void test3() {
-//    given
+      // given
       when(mockDto.getCount()).thenReturn(count);
       when(mockDto.getTicketInfoId()).thenReturn(testTicketInfoId);
       when(redisRepository.decrementLeftSeatInRedis(testTicketInfoId, count)).thenThrow(
@@ -141,37 +145,43 @@ class ReservationServiceTest {
         leftSeats.addAndGet(-invokedCount);
         return null;
       }).when(testTicketInfo).minusSeats(anyInt());
-//    when
+
+      // when
       Long result = reservationService.makeReservation(mockDto, testUser);
-//    then
+
+      // then
       assertEquals(testReservationId, result);
-      assertEquals(initialValue-count, testTicketInfo.getLeftSeats());
+      assertEquals(initialValue - count, testTicketInfo.getLeftSeats());
       verify(reservationRepository, times(1)).save(any(Reservation.class));
       verify(ticketInfoRepository, times(1)).findByIdWithLock(testTicketInfoId);
-      verify(redisRepository, times(1)).decrementLeftSeatInRedis(any(Long.class),any(int.class));
+      verify(redisRepository, times(1)).decrementLeftSeatInRedis(any(Long.class), any(int.class));
 
     }
+
     @Test
     @DisplayName("Redis로 예매하기 테스트")
     void test4() {
-//    given
+      // given
       when(mockDto.getCount()).thenReturn(count);
       when(mockDto.getTicketInfoId()).thenReturn(testTicketInfoId);
       when(reservationRepository.save(any(Reservation.class))).thenAnswer(
           invocation -> testReservation);
       when(testReservation.getId()).thenReturn(testReservationId);
       when(testTicketInfo.getLeftSeats()).thenAnswer(invocation -> leftSeats.get());
-      when(redisRepository.decrementLeftSeatInRedis(eq(testTicketInfoId), anyInt())).thenAnswer(invocation -> {
-        int invokedCount = invocation.getArgument(1, Integer.class);
-        leftSeats.addAndGet(-invokedCount);
-        return true;
-      });
-//    when
+      when(redisRepository.decrementLeftSeatInRedis(eq(testTicketInfoId), anyInt())).thenAnswer(
+          invocation -> {
+            int invokedCount = invocation.getArgument(1, Integer.class);
+            leftSeats.addAndGet(-invokedCount);
+            return true;
+          });
+
+      // when
       Long result = reservationService.makeReservation(mockDto, testUser);
-//    then
+
+      // then
       assertEquals(testReservationId, result);
-      assertEquals(initialValue-count, testTicketInfo.getLeftSeats());
-      verify(redisRepository, times(1)).decrementLeftSeatInRedis(any(Long.class),any(int.class));
+      assertEquals(initialValue - count, testTicketInfo.getLeftSeats());
+      verify(redisRepository, times(1)).decrementLeftSeatInRedis(any(Long.class), any(int.class));
       verify(reservationRepository, times(1)).save(any(Reservation.class));
     }
 
@@ -179,7 +189,8 @@ class ReservationServiceTest {
 
   @Nested
   @DisplayName("예매완료 로직 테스트")
-  class testReservationComplete{
+  class testReservationComplete {
+
     Long testReservationId = 999999L;
     Long testTicketInfoId = 123456L;
     Long testUserId = 111111L;
@@ -188,8 +199,9 @@ class ReservationServiceTest {
     @Test
     @DisplayName("예매 완료")
     void test5() {
-//    given
-      when(reservationRepository.findById(testReservationId)).thenReturn(Optional.of(testReservation));
+      // given
+      when(reservationRepository.findById(testReservationId)).thenReturn(
+          Optional.of(testReservation));
       when(testReservation.getUser()).thenReturn(testUser);
       when(testReservation.getTicketInfoId()).thenReturn(testTicketInfoId);
       when(testUser.getId()).thenReturn(testUserId);
@@ -197,10 +209,12 @@ class ReservationServiceTest {
       when(testReservation.getId()).thenReturn(testReservationId);
       when(testTicketInfo.getEvent()).thenReturn(testEvent);
       when(testEvent.getTitle()).thenReturn(testTitle);
-//    when
+
+      // when
       ReservationResponseDto result = reservationService.reservationComplete(
           testReservationId, testUser);
-//    then
+
+      // then
       assertEquals(testReservationId, result.getId());
       assertEquals(testTitle, result.getTitle());
     }
@@ -210,7 +224,8 @@ class ReservationServiceTest {
 
   @Nested
   @DisplayName("예매취소 로직 테스트")
-  class testDeleteReservation{
+  class testDeleteReservation {
+
     Long testReservationId = 888888L;
     Long testTicketInfoId = 123456L;
     int count = 1;
@@ -220,26 +235,31 @@ class ReservationServiceTest {
     @Test
     @DisplayName("오늘이 공연일이라 예매 취소 실패")
     void test6() {
-//      given
-      when(reservationRepository.findById(testReservationId)).thenReturn(Optional.of(testReservation));
+      // given
+      when(reservationRepository.findById(testReservationId)).thenReturn(
+          Optional.of(testReservation));
       when(testReservation.getUser()).thenReturn(testUser);
       when(testReservation.getTicketInfoId()).thenReturn(testTicketInfoId);
       when(ticketInfoRepository.findById(testTicketInfoId)).thenReturn(Optional.of(testTicketInfo));
       when(testTicketInfo.getEvent()).thenReturn(testEvent);
       when(testEvent.getDate()).thenReturn(LocalDateTime.now());
-//      when
+
+      // when
       try {
         reservationService.deleteReservation(testReservationId, testUser);
       } catch (CustomException e) {
+
+        // then
         assertEquals(HttpStatus.BAD_REQUEST, e.getHttpStatus());
       }
     }
 
     @Test
     @DisplayName("예매 취소 성공 DB로")
-    void test7(){
-//      given
-      when(reservationRepository.findById(testReservationId)).thenReturn(Optional.of(testReservation));
+    void test7() {
+      // given
+      when(reservationRepository.findById(testReservationId)).thenReturn(
+          Optional.of(testReservation));
       when(testReservation.getUser()).thenReturn(testUser);
       when(testReservation.getTicketInfoId()).thenReturn(testTicketInfoId);
       when(testReservation.getCount()).thenReturn(count);
@@ -254,10 +274,12 @@ class ReservationServiceTest {
         leftSeats.addAndGet(invokedCount);
         return null;
       }).when(testTicketInfo).plusSeats(anyInt());
-//      when
+
+      // when
       reservationService.deleteReservation(testReservationId, testUser);
-//      then
-      assertEquals(initialValue+count, testTicketInfo.getLeftSeats());
+
+      // then
+      assertEquals(initialValue + count, testTicketInfo.getLeftSeats());
       verify(redisRepository, never()).incrementLeftSeatInRedis(testTicketInfoId, count);
     }
 
