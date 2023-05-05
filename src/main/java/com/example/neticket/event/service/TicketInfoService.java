@@ -27,13 +27,12 @@ public class TicketInfoService {
   private final ReservationRepository reservationRepository;
   private final RedisTemplate<String, DetailEventResponseDto> redisTemplate;
 
-  /**
+  /*
    * 매일 자정에 돌아가는 스케쥴러 오늘이 공연일인 모든 공연을 예매 불가능으로 돌린다.
    * repository에서 오늘이 공연 당일인 공연의 ticketInfo를 다 불러온다.
    * 해당 공연의 dto 캐시를 삭제한다. 해당 공연의 leftSeats 캐시도 삭제하고 DB에 정합성을 맞춘다.
    * ticketInfo에 변화가 생긴 것을 repository에 반영한다.
    */
-
   @Scheduled(cron = "0 0 0 * * ?")
   public void closeTicket() {
     List<TicketInfo> ticketInfos = ticketInfoRepository.findTicketInfoByEventDate();
@@ -56,11 +55,10 @@ public class TicketInfoService {
     }
   }
 
-  /**
+  /*
    * 매일 18시 티켓정보의 openDate가 오늘인 공연의 isAvailable을 true로 바꾼다.
    * 해당 ticketInfo의 leftSeats를 redis의 캐시로 저장한다.
    */
-
   @Scheduled(cron = "0 0 18 * * ?")
   public void openTicket() {
     List<TicketInfo> ticketInfos = ticketInfoRepository.findTicketInfoByOpenDate();
@@ -72,7 +70,6 @@ public class TicketInfoService {
     }
     ticketInfoRepository.saveAll(ticketInfos);
   }
-
 
   // admin 유저가 새로 서버 시작할때 ticketInfo 업데이트
   @Transactional

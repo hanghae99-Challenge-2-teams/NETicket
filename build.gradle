@@ -1,14 +1,7 @@
-buildscript {
-    ext {
-        queryDslVersion = "5.0.0"
-    }
-}
-
 plugins {
     id 'java'
     id 'org.springframework.boot' version '2.7.5'
     id 'io.spring.dependency-management' version '1.0.15.RELEASE'
-    //querydsl 추가
     id 'com.ewerk.gradle.plugins.querydsl' version '1.0.10'
 }
 
@@ -20,6 +13,7 @@ configurations {
     compileOnly {
         extendsFrom annotationProcessor
     }
+    querydsl.extendsFrom compileClasspath
 }
 
 repositories {
@@ -54,12 +48,12 @@ dependencies {
     // Redis
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
-    //  Caffeine
+    // Caffeine
     implementation 'com.github.ben-manes.caffeine:caffeine:3.0.4'
 
-    //querydsl 추가
-    implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
-    implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
+    // querydsl
+    implementation 'com.querydsl:querydsl-jpa:5.0.0'
+    implementation 'com.querydsl:querydsl-apt:5.0.0'
 
 }
 
@@ -75,7 +69,6 @@ bootJar {
     archiveFileName = 'app.jar'
 }
 
-//querydsl 추가
 def querydslDir = "$buildDir/generated/querydsl"
 
 querydsl {
@@ -89,11 +82,4 @@ sourceSets {
 
 compileQuerydsl {
     options.annotationProcessorPath = configurations.querydsl
-}
-
-configurations {
-    compileOnly {
-        extendsFrom annotationProcessor
-    }
-    querydsl.extendsFrom compileClasspath
 }

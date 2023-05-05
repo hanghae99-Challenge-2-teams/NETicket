@@ -15,13 +15,11 @@ import com.example.neticket.user.entity.User;
 import java.time.Duration;
 import java.time.LocalDate;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ReservationService {

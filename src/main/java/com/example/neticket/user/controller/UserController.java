@@ -1,14 +1,11 @@
 package com.example.neticket.user.controller;
 
 import com.example.neticket.event.dto.MessageResponseDto;
-import com.example.neticket.exception.CustomException;
-import com.example.neticket.exception.ExceptionType;
 import com.example.neticket.reservation.dto.ReservationResponseDto;
 import com.example.neticket.security.UserDetailsImpl;
 import com.example.neticket.user.dto.LoginRequestDto;
 import com.example.neticket.user.dto.LoginResponseDto;
 import com.example.neticket.user.dto.SignupRequestDto;
-import com.example.neticket.user.entity.UserRoleEnum;
 import com.example.neticket.user.service.UserService;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
