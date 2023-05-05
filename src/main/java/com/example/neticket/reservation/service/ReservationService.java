@@ -12,6 +12,7 @@ import com.example.neticket.reservation.entity.Reservation;
 import com.example.neticket.reservation.repository.RedisRepository;
 import com.example.neticket.reservation.repository.ReservationRepository;
 import com.example.neticket.user.entity.User;
+import io.lettuce.core.RedisCommandTimeoutException;
 import java.time.Duration;
 import java.time.LocalDate;
 import lombok.RequiredArgsConstructor;
@@ -52,27 +53,23 @@ public class ReservationService {
   // 2.예매하기
   @Transactional(isolation = Isolation.READ_COMMITTED)
   public Long makeReservation(ReservationRequestDto dto, User user) {
-    boolean hasLeftSeats = redisRepository.hasLeftSeatsInRedis(dto.getTicketInfoId());
-    if (hasLeftSeats) {
-      decrementLeftSeatInRedis(dto);
-    } else {
+    try {
+      Boolean success = redisRepository.decrementLeftSeatInRedis(dto.getTicketInfoId(),
+          dto.getCount());
+      if (!success) {
+        throw new CustomException(ExceptionType.OUT_OF_TICKET_EXCEPTION);
+      }
+    } catch (Exception e) {
+      if (e instanceof CustomException || e instanceof RedisCommandTimeoutException) {
+        throw e;
+      }
       decrementLeftSeatInDB(dto);
     }
-
     return reservationRepository.save(new Reservation(dto, user)).getId();
 
   }
 
-  // 2-1.redis로 좌석 수 변경
-  private void decrementLeftSeatInRedis(ReservationRequestDto dto) {
-    Boolean success = redisRepository.decrementLeftSeatInRedis(dto.getTicketInfoId(),
-        dto.getCount());
-    if (!success) {
-      throw new CustomException(ExceptionType.OUT_OF_TICKET_EXCEPTION);
-    }
-  }
-
-  // 2-2.캐시 없으면 DB로 좌석수 변경
+  // 2-1.캐시 없으면 DB로 좌석수 변경
   private void decrementLeftSeatInDB(ReservationRequestDto dto) {
     TicketInfo ticketInfo = ticketInfoRepository.findByIdWithLock(dto.getTicketInfoId())
         .orElseThrow(
