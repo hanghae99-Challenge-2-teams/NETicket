@@ -249,7 +249,6 @@ function showPaging(response) {
 }
 
 // 상세페이지
-
 let isAvailable;
 
 function getEventDetails(eventId) {
@@ -395,7 +394,7 @@ function saveReservation() {
       ticketInfoId: ticketInfoId,
       count: selectedValue
     }),
-    success: function(resvId, textStatus, jqXHR) {
+    success: function (resvId, textStatus, jqXHR) {
       alert("예매가 완료되었습니다.");
 // 백엔드 헤더에서 측정할때 쓰는 코드
       let responseTime = jqXHR.getResponseHeader('X-Response-Time');
@@ -452,20 +451,18 @@ function resetTicketInfo() {
     headers: {
       'Authorization': token // Authorization 헤더에 토큰 값 추가
     },
-    success: function(response) {
+    success: function (response) {
       location.reload();
       alert("공연정보가 현재 시간에 맞게 리셋되었습니다.");
     },
-    error: function(xhr, status, error) {
+    error: function (xhr, status, error) {
       // 요청이 실패한 경우 실행할 코드
       console.log("Error: " + xhr.responseText);
       alert("리셋에 실패하였습니다.");
     }
   });
 
-
 }
-
 
 function addevent() {
   $("#eventForm").on("submit", function (event) {
@@ -562,7 +559,7 @@ function cacheEventAdd() {
     url: "/api/neticket/cache/left-seats/" + cacheEventNum,
     dataType: "json",
     headers: {
-      'Authorization': token // Authorization 헤더에 토큰 값 추가
+      'Authorization': token
     },
     success: function (response) {
       location.reload();
@@ -583,7 +580,7 @@ function deleteLeftSeatsCache(cacheEventNum) {
     url: "/api/neticket/cache/left-seats/" + cacheEventNum,
     dataType: "json",
     headers: {
-      'Authorization': token // Authorization 헤더에 토큰 값 추가
+      'Authorization': token
     },
     success: function (response) {
       location.reload();
@@ -605,7 +602,7 @@ function refreshLeftSeatsCache() {
     url: "/api/neticket/cache/left-seats/" + cacheEventNum,
     dataType: "json",
     headers: {
-      'Authorization': token // Authorization 헤더에 토큰 값 추가
+      'Authorization': token
     },
     success: function (response) {
       alert("남은 좌석 수가 성공적으로 갱신되었습니다.");
@@ -620,7 +617,7 @@ function refreshLeftSeatsCache() {
 // 마이페이지
 function showMyPage() {
 
-  let token = getAuthTokenFromCookie(); // 쿠키에서 토큰 값 추출
+  let token = getAuthTokenFromCookie();
 
   $.ajax({
     type: "GET",
@@ -628,10 +625,10 @@ function showMyPage() {
     dataType: "json",
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': token // Authorization 헤더에 토큰 값 추가
+      'Authorization': token
     },
     success: function (response) {
-      $('#getresv').empty(); // 이 부분을 추가
+      $('#getresv').empty();
 
       // response 객체가 배열이 아닌 경우에도 배열로 처리
       let responseArray = Array.isArray(response) ? response : [response];
@@ -723,8 +720,6 @@ function showSearchResult(pageNum) {
     pageNum = 1;
   }
 
-
-
   $.ajax({
     type: "GET",
     url: "/api/neticket/events/search?keyword=" + keyword + "&page=" + pageNum,
@@ -767,7 +762,7 @@ function showSearchResult(pageNum) {
           row.appendChild(cardColumn);
         }
       }
-    },error: function (response) {
+    }, error: function (response) {
       alert(response.responseJSON.msg);
     }
   });
@@ -804,7 +799,8 @@ function showSearchPaging(response) {
 
   if (endPage < totalPages) {
     pagination.append(`<li class="page-item">
-                          <a class="page-link" onclick="showSearchResult(${endPage + 1})" href="#" aria-label="Next">
+                          <a class="page-link" onclick="showSearchResult(${endPage
+    + 1})" href="#" aria-label="Next">
                             <span aria-hidden="true">&raquo;</span>
                           </a>
                         </li>`);
@@ -820,7 +816,8 @@ function dateFormat(date) {
   const hours = ('0' + datetime.getHours()).slice(-2);
   const minutes = ('0' + datetime.getMinutes()).slice(-2);
 
-  const formattedDatetimeStr = year + '-' + month + '-' + day + ' ' + hours + '시 ' + minutes + '분';
+  const formattedDatetimeStr = year + '-' + month + '-' + day + ' ' + hours
+      + '시 ' + minutes + '분';
   return formattedDatetimeStr;
 
 }
