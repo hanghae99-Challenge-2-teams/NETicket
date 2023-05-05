@@ -27,7 +27,7 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 @Configuration
 @EnableCaching
-public class RedisConfig extends CachingConfigurerSupport {
+public class CacheConfig extends CachingConfigurerSupport {
 
   @Value("${spring.redis.host}")
   private String host;
@@ -61,7 +61,7 @@ public class RedisConfig extends CachingConfigurerSupport {
   @Bean
   public RedisConnectionFactory redisConnectionFactory() {
     LettuceClientConfiguration clientConfig = LettuceClientConfiguration.builder()
-        .commandTimeout(Duration.ofMillis(500)) // 타임아웃 설정
+        .commandTimeout(Duration.ofMillis(100)) // 타임아웃 설정
         .build();
 
     RedisStandaloneConfiguration serverConfig = new RedisStandaloneConfiguration(host, port);

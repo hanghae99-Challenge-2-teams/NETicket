@@ -1,6 +1,5 @@
 package com.example.neticket.config;
 
-
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import javax.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
