@@ -61,7 +61,7 @@ public class CacheConfig extends CachingConfigurerSupport {
   @Bean
   public RedisConnectionFactory redisConnectionFactory() {
     LettuceClientConfiguration clientConfig = LettuceClientConfiguration.builder()
-        .commandTimeout(Duration.ofMillis(100)) // 타임아웃 설정
+        .commandTimeout(Duration.ofMillis(500)) // 타임아웃 설정
         .build();
 
     RedisStandaloneConfiguration serverConfig = new RedisStandaloneConfiguration(host, port);
