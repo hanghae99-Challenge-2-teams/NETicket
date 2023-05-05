@@ -13,14 +13,17 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 @Component
 public class ResponseTimeAop {
 
-//  예매하기 응답속도 측정 / admin만
+  // Userdetails 확인하는 응답속도 측정 AOP (admin 활성화)
   @Around("execution(public * com.example.neticket.reservation.controller.ReservationController.makeReservations(..)) && args(.., userDetails)")
-  public Object checkResponseTime(ProceedingJoinPoint joinPoint, UserDetailsImpl userDetails) throws Throwable{
+  public Object checkResponseTime(ProceedingJoinPoint joinPoint, UserDetailsImpl userDetails)
+      throws Throwable {
 
     boolean isAdmin = userDetails.getAuthorities().stream()
         .anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"));
 
-    if (!isAdmin) return joinPoint.proceed();
+    if (!isAdmin) {
+      return joinPoint.proceed();
+    }
 
     long startTime = System.currentTimeMillis();
 
@@ -28,7 +31,7 @@ public class ResponseTimeAop {
       return joinPoint.proceed();
     } finally {
       long responseTime = System.currentTimeMillis() - startTime;
-//      responseTime을 http response header에 "X-Response-Time" 키값에다가 value로 삽입해서 반환
+      // responseTime을 http response header에 "X-Response-Time" 키값에다가 value로 삽입해서 반환
       ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
       if (requestAttributes != null) {
         HttpServletResponse response = requestAttributes.getResponse();
@@ -40,7 +43,7 @@ public class ResponseTimeAop {
 
   }
 
-//  검색 응답속도 측정 / 유저역할 상관x
+  // 검색 응답속도 측정
   @Around("execution(public * com.example..neticket.event.controller.EventController.searchEvents(..))")
   public Object checkSearchResponseTime(ProceedingJoinPoint joinPoint) throws Throwable {
     long startTime = System.currentTimeMillis();
@@ -56,7 +59,7 @@ public class ResponseTimeAop {
           response.setHeader("X-Search-Response-Time", String.valueOf(responseTime));
         }
       }
-
     }
   }
+
 }

@@ -62,13 +62,7 @@ public class EventController {
 
   }
 
-  /**
-   * 4.검색기능 keyword로 공연 제목과 공연 장소를 검색
-   *
-   * @param keyword : 검색어
-   * @param page    : 현재 페이지. Pageable에서는 0페이지가 첫페이지라 -1
-   * @return : 검색결과를 Page<EventResponseDto>로 반환
-   */
+  // 4.검색기능 keyword로 공연 제목과 공연 장소를 검색
   @GetMapping("/search")
   public ResponseEntity<Page<EventResponseDto>> searchEvents(
       @RequestParam(value = "keyword") String keyword,
