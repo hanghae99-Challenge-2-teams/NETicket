@@ -117,7 +117,6 @@ class ReservationServiceTest {
   @Nested
   @DisplayName("예매하기 로직 테스트")
   class testMakeReservations {
-
     Long testTicketInfoId = 123456L;
     Long testReservationId = 999999L;
     ReservationRequestDto mockDto = mock(ReservationRequestDto.class);
@@ -125,19 +124,17 @@ class ReservationServiceTest {
     int initialValue = 100;
     AtomicInteger leftSeats = new AtomicInteger(initialValue);
 
-
     @Test
     @DisplayName("DB로 예매하기 테스트")
     void test3() {
       // given
       when(mockDto.getCount()).thenReturn(count);
       when(mockDto.getTicketInfoId()).thenReturn(testTicketInfoId);
-      when(redisRepository.decrementLeftSeatInRedis(testTicketInfoId, count)).thenThrow(
-          RedisException.class);
+      when(redisRepository.hasLeftSeatsInRedis(testTicketInfoId)).thenReturn(false);
 
+      when(ticketInfoRepository.findByIdWithLock(any())).thenReturn(Optional.of(testTicketInfo));
       when(reservationRepository.save(any(Reservation.class))).thenAnswer(
           invocation -> testReservation);
-      when(ticketInfoRepository.findByIdWithLock(any())).thenReturn(Optional.of(testTicketInfo));
       when(testReservation.getId()).thenReturn(testReservationId);
       when(testTicketInfo.getLeftSeats()).thenAnswer(invocation -> leftSeats.get());
       doAnswer(invocation -> {
@@ -151,38 +148,37 @@ class ReservationServiceTest {
 
       // then
       assertEquals(testReservationId, result);
-      assertEquals(initialValue - count, testTicketInfo.getLeftSeats());
-      verify(reservationRepository, times(1)).save(any(Reservation.class));
-      verify(ticketInfoRepository, times(1)).findByIdWithLock(testTicketInfoId);
-      verify(redisRepository, times(1)).decrementLeftSeatInRedis(any(Long.class), any(int.class));
+      assertEquals(initialValue-count, testTicketInfo.getLeftSeats());
+      verify(redisRepository, times(1)).hasLeftSeatsInRedis(testTicketInfoId);
+      verify(redisRepository, never()).decrementLeftSeatInRedis(any(Long.class),any(int.class));
 
     }
-
     @Test
     @DisplayName("Redis로 예매하기 테스트")
     void test4() {
       // given
       when(mockDto.getCount()).thenReturn(count);
       when(mockDto.getTicketInfoId()).thenReturn(testTicketInfoId);
+      when(redisRepository.hasLeftSeatsInRedis(testTicketInfoId)).thenReturn(true);
       when(reservationRepository.save(any(Reservation.class))).thenAnswer(
           invocation -> testReservation);
       when(testReservation.getId()).thenReturn(testReservationId);
       when(testTicketInfo.getLeftSeats()).thenAnswer(invocation -> leftSeats.get());
-      when(redisRepository.decrementLeftSeatInRedis(eq(testTicketInfoId), anyInt())).thenAnswer(
-          invocation -> {
-            int invokedCount = invocation.getArgument(1, Integer.class);
-            leftSeats.addAndGet(-invokedCount);
-            return true;
-          });
+      when(redisRepository.decrementLeftSeatInRedis(eq(testTicketInfoId), anyInt())).thenAnswer(invocation -> {
+        int invokedCount = invocation.getArgument(1, Integer.class);
+        leftSeats.addAndGet(-invokedCount);
+        return true;
+      });
 
       // when
       Long result = reservationService.makeReservation(mockDto, testUser);
 
       // then
       assertEquals(testReservationId, result);
-      assertEquals(initialValue - count, testTicketInfo.getLeftSeats());
-      verify(redisRepository, times(1)).decrementLeftSeatInRedis(any(Long.class), any(int.class));
-      verify(reservationRepository, times(1)).save(any(Reservation.class));
+      assertEquals(initialValue-count, testTicketInfo.getLeftSeats());
+      verify(redisRepository, times(1)).hasLeftSeatsInRedis(testTicketInfoId);
+      verify(redisRepository, times(1)).decrementLeftSeatInRedis(any(Long.class),any(int.class));
+      verify(ticketInfoRepository, never()).save(any(TicketInfo.class));
     }
 
   }
