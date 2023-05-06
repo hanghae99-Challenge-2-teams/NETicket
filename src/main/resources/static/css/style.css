@@ -4,14 +4,18 @@ body {
   font-family: 'Gowun Dodum', sans-serif;
   color: #000;
   height: 100%;
-  background-color: #f5f5f5ad; /* 배경색 변경 */
+  background-color: #f5f5f5ad;
   margin-left: 10px;
   margin-right: 10px;
   margin-top: 10px;
 }
 
+.custom-container {
+  max-width: 1600px;
+}
+
 .col {
-  flex: 1 0 0%;
+  flex: 1 0 0;
   display: flex;
   justify-content: space-evenly;
   margin-bottom: 10px;
@@ -19,7 +23,7 @@ body {
 
 .card-img-top {
   width: 100%;
-  height: 250px; /* 원하는 높이를 설정하세요 */
+  height: 250px;
   object-fit: cover;
 }
 
@@ -99,7 +103,7 @@ body {
   display: inline-block;
 }
 
-.infoLabel{
+.infoLabel {
   height: 100%;
 }
 
@@ -117,7 +121,12 @@ body {
 }
 
 .nav-link {
-  font-size: 20px;
+  font-size: 18px;
+  color: #222222;
+}
+
+.nav-link:focus, .nav-link:hover {
+  color: #f14646;
 }
 
 .productWrapper .summary .info {
@@ -202,7 +211,7 @@ body {
 
 .card-wrapper {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(370px, 1fr));
+  grid-template-columns: repeat(1, minmax(370px, 1fr));
   grid-gap: 30px;
   width: 100%;
   margin: 0 auto;
@@ -237,15 +246,15 @@ body {
   background-color: white;
   margin-top: 20px;
   margin-bottom: 40px;
-  background-color: rgba(255, 192, 203, 0.3); /* 핑크빛 배경 */
-  border-radius: 15px; /* 둥글게 처리 */
-  padding: 15px; /* 내부 여백 추가 */
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); /* 그림자 효과 */
+  background-color: rgba(255, 192, 203, 0.3);
+  border-radius: 15px;
+  padding: 15px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
 
 }
 
 .btn {
-  border-radius: 50px; /* 둥글게 처리 */
+  border-radius: 50px;
 }
 
 #eventForm {
@@ -254,7 +263,7 @@ body {
 }
 
 label {
-  font-size: 1.1rem; /* 원하는 글씨 크기로 변경 */
+  font-size: 1.1rem;
 }
 
 .reservation-card {
@@ -291,7 +300,6 @@ label {
   display: inline;
 }
 
-/* pagination 스타일 커스텀 */
 .pagination {
   display: flex;
   justify-content: center;
@@ -332,7 +340,6 @@ label {
   border-radius: 1rem;
 }
 
-/*카드슬라이드*/
 #carouselExampleInterval {
   max-width: 1000px;
   margin: 0 auto;
@@ -351,7 +358,6 @@ label {
   align-items: center;
 }
 
-/* End Non-Essential  */
 .property-card {
   height: 18em;
   width: 14em;
@@ -372,7 +378,6 @@ label {
   box-shadow: 15px 15px 27px #e1e1e3, -15px -15px 27px #ffffff;
 }
 
-/* Top Half of card, image. */
 .property-image {
   height: 50%;
   width: 100%; /* 이미지 너비를 카드 너비에 맞춥니다. */
@@ -387,7 +392,6 @@ label {
   background-repeat: no-repeat;
 }
 
-/* Bottom Card Section */
 section.infoSection {
   margin: 10px 0 0 0;
   padding: 0px;
@@ -406,7 +410,6 @@ section.infoSection {
   text-align: center;
 }
 
-/* Social Icons */
 .property-social-icons {
   width: 1em;
   height: 1em;
@@ -420,7 +423,6 @@ section.infoSection {
   border-radius: 10px;
 }
 
-/* Property Cards Hover States */
 .property-card:hover .property-description {
   height: 0em;
   padding: 0px 1em;
@@ -458,7 +460,7 @@ section.infoSection {
   font-size: 1em;
   font-weight: bold;
   font-family: 'Gowun Dodum', sans-serif;
-  margin-top: 1em; /* 위 마진 추가 */
+  margin-top: 1em;
   margin-bottom: 0.5em;
   color: #b32b36;
 }
@@ -488,8 +490,9 @@ h3 {
   font-size: 24px;
   color: #ff5959;
   font-weight: bold;
-  margin-top: 20px;
-  margin-left: 70px;
+  align-items: center;
+  display: flex;
+  justify-content: space-around;
 }
 
 .common_footer {
@@ -555,9 +558,3 @@ h3 {
 .footer_etc {
   margin-top: 10px;
 }
-
-
-
-
-
-

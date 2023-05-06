@@ -5,35 +5,36 @@
 </head>
 <body>
 <div th:fragment="navbar">
-  <div class="row justify-content-between align-items-center py-2">
-    <div class="col-lg-4 col-md-5 col-sm-6">
-      <a href="/neticket">
-        <img src="/images/logo2.png" alt="NETicket"
-             style="width: 200px; object-fit: contain; margin-top: 50px; margin-left: 100px;">
-      </a>
-    </div>
-    <div class="col-lg-5 col-md-4 col-sm-11">
-      <form action="/neticket/search" method="get" class="search-container">
-        <input type="text" name="keyword" placeholder="검색">
-        <input type="hidden" name="page" value="1">
-        <input type="submit" value="검색">
-      </form>
-    </div>
-    <div class="col-lg-3 col-md-3 col-sm-7">
-      <ul class="nav justify-content-end" style="margin-right: 100px">
-        <li class="nav-item">
-          <a class="nav-link" href="/neticket/admin/event" style="color: black; display: none">공연
-            추가</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/neticket/login" style="color: black">로그인</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/neticket/signup" style="color: black">회원가입</a>
-        </li>
-      </ul>
+  <div class="container custom-container">
+    <div class="row justify-content-between align-items-center py-2">
+      <div class="col-lg-4 col-md-5 col-sm-6 d-flex justify-content-center justify-content-lg-start">
+        <a href="/neticket">
+          <img src="/images/logo2.png" alt="NETicket" class="img-fluid" style="max-width: 200px; object-fit: contain; margin-top: 50px;">
+        </a>
+      </div>
+      <div class="col-lg-5 col-md-4 col-sm-11">
+        <form action="/neticket/search" method="get" class="search-container">
+          <input type="text" name="keyword" placeholder="검색" class="form-control">
+          <input type="hidden" name="page" value="1">
+          <input type="submit" value="검색" class="btn ms-2">
+        </form>
+      </div>
+      <div class="col-lg-3 col-md-3 col-sm-7">
+        <ul class="nav justify-content-lg-end justify-content-center">
+          <li class="nav-item">
+            <a class="nav-link" href="/neticket/admin/event" style="display: none">공연 추가</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/neticket/login">로그인</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/neticket/signup">회원가입</a>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznB1UzOiR5MOAI6J6gYLOqxN6eV49JgN01+7SkmI1Dg9t/2fJ/nLcaWMId" crossorigin="anonymous"></script>
 </body>
 </html>
