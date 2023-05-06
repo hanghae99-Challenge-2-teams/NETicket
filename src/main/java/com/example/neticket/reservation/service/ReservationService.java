@@ -12,6 +12,7 @@ import com.example.neticket.reservation.entity.Reservation;
 import com.example.neticket.reservation.repository.RedisRepository;
 import com.example.neticket.reservation.repository.ReservationRepository;
 import com.example.neticket.user.entity.User;
+import io.lettuce.core.RedisCommandTimeoutException;
 import java.time.Duration;
 import java.time.LocalDate;
 import lombok.RequiredArgsConstructor;
@@ -59,7 +60,7 @@ public class ReservationService {
         throw new CustomException(ExceptionType.OUT_OF_TICKET_EXCEPTION);
       }
     } catch (Exception e) {
-      if (e instanceof CustomException) {
+      if (e instanceof CustomException || e instanceof RedisCommandTimeoutException) {
         throw e;
       }
       decrementLeftSeatInDB(dto);
