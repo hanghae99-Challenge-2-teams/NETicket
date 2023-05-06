@@ -434,8 +434,8 @@ function showReservationCompleted() {
       $('.title').text(response.title)
       $('.place').text(response.place);
       $('.date').text(newDate);
-      $('.totalPrice').text(response.totalPrice);
-      $('.count').text(response.count);
+      $('.totalPrice').text(addCommas(response.totalPrice) + '원');
+      $('.count').text(response.count + "매");
     },
   })
 }
@@ -639,6 +639,7 @@ function showMyPage() {
         let place = responseArray[i].place;
         let date = responseArray[i].date;
         let totalPrice = responseArray[i].totalPrice;
+        let formattedPrice = totalPrice.toLocaleString();
         let count = responseArray[i].count;
         let newDate = dateFormat(date);
 
@@ -657,7 +658,7 @@ function showMyPage() {
                         <div class="infoDesc">${newDate}</div>
                       </li>
                       <li class="infoItem infoPrice"><strong class="infoLabel">총 가격 : </strong>
-                        <div class="infoDesc">${totalPrice}원</div>
+                        <div class="infoDesc">${formattedPrice}원</div>
                       </li>
                       <li class="infoItem"><strong class="infoLabel">매수 : </strong>
                         <div class="infoDesc">${count}매</div>
