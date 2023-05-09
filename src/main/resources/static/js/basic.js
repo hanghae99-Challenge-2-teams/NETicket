@@ -273,6 +273,12 @@ function getEventDetails(eventId) {
       $('#bookingButton').data('ticketInfo', event.ticketInfoDto);
       // 남은 시간을 표시합니다.
       updateRemainingTime();
+      const now = new Date();
+      const eventDate = new Date(event.date);
+      if (eventDate <= now) {
+        // 이벤트 날짜가 오늘 이전이거나 오늘이라면
+        $('.end').text('이미 예매 종료된 공연입니다').css('color', 'red');
+      }
 
     },
     error: function (jqXHR, textStatus, errorThrown) {
