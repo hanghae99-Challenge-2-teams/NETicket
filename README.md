@@ -1,5 +1,5 @@
 # 🎟NETicket🎟
-### 대규모 트랜잭션을 빠르고 안정적으로 처리하는 티켓 예매 사이트
+### 대규모 트랜잭션을 빠르고 안정적으로 처리하는 티켓 예매 사이트🤗
 
 ## 📚Team Notion 보러가기
 [Notion](https://www.notion.so/NETicket-10c043b6526a4c1c9d892b46d77d229c)
