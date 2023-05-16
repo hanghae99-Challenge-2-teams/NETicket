@@ -2,9 +2,9 @@
 ### 대규모 트랜잭션을 빠르고 안정적으로 처리하는 티켓 예매 사이트🤗
 
 ## 📚Team Notion 보러가기
-[Notion](https://www.notion.so/NETicket-10c043b6526a4c1c9d892b46d77d229c)
+[Notion](https://misty-composer-643.notion.site/NETicket-10c043b6526a4c1c9d892b46d77d229c)
 ## ✨Team Brochure 보러가기✨
-[Brochure](https://www.notion.so/NETicket-2b06067c2b2448faa71951f43f225a0a)
+[Brochure](https://misty-composer-643.notion.site/NETicket-2b06067c2b2448faa71951f43f225a0a)
 <br>
 # 💁🏻‍♂️프로젝트 소개
 
@@ -194,11 +194,11 @@ No Error Ticket!
 
 ## 🏹 기술적 의사 결정
 
-[기술적 의사 결정 과정 보러가기](https://www.notion.so/aef8266d7e5d42ff908fdce9bb438300)
+[기술적 의사 결정 과정 보러가기](https://misty-composer-643.notion.site/aef8266d7e5d42ff908fdce9bb438300)
 
 ## 🗺 API 명세서
 
-[API 명세서 보러가기](https://www.notion.so/API-ec546f91e7b0472ea3ab3909ffc1b2ee)
+[API 명세서 보러가기](https://misty-composer-643.notion.site/API-ec546f91e7b0472ea3ab3909ffc1b2ee)
 
 ## 💾 ERD
 
@@ -217,11 +217,11 @@ No Error Ticket!
 </aside>
 <br><br>
 
-[1. 트랜잭션 충돌 문제를 비관적 락으로 해결](https://www.notion.so/1-2ace0d67e5be4082a3fc3153de662e73)<br>
-[2. 비관적 락 적용 시 속도 문제를 Redis Cache로 해결](https://www.notion.so/2-Redis-Cache-58069ce89a91466d94fe7d1d7ca0812b)<br>
-[3. 더 높은 목표치를 Scale Out으로 해결](https://www.notion.so/3-Scale-Out-036894647e974fde914d91195eb83420)<br>
-[4. 서버 확장으로 인한 비용 문제를 AutoScaling으로 해결](https://www.notion.so/4-AutoScaling-e8c4f28c5ea545a284400422ec865794)<br>
-[5. APM으로 찾은 병목현상을 Hikari, MySQL 튜닝으로 해결](https://www.notion.so/5-APM-Hikari-MySQL-fd64de87205e4c59a4bdf31ed0b5627f)<br>
+[1. 트랜잭션 충돌 문제를 비관적 락으로 해결](https://misty-composer-643.notion.site/1-2ace0d67e5be4082a3fc3153de662e73)<br>
+[2. 비관적 락 적용 시 속도 문제를 Redis Cache로 해결](https://misty-composer-643.notion.site/2-Redis-Cache-58069ce89a91466d94fe7d1d7ca0812b)<br>
+[3. 더 높은 목표치를 Scale Out으로 해결](https://misty-composer-643.notion.site/3-Scale-Out-036894647e974fde914d91195eb83420)<br>
+[4. 서버 확장으로 인한 비용 문제를 AutoScaling으로 해결](https://misty-composer-643.notion.site/4-AutoScaling-e8c4f28c5ea545a284400422ec865794)<br>
+[5. APM으로 찾은 병목현상을 Hikari, MySQL 튜닝으로 해결](https://misty-composer-643.notion.site/5-APM-Hikari-MySQL-fd64de87205e4c59a4bdf31ed0b5627f)<br>
 
 ---
 
@@ -235,7 +235,7 @@ No Error Ticket!
 </aside>
 <br>
 
-[성능개선 항목 보러가기](https://www.notion.so/17f7b104d38e40aaa75f1bd8d6dc9619)
+[성능개선 항목 보러가기](https://misty-composer-643.notion.site/17f7b104d38e40aaa75f1bd8d6dc9619)
 
 ---
 
